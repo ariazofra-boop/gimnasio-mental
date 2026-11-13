@@ -223,6 +223,20 @@ input[type=text]:focus{border-color:var(--pri)}
 .mcard .front{background:#fff;border:2px solid var(--line);font-size:30px;transform:rotateY(180deg)}
 .mcard.up .back{transform:rotateY(180deg)}.mcard.up .front{transform:rotateY(360deg)}
 .mcard.done .front{background:#d6f5e3;border-color:#2fb36f}
+.gsub{text-align:center;color:var(--muted);font-weight:800;font-size:13px;margin:-4px 0 10px}
+.gtabs{margin-bottom:12px}.gtabs .chip{font-size:13px;padding:7px 11px}
+.gnews{background:#fff7e6;border:1px solid #ffe0a3;border-radius:14px;padding:11px 13px;font-size:14px;line-height:1.5;margin-bottom:12px}
+.ggames{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.gg{background:#f7f4ff;border:2px solid #e8e0fb;border-radius:16px;padding:10px;text-align:left;display:flex;flex-direction:column;gap:2px;color:var(--ink)}
+.gg.done{background:#eefaf3;border-color:#bfe9cf}.gg .ggi{font-size:26px}.gg b{font-size:14.5px}.gg small{font-weight:800;font-size:12.5px;color:var(--pri)}.gg.done small{color:var(--ok)}.gg .gl{color:var(--muted)!important;font-weight:700}
+.ranking div.meR{background:#e9e0ff}
+.mcardm{display:flex;gap:10px;background:#f7f4ff;border-radius:16px;padding:10px;margin-bottom:9px}.mcardm.me{background:#efe7ff;border:2px solid #d4c3ff}
+.mav{width:64px;flex:none}.mav svg{width:64px;height:auto;background:#fff;border-radius:50%}
+.mi{flex:1;min-width:0}.mi b{display:block}.mi small{display:block;color:var(--muted);font-weight:700;font-size:12.5px}
+.mlv{display:grid;grid-template-columns:1fr 1fr;gap:3px 10px;margin-top:6px}.mlv span{display:grid;grid-template-columns:18px 1fr 16px;align-items:center;gap:4px;font-size:13px}
+.mlv span::before{content:'';grid-column:2;grid-row:1;height:6px;border-radius:6px;background:#e7e0f7}.mlv i{grid-column:2;grid-row:1;height:6px;border-radius:6px;display:block}
+.mlv em{font-style:normal;font-weight:800;color:var(--muted);font-size:11.5px}
+.taunt{font-family:Fredoka;font-weight:600;font-size:19px;background:#fff1d6;border-radius:14px;padding:10px;margin:10px 0}
 .pop{animation:pop .35s ease}
 @keyframes pop{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}
 .shake{animation:shake .3s}
@@ -274,6 +288,7 @@ function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.games)
 let localOK=false;try{localStorage.setItem(KEY+'-t','1');localOK=localStorage.getItem(KEY+'-t')==='1'}catch(e){}
 function norm(s){s.stats=Object.assign({plays:0,daily:0,records:0,perfect:0,group:0,early:0,sent:0},s.stats||{});if(!s.stats.plays)s.stats.plays=Object.values(s.games).reduce((a,g)=>a+(g.plays||0),0);s.discos=s.discos||{};if(s.sound===undefined)s.sound=true;return s}
 let st=norm(load());
+if(st.name&&!st.profile){st.profile={curso:'2eso'}}
 /* --- guardado: navegador + nube de la cuenta (si hay sesión iniciada en Claude) --- */
 let cloudRef=null,cloudBusy=false,cloudDirty=false,cloudTimer=null,curView='';
 function save(){
@@ -365,6 +380,7 @@ function finish(k,score,delta,lines,cheer,perfect){
  st.stats.plays++;if(new Date().getHours()<9&&new Date().getHours()>=5)st.stats.early++;
  if(ctx.mode==='group'){save();return groupDone(score)}
  if(perfect)st.stats.perfect++;
+ if(ctx.mode==='gday'){st.xp+=Math.max(5,Math.round(score/4));addStreak();save();return groupDayDone(k,score,r0)}
  if(ctx.mode==='gnew'||ctx.mode==='gplay'){st.xp+=Math.max(5,Math.round(score/4));addStreak();save();return groupChDone(k,score,r0)}
  if(ctx.mode==='challenge')return challengeDone(k,score,cheer,r0);
  if(ctx.mode==='send'){st.xp+=Math.max(5,Math.round(score/4));st.stats.sent++;addStreak();save();shareScreen(k,ctx.lv,ctx.seed,score);return celebrate(r0,false,false)}
@@ -584,7 +600,7 @@ function playSeries(){
 
 /* ================= 5. MISIONES DE VIDA ================= */
 const MISSIONS=[
- {id:1,tier:1,t:'La merienda',s:'Vas a organizar una merienda para 6 amigas y tienes 30 €.',q:'¿Cómo empiezas?',tip:'Divide y planifica: primero lo imprescindible, después los extras.',o:[
+ {id:1,tier:1,t:'La merienda',s:'Vas a organizar una merienda para 6 amigos y amigas y tienes 30 €.',q:'¿Cómo empiezas?',tip:'Divide y planifica: primero lo imprescindible, después los extras.',o:[
   ['Hago una lista de lo que necesitamos, calculo que tengo 5 € por persona y después veo qué extras caben.',3,'¡Eso es planificar! Primero lo imprescindible, luego los caprichos. Dividir el presupuesto te da una referencia rápida.'],
   ['Voy al súper, compro lo que me apetezca y ya veré si me llega.',0,'Sin plan es muy fácil quedarte sin dinero antes de tener lo básico (bebida, algo salado…).'],
   ['Pido a cada amiga que traiga algo, sin decir qué.',1,'Repartir es buena idea, ¡pero sin coordinaros podéis acabar con 6 bolsas de patatas y nada para beber!'],
@@ -599,11 +615,11 @@ const MISSIONS=[
   ['Miro la web del instituto o de las autoridades, o pregunto al tutor o en casa.',3,'¡Bien! Ir a la fuente oficial es la forma más rápida de saber si es verdad.'],
   ['Me lo creo: si lo dice tanta gente, será verdad.',0,'Que mucha gente lo comparta no lo hace verdad. Los bulos se extienden justo así.'],
   ['Espero a ver qué hacen los demás.',1,'Es mejor que reenviarlo, pero puedes averiguarlo tú misma en un minuto.']]},
- {id:4,tier:1,t:'Una amiga molesta',s:'Una amiga está seria contigo porque organizaste un plan y no la avisaste.',q:'¿Cómo lo afrontas?',tip:'Escucha para entender, no solo para responder.',o:[
-  ['Hago como si nada, ya se le pasará.',0,'Ignorarlo suele empeorar las cosas: ella se siente todavía más apartada.'],
-  ['Le pregunto cómo se siente, la escucho y le explico qué pasó, sin echarle la culpa.',3,'¡Muy bien! Escuchar primero hace que la otra persona se sienta comprendida, y así es mucho más fácil arreglarlo.'],
-  ['Le digo que exagera, que no es para tanto.',0,'Aunque a ti no te lo parezca, para ella sí es importante. Decirle que exagera suele cortar la conversación.'],
-  ['Le pido perdón por mensaje y ya está.',1,'Pedir perdón está bien. Hablarlo en persona y escucharla lo hace todavía mejor.']]},
+ {id:4,tier:1,t:'Un amigo molesto',s:'Alguien de tu grupo de amigos está serio contigo porque organizaste un plan y no le avisaste.',q:'¿Cómo lo afrontas?',tip:'Escucha para entender, no solo para responder.',o:[
+  ['Hago como si nada, ya se le pasará.',0,'Ignorarlo suele empeorar las cosas: se siente todavía más apartado.'],
+  ['Le pregunto cómo se siente, le escucho y le explico qué pasó, sin echarle la culpa.',3,'¡Muy bien! Escuchar primero hace que la otra persona se sienta comprendida, y así es mucho más fácil arreglarlo.'],
+  ['Le digo que exagera, que no es para tanto.',0,'Aunque a ti no te lo parezca, para esa persona sí es importante. Decirle que exagera suele cortar la conversación.'],
+  ['Le pido perdón por mensaje y ya está.',1,'Pedir perdón está bien. Hablarlo en persona y escuchar lo hace todavía mejor.']]},
  {id:5,tier:2,t:'Aprender guitarra',s:'Quieres aprender a tocar la guitarra, pero no tienes profesor.',q:'¿Cuál es el mejor plan?',tip:'Para aprender algo nuevo: busca recursos, divide la meta en pasos y practica un poco cada día.',o:[
   ['Busco vídeos para principiantes y una app de afinador, y practico 15 minutos al día con metas pequeñas (primero 3 acordes).',3,'¡Así se consigue! Buscar recursos y dividir la meta en pasos pequeños es la clave para aprender cualquier cosa por tu cuenta.'],
   ['Intento tocar directamente mi canción favorita, aunque es muy difícil.',1,'La motivación es buena, pero si empiezas por lo más difícil es fácil frustrarte y abandonar.'],
@@ -670,7 +686,7 @@ function playVida(){
    });
   }
   show();
-  function done(){finish('vida',S.score,S.pts>=8?1:S.pts<=4?-1:0,[`🧭 Puntos de decisión: ${S.pts} de ${N*3}`,'💬 Idea: comentad juntas alguna de las misiones. ¿Qué habríais hecho vosotras?'],cheerFor(S.pts/(N*3)),S.pts===N*3)}
+  function done(){finish('vida',S.score,S.pts>=8?1:S.pts<=4?-1:0,[`🧭 Puntos de decisión: ${S.pts} de ${N*3}`,'💬 Idea: comentad en familia alguna de las misiones. ¿Qué habríais hecho?'],cheerFor(S.pts/(N*3)),S.pts===N*3)}
  });
 }
 
@@ -680,7 +696,7 @@ const PLAY={mem:playMem,calc:playCalc,stroop:playStroop,series:playSeries,vida:p
 const GENRES=[['pop','Pop','🎤','#ff4fa0'],['rock','Rock','🎸','#e5484d'],['indie','Indie','🌙','#7c6cf0'],['rap','Rap / Hip-hop','🎧','#f59e0b'],['electro','Electrónica','🎛️','#06b6d4'],['latino','Latino','💃','#ff7a45'],['kpop','K-pop','✨','#c084fc'],['flamenco','Flamenco','🌹','#d7263d'],['jazz','Jazz','🎷','#c08a3e'],['clasica','Clásica','🎻','#6366f1'],['metal','Metal','🤘','#64748b'],['reggae','Reggae','🌴','#16a34a'],['country','Country','🤠','#b45309']];
 const genre=id=>GENRES.find(g=>g[0]===id)||GENRES[0];
 const SKINS=['#fde3cf','#f6caa4','#e2a97f','#c0845a','#8d5636','#5f3a22'];
-const HAIRS=[['larga','Larga lisa'],['ondas','Larga con ondas'],['media','Media melena'],['coletas','Dos coletas'],['coleta','Coleta alta'],['mono','Moño'],['trenzas','Trenzas'],['rizos','Rizos'],['corta','Corta']];
+const HAIRS=[['larga','Larga lisa'],['ondas','Larga con ondas'],['media','Media melena'],['coletas','Dos coletas'],['coleta','Coleta alta'],['mono','Moño'],['trenzas','Trenzas'],['rizos','Rizos'],['corta','Corta despeinada'],['chico','Corto con raya'],['pincho','De punta'],['flequillo','Con flequillo'],['rizoscortos','Rizos cortos'],['rapado','Rapado']];
 const EYES=[['#6b3e21','Marrones'],['#8a6a2b','Avellana'],['#3f8f5a','Verdes'],['#3a7bd5','Azules'],['#1fa6a6','Turquesa'],['#6b7b8c','Grises']];
 const FACES=[['risa','😁 Sonrisa grande'],['sonrisa','😊 Sonrisa'],['cool','😏 Pícara'],['guino','😉 Guiño']];
 const HAIRCOL=[['#2b1d16','Negro'],['#5a3825','Castaño'],['#9a4a26','Caoba'],['#e8c27a','Rubio'],['#d9502e','Pelirrojo'],['#ff69b4','Rosa'],['#4f7cff','Azul'],['#9b5cff','Morado'],['#2ec4a0','Verde'],['plata','Plata',{disco:'perfect'}],['arcoiris','Arcoíris',{disco:'streak7'}],['galaxia','Galaxia',{chest:'galaxia'}]];
@@ -717,6 +733,11 @@ function avatarInner(a){
   case 'trenzas':back=`<path d="M58,90 C54,48 78,32 100,32 C122,32 146,48 142,90 L142,112 L58,112 Z" fill="${hc}"/>`;{for(let i=0;i<9;i++){const y=114+i*10;locks+=`<ellipse cx="${62-i*.5}" cy="${y}" rx="8" ry="6.5" fill="${hc}" stroke="${hs}" stroke-width="1.2" transform="rotate(${i%2?22:-22} ${62-i*.5} ${y})"/><ellipse cx="${138+i*.5}" cy="${y}" rx="8" ry="6.5" fill="${hc}" stroke="${hs}" stroke-width="1.2" transform="rotate(${i%2?-22:22} ${138+i*.5} ${y})"/>`}locks+=`<rect x="53" y="200" width="12" height="6" rx="3" fill="${gc}"/><rect x="135" y="200" width="12" height="6" rx="3" fill="${gc}"/>`}front=part;break;
   case 'rizos':{for(let i=0;i<=14;i++){const ang=Math.PI*(1.0+i*0.0714);back+=`<circle cx="${(100+54*Math.cos(ang)).toFixed(1)}" cy="${(84+50*Math.sin(ang)).toFixed(1)}" r="19" fill="${hc}"/>`}for(let i=0;i<5;i++){back+=`<circle cx="${48-i}" cy="${94+i*16}" r="17" fill="${hc}"/><circle cx="${152+i}" cy="${94+i*16}" r="17" fill="${hc}"/>`}
    front=`<path d="M60,84 C60,52 80,40 100,40 C120,40 140,52 140,84 C130,66 116,60 100,61 C84,60 70,66 60,84 Z" fill="${hc}"/>`+[68,84,100,116,132].map((x,i)=>`<circle cx="${x}" cy="${54+(i%2)*6}" r="12" fill="${hc}"/>`).join('')+zig(84,44,.8,-10);break}
+  case 'chico':back=`<path d="M59,94 C55,52 78,33 100,33 C124,33 145,52 141,94 Z" fill="${hc}"/>`;front=`<path d="M58,90 C56,54 76,35 100,35 C126,35 146,54 142,88 C139,72 131,62 119,58 C107,64 86,65 70,62 C64,70 60,80 58,90 Z" fill="${hc}"/><path d="M118,40 C116,48 117,54 119,58" stroke="${hs}" stroke-width="2" fill="none"/>${zig(80,46,.8,-15)}`;break;
+  case 'pincho':back=`<path d="M60,92 C56,56 78,40 100,40 C122,40 144,56 140,92 Z" fill="${hc}"/>`;front=`<path d="M58,90 C56,62 64,50 70,46 L66,28 L80,40 L84,20 L94,35 L100,15 L106,35 L116,20 L120,40 L134,28 L130,46 C136,50 144,62 142,90 C138,74 128,64 116,62 C104,66 88,66 76,62 C68,68 62,78 58,90 Z" fill="${hc}"/>${zig(92,34,.7,-60)}`;break;
+  case 'flequillo':back=`<path d="M58,96 C54,52 78,32 100,32 C124,32 146,52 142,96 Z" fill="${hc}"/>`;front=`<path d="M57,96 C54,54 78,35 100,35 C122,35 146,54 143,96 L137,96 C136,84 133,78 128,76 L120,80 L112,75 L104,80 L96,75 L88,80 L80,75 L72,77 C67,79 64,86 63,96 Z" fill="${hc}"/>${zig(84,46,.8,-10)}`;break;
+  case 'rizoscortos':{for(let i=0;i<=10;i++){const ang=Math.PI*(1.0+i*0.1);back+=`<circle cx="${(100+44*Math.cos(ang)).toFixed(1)}" cy="${(80+40*Math.sin(ang)).toFixed(1)}" r="13" fill="${hc}"/>`}front=`<path d="M60,86 C60,56 80,44 100,44 C120,44 140,56 140,86 C130,70 116,64 100,65 C84,64 70,70 60,86 Z" fill="${hc}"/>`+[70,85,100,115,130].map((x,i)=>`<circle cx="${x}" cy="${52+(i%2)*5}" r="10" fill="${hc}"/>`).join('');break}
+  case 'rapado':front=`<path d="M60,86 C60,52 80,40 100,40 C120,40 140,52 140,86 C132,68 118,60 100,60 C82,60 68,68 60,86 Z" fill="${hc}" opacity=".85"/>`;break;
   default:back=`<path d="M58,98 C54,52 78,32 100,32 C124,32 146,52 142,98 Z" fill="${hc}"/>`;front=`<path d="M58,90 C56,56 70,40 84,38 L82,30 L92,36 L96,26 L102,35 L110,28 L112,37 L122,32 L122,40 C136,46 144,62 142,90 C138,74 130,64 120,60 L122,70 L110,62 L106,72 L98,62 L90,72 L88,62 C74,66 64,76 58,90 Z" fill="${hc}"/>${zig(108,44,.9,0)}`;
  }
  // cuerpo: brazos, camiseta y mangas
@@ -747,7 +768,7 @@ function avatarInner(a){
   const lidLow=face==='cool';
   return `<clipPath id="${id}"><path d="${sh}"/></clipPath><path d="${sh}" fill="#fff"/><g clip-path="url(#${id})"><circle cx="${cx}" cy="98" r="7.5" fill="${eyeC}"/><circle cx="${cx}" cy="98" r="7.5" fill="url(#irisShade)"/><circle cx="${cx}" cy="98" r="3.6" fill="#140c0a"/><circle cx="${cx+2.6}" cy="95" r="2.4" fill="#fff"/><circle cx="${cx-2.4}" cy="101.5" r="1.1" fill="#fff" opacity=".9"/>${lidLow?`<rect x="${cx-12}" y="84" width="24" height="9" fill="${skin}"/>`:''}</g>
   <path d="M${cx-12},${lidLow?94:99} Q${cx-11},${lidLow?91:85} ${cx},${lidLow?92:85} Q${cx+12},${lidLow?91:85} ${cx+12},${lidLow?94:98}" stroke="#2a1a14" stroke-width="3.2" fill="none" stroke-linecap="round"/>
-  <path d="M${cx+12*out},${lidLow?94:97} l${4*out},-4" stroke="#2a1a14" stroke-width="2.6" stroke-linecap="round"/>
+  ${a.eyes==='natural'?'':`<path d="M${cx+12*out},${lidLow?94:97} l${4*out},-4" stroke="#2a1a14" stroke-width="2.6" stroke-linecap="round"/>`}
   <path d="M${cx-7},108.5 Q${cx},110.5 ${cx+7},108.5" stroke="${sk3}" stroke-width="1.2" fill="none" opacity=".7"/>`};
  const teeth=`<path d="M84,118 Q100,121 116,118 Q114,134 100,134 Q86,134 84,118 Z" fill="#8e2b3d"/><path d="M85,118.6 Q100,121.6 115,118.6 L114,124.5 Q100,126.5 86,124.5 Z" fill="#fff"/><path d="M92,131 Q100,134 108,131" stroke="#ff8fa3" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M82,117 Q83,119 85,118 M118,117 Q117,119 115,118" stroke="${sk3}" stroke-width="1.4" fill="none"/>`;
  const mouth={risa:teeth,sonrisa:`<path d="M86,119 Q100,130 114,119" stroke="#a83a50" stroke-width="3.2" fill="none" stroke-linecap="round"/><path d="M84,117.5 Q85,120 87,119.5 M116,117.5 Q115,120 113,119.5" stroke="${sk3}" stroke-width="1.4" fill="none"/>`,
@@ -835,11 +856,11 @@ const DISCOS=[
  {id:'perfect',e:'📀',n:'Actuación perfecta',d:'Haz una partida perfecta, sin fallos',c:s=>s.stats.perfect>=1},
  {id:'band3',e:'💿',n:'Banda completa',d:'Todos los instrumentos en nivel 3',c:s=>Object.values(s.games).every(g=>g.lv>=3)},
  {id:'band7',e:'📀',n:'Banda de estrellas',d:'Todos los instrumentos en nivel 7',c:s=>Object.values(s.games).every(g=>g.lv>=7)},
- {id:'duel1',e:'💿',n:'Primera batalla',d:'Manda o juega una batalla con una amiga',c:s=>(s.duels||[]).length>=1||s.stats.sent>=1},
- {id:'wins3',e:'📀',n:'Ganadora de batallas',d:'Gana 3 batallas',c:s=>(s.duels||[]).filter(d=>d.me>d.them).length>=3},
+ {id:'duel1',e:'💿',n:'Primera batalla',d:'Manda o juega una batalla con alguien',c:s=>(s.duels||[]).length>=1||s.stats.sent>=1},
+ {id:'wins3',e:'📀',n:'Racha de victorias',d:'Gana 3 batallas',c:s=>(s.duels||[]).filter(d=>d.me>d.them).length>=3},
  {id:'group',e:'💿',n:'Fiesta en casa',d:'Juega una partida en Modo grupo',c:s=>s.stats.group>=1},
  {id:'chest5',e:'📀',n:'Coleccionista',d:'Abre 5 cofres diarios',c:s=>(s.stats.chests||0)>=5},
- {id:'early',e:'💿',n:'Madrugadora',d:'Entrena antes de las 9 de la mañana',c:s=>s.stats.early>=1},
+ {id:'early',e:'💿',n:'Madrugón',d:'Entrena antes de las 9 de la mañana',c:s=>s.stats.early>=1},
 ];
 const unlocksBy=pred=>[...HAIRCOL,...OUTFITS,...ACCS].filter(x=>x[2]&&pred(x[2])).map(x=>x[1].replace(/ ✨$/,'')).join(', ');
 function checkDiscos(){
@@ -851,7 +872,7 @@ function checkDiscos(){
 function celebrate(r0,lvUp,win){
  const r1=rankOf(st.xp);
  if(r1>r0){confetti();jingle('stage');const un=unlocksBy(r=>r.stage!=null&&r.stage>r0&&r.stage<=r1);toast(`<b>${RANKS[r1][2]} ¡Nuevo escenario!</b> Ahora tocas en: ${RANKS[r1][1]}${un?`<br><small>🔓 Desbloqueas: ${un}</small>`:''}`)}
- else if(lvUp||win){confetti();jingle(lvUp?'level':'win')}
+ else if(lvUp||win){confetti();if(lvUp){sfx('drumroll');setTimeout(()=>jingle('level'),800)}else{sfx('fanfare');setTimeout(()=>sfx('applause'),500)}}
  checkDiscos();
 }
 
@@ -870,6 +891,7 @@ function artistEditor(first){
   <div class="lab">Estilo musical</div>${chips('aGen',GENRES.map(g=>[g[0],g[2]+' '+g[1]]),a.genre)}
   <div class="lab">Piel</div>${sw('aSkin',SKINS,a.skin,(x,i)=>i)}
   <div class="lab">Expresión</div>${chips('aFace',FACES,a.face||'risa')}
+  <div class="lab">Ojos</div>${chips('aEyes',[['raya','👁️ Con raya'],['natural','🙂 Natural']],a.eyes||'raya')}
   <div class="lab">Color de ojos</div>${sw('aEye',EYES,a.eyeColor||'#6b3e21',x=>x[0])}
   <div class="lab">Peinado</div>${chips('aHair',HAIRS,a.hair)}
   <div class="lab">Color de pelo</div>${sw('aHc',HAIRCOL,a.hairColor,x=>x[0])}
@@ -887,7 +909,7 @@ function artistEditor(first){
   $('#lockMsg').textContent='';
   if(multi){b.classList.toggle('sel')}else{$('#'+id).querySelectorAll('button').forEach(x=>x.classList.remove('sel'));b.classList.add('sel')}
   fn(b.dataset.v,b.classList.contains('sel'));upd()});
- bindSel('aGen',v=>a.genre=v);bindSel('aFace',v=>a.face=v);bindSel('aEye',v=>a.eyeColor=v);bindSel('aSkin',v=>a.skin=+v);bindSel('aHair',v=>a.hair=v);bindSel('aHc',v=>a.hairColor=v);bindSel('aOut',v=>a.outfit=v);bindSel('aOc',v=>a.outfitColor=v);
+ bindSel('aGen',v=>a.genre=v);bindSel('aFace',v=>a.face=v);bindSel('aEye',v=>a.eyeColor=v);bindSel('aEyes',v=>a.eyes=v);bindSel('aSkin',v=>a.skin=+v);bindSel('aHair',v=>a.hair=v);bindSel('aHc',v=>a.hairColor=v);bindSel('aOut',v=>a.outfit=v);bindSel('aOc',v=>a.outfitColor=v);
  bindSel('aAcc',(v,on)=>{a.acc=a.acc.filter(x=>x!==v);if(on){a.acc.push(v);const other=v==='gorra'?'corona':v==='corona'?'gorra':null;if(other&&a.acc.includes(other)){a.acc=a.acc.filter(x=>x!==other);const ob=$('#aAcc').querySelector(`[data-v="${other}"]`);if(ob)ob.classList.remove('sel')}}},true);
  $('#sname').oninput=e=>{a.stage=e.target.value};
  if($('#exit'))$('#exit').onclick=home;
@@ -1089,11 +1111,11 @@ function quizTopics(){
 }
 
 function playQuiz(k){
- const lv=ctx.lv,N=10,bank=k==='trivia'?TRIVIA:MUSICA,tr=curTrim(),maxD=lv<=3?1:lv<=6?2:3;
- const allowed=bank.map((q,i)=>[q,i]).filter(([q])=>q[2]<=tr);
+ const lv=ctx.lv,N=10,BK=bankFor(ctx.curso||myCurso(),k),bank=BK.bank,tr=curTrim(),maxD=lv<=3?1:lv<=6?2:3,band=BANDIDX[bandOf(ctx.curso||myCurso())];
+ const allowed=bank.map((q,i)=>[q,i]).filter(([q])=>BK.kind==='class'?q[2]<=tr:BK.kind==='gen'?q[2]<=band:true);
  let pool=allowed.filter(([q])=>q[1]<=maxD);if(pool.length<N)pool=allowed;
- const adapt=k==='trivia'&&ctx.mode==='solo';
- const extra=k==='trivia'?`Preguntas de lo que se suele dar hasta ahora en 2º de ESO (<b>${TRIM[tr]}</b>) y repaso de 1º.${adapt?' Si te sale algo que aún no habéis dado, pulsa <b>«🙈 Aún no lo hemos dado»</b> y no contará como fallo.<br><br><button class="chip" id="qTopics">📚 Ver y elegir los temas</button>':''}`:'Cantantes, canciones, instrumentos y lo que das en clase de música. Al responder verás la explicación.';
+ const adapt=BK.kind==='class'&&ctx.mode==='solo';
+ const extra=BK.kind==='gen'?`Preguntas de cultura general para ${cursoName(ctx.curso||myCurso())}. Al responder verás la explicación.`:k==='trivia'?`Preguntas de lo que se suele dar hasta ahora en 2º de ESO (<b>${TRIM[tr]}</b>) y repaso de 1º.${adapt?' Si te sale algo que aún no habéis dado, pulsa <b>«🙈 Aún no lo hemos dado»</b> y no contará como fallo.<br><br><button class="chip" id="qTopics">📚 Ver y elegir los temas</button>':''}`:'Cantantes, canciones, instrumentos y lo que das en clase de música. Al responder verás la explicación.';
  intro(k,`Son ${N} preguntas. ${extra}`,()=>{
   const seenK='quiz_'+k,seen=ctx.mode==='solo'?((st.quizSeen||{})[seenK]||[]):[];
   const list=adapt?pickAdaptive(allowed,N,maxD):shuffle(pool).sort((a,b)=>seen.includes(a[1])-seen.includes(b[1])).slice(0,N);
@@ -1104,7 +1126,7 @@ function playQuiz(k){
    if(S.i>=list.length)return done();
    const [Q,qi]=list[S.i];S.i++;
    const opts=shuffle([Q[4],...Q[5]]);
-   b.innerHTML=`<div class="info">Pregunta ${S.i} de ${list.length}</div><span class="qtag">${Q[0]}${k==='trivia'&&Q[2]?' · '+TRIM[Q[2]]:''}</span><div class="qtext">${Q[3]}</div><div class="vopts">${opts.map(o=>`<button class="vopt" data-v="${esc(o)}">${o}</button>`).join('')}</div>${adapt?'<button class="skipq" id="skq">🙈 Aún no lo hemos dado</button>':''}<div id="ex"></div>`;
+   b.innerHTML=`<div class="info">Pregunta ${S.i} de ${list.length}</div><span class="qtag">${Q[0]}${BK.kind==='class'&&Q[2]?' · '+TRIM[Q[2]]:''}</span><div class="qtext">${Q[3]}</div><div class="vopts">${opts.map(o=>`<button class="vopt" data-v="${esc(o)}">${o}</button>`).join('')}</div>${adapt?'<button class="skipq" id="skq">🙈 Aún no lo hemos dado</button>':''}<div id="ex"></div>`;
    if(adapt)$('#skq').onclick=()=>{
     const key=bucketOf(Q);tq().notYet[key]=addDays(21);S.skip++;save();
     const rest=list.slice(S.i).map(x=>x[1]);const more=pickAdaptive(allowed.filter(([QQ,ii])=>!rest.includes(ii)&&ii!==qi),1,maxD)[0];
@@ -1115,6 +1137,7 @@ function playQuiz(k){
     const good=bt.dataset.v===Q[4];
     b.querySelectorAll('.vopt').forEach(x=>{x.disabled=true;if(x.dataset.v===Q[4])x.classList.add('p3')});
     if(good){S.ok++;S.score+=10+(Date.now()-S.t0<8000?5:0);setScore(S.score)}else bt.classList.add('p0');
+    if(ctx.answers)ctx.answers.push([qi,good?1:0]);
     if(adapt){recordTQ(qi,Q,good);const rr=roundRes[Q[0]]=roundRes[Q[0]]||[0,0];rr[1]++;if(good)rr[0]++;save();if($('#skq'))$('#skq').remove()}
     $('#ex').innerHTML=`<div class="explain">${good?'✅ ¡Correcto!':'❌ Era: <b>'+Q[4]+'</b>.'} ${Q[6]||''}</div><button class="btn wide" style="margin-top:14px" id="nx">${S.i>=list.length?'Ver resultado':'Siguiente →'}</button>`;
     $('#nx').onclick=q;$('#ex').scrollIntoView({behavior:'smooth',block:'nearest'});
@@ -1155,6 +1178,97 @@ function openChest(){
  },1300);
 }
 
+/* ================= PERFIL: CURSO / EDAD ================= */
+const CURSOS=[['5pri','5º Primaria','pri'],['6pri','6º Primaria','pri'],['1eso','1º ESO','eso'],['2eso','2º ESO','eso'],['3eso','3º ESO','eso'],['4eso','4º ESO','eso'],['batx','Bachillerato','eso'],['adulto','Persona adulta','adult']];
+const cursoName=c=>(CURSOS.find(x=>x[0]===c)||[0,'—'])[1];
+const bandOf=c=>(CURSOS.find(x=>x[0]===c)||[0,0,'eso'])[2];
+const BANDIDX={pri:0,eso:1,adult:2};
+const myCurso=()=>(st.profile&&st.profile.curso)||'2eso';
+const FAMILY_GAMES=['mem','calc','stroop','series','musica'];
+function applyProfile(){
+ const c=myCurso();
+ if(c==='2eso'){GAMES.trivia.name='Trivial de clase';GAMES.trivia.desc='Preguntas del temario de 2º de ESO: mates, ciencias, sociales, lenguas, inglés y tecnología.';GAMES.trivia.area='Cultura de clase'}
+ else{GAMES.trivia.name='Trivial de cultura';GAMES.trivia.desc=`Preguntas de cultura general para tu edad (${cursoName(c)}): ciencia, geografía, historia, mates…`;GAMES.trivia.area='Cultura general'}
+}
+function cursoScreen(first){
+ curView='curso';cleanup();
+ view.innerHTML=`<div class="panel pop" style="margin-top:30px"><div style="text-align:center;font-size:54px">🎒</div><h2 class="f" style="text-align:center;font-size:24px;margin:6px 0">¿En qué curso estás?</h2>
+ <p class="lead" style="text-align:center">Así las preguntas y los juegos se adaptan a tu edad. Lo puedes cambiar cuando quieras en ⚙️ Ajustes.</p>
+ <div class="chips" id="cc" style="justify-content:center;margin-top:10px">${CURSOS.map(c=>`<button class="chip${c[0]===myCurso()&&!first?' sel':''}" data-v="${c[0]}">${c[1]}</button>`).join('')}</div>
+ <div id="ccAge" style="display:none;margin-top:14px"><div class="lab">¿Cuántos años tienes? (opcional)</div><input type="text" id="age" inputmode="numeric" maxlength="3" placeholder="Edad"></div>
+ <button class="btn wide" id="ccOk" style="margin-top:18px" disabled>Continuar</button></div>`;
+ let sel=first?null:myCurso();if(sel)$('#ccOk').disabled=false;
+ bindChips('cc',v=>{sel=v;$('#ccOk').disabled=false;$('#ccAge').style.display=v==='adulto'?'block':'none'});
+ $('#ccOk').onclick=()=>{if(!sel)return;const isNew=!st.profile;st.profile=Object.assign(st.profile||{},{curso:sel});
+  if(sel==='adulto'){const a=parseInt($('#age').value);if(a>0&&a<120)st.profile.edad=a}
+  if(isNew&&bandOf(sel)==='adult'&&st.stats.plays===0)Object.values(st.games).forEach(g=>g.lv=Math.max(g.lv,3));
+  save();applyProfile();if(!st.artist)return artistEditor(true);if(!openPending())home()};
+}
+const GENERAL=[
+ ['Naturaleza',1,0,'¿Cuántas patas tiene una araña?','8',['6','10','4'],'Los insectos tienen 6; las arañas son arácnidos y tienen 8.'],
+ ['Geografía',1,0,'¿Cuál es la capital de España?','Madrid',['Barcelona','Sevilla','Valencia'],'Madrid es la capital desde el siglo XVI.'],
+ ['Geografía',1,0,'¿Cuál es el océano más grande del planeta?','El Pacífico',['El Atlántico','El Índico','El Ártico'],'Ocupa casi un tercio de la superficie de la Tierra.'],
+ ['Ciencia',1,0,'¿Qué planeta es conocido como el planeta rojo?','Marte',['Júpiter','Venus','Saturno'],'Su color se debe al óxido de hierro de su suelo.'],
+ ['Ciencia',1,0,'¿Qué gas toman las plantas del aire para hacer la fotosíntesis?','Dióxido de carbono',['Oxígeno','Helio','Nitrógeno'],'Toman CO₂ y liberan oxígeno.'],
+ ['Mates',1,0,'¿Cuánto es 7 × 8?','56',['54','48','64'],'7 × 8 = 56.'],
+ ['Mates',1,0,'¿Cuántos minutos son una hora y media?','90',['60','150','80'],'60 + 30 = 90 minutos.'],
+ ['Naturaleza',1,0,'¿Cuál es el animal terrestre más grande?','El elefante africano',['La jirafa','El rinoceronte','El hipopótamo'],'La jirafa es el más alto, pero el elefante es el más grande.'],
+ ['Lengua',1,0,'¿Cuál es el plural de «lápiz»?','Lápices',['Lápizes','Lápiz','Lapizes'],'La z cambia a c delante de e.'],
+ ['Barcelona',1,0,'¿Qué arquitecto diseñó la Sagrada Família?','Antoni Gaudí',['Lluís Domènech i Montaner','Josep Puig i Cadafalch','Le Corbusier'],'Gaudí trabajó en ella más de 40 años.'],
+ ['Ciencia',2,0,'¿Cuál es el planeta más grande del sistema solar?','Júpiter',['Saturno','La Tierra','Neptuno'],'Cabrían más de 1.000 Tierras dentro.'],
+ ['Ciencia',2,0,'¿Cuántos huesos tiene aproximadamente una persona adulta?','206',['106','306','150'],'Al nacer tenemos más, pero algunos se fusionan.'],
+ ['Geografía',2,0,'¿Cuál es el río más largo de la península ibérica?','El Tajo',['El Ebro','El Duero','El Guadalquivir'],'Mide unos 1.000 km y desemboca en Lisboa.'],
+ ['Arte',2,0,'¿Quién pintó la Mona Lisa (La Gioconda)?','Leonardo da Vinci',['Pablo Picasso','Vincent van Gogh','Salvador Dalí'],'Está en el museo del Louvre, en París.'],
+ ['Mates',2,0,'¿Cuánto es la mitad de 3/4?','3/8',['3/2','1/4','6/8'],'Se multiplica el denominador por 2.'],
+ ['Geografía',2,0,'¿En qué continente está Egipto?','África',['Asia','Europa','Oceanía'],'En el noreste de África.'],
+ ['Naturaleza',2,0,'¿Cuál de estos animales es un mamífero?','El delfín',['El tiburón','El pingüino','La tortuga'],'Los delfines respiran aire y amamantan a sus crías.'],
+ ['Barcelona',2,0,'¿Qué montaña de Barcelona tiene un parque de atracciones?','El Tibidabo',['Montjuïc','El Montseny','Montserrat'],'Es uno de los parques de atracciones más antiguos de Europa.'],
+ ['Ciencia',1,1,'¿Qué órgano bombea la sangre por el cuerpo?','El corazón',['Los pulmones','El hígado','Los riñones'],'Late unas 100.000 veces al día.'],
+ ['Ciencia',2,1,'¿Cuál es la fórmula química del agua?','H₂O',['O₂','CO₂','HO'],'Dos átomos de hidrógeno y uno de oxígeno.'],
+ ['Historia',2,1,'¿En qué año llegó Colón a América?','1492',['1592','1392','1500'],'Marca el inicio de la Edad Moderna.'],
+ ['Geografía',2,1,'¿Cuál es la montaña más alta del mundo?','El Everest',['El K2','El Aconcagua','El Kilimanjaro'],'Mide unos 8.849 metros.'],
+ ['Ciencia',2,1,'¿A qué velocidad aproximada viaja la luz?','300.000 km/s',['300 km/s','3.000 km/h','30.000 km/s'],'La luz del Sol tarda unos 8 minutos en llegar.'],
+ ['Mates',2,1,'¿Cuál es el número primo más pequeño?','2',['1','3','0'],'El 1 no se considera primo.'],
+ ['Lengua',2,1,'¿Quién escribió «Don Quijote de la Mancha»?','Miguel de Cervantes',['Lope de Vega','Federico García Lorca','Francisco de Quevedo'],'Se publicó en 1605 y 1615.'],
+ ['Tecnología',2,1,'¿Qué significan las siglas «www»?','World Wide Web',['World Web Wide','Wide World Web','Web World Wide'],'La «red de alcance mundial».'],
+ ['Barcelona',2,1,'¿En qué año se celebraron los Juegos Olímpicos de Barcelona?','1992',['1988','1996','2000'],'Cambiaron muchísimo la ciudad.'],
+ ['Historia',3,1,'¿En qué año terminó la Segunda Guerra Mundial?','1945',['1939','1918','1950'],'Empezó en 1939 y acabó en 1945.'],
+ ['Ciencia',3,1,'¿Quién propuso la teoría de la relatividad?','Albert Einstein',['Isaac Newton','Marie Curie','Galileo Galilei'],'La publicó a principios del siglo XX.'],
+ ['Ciencia',3,1,'¿Qué científica ganó premios Nobel en dos ciencias distintas?','Marie Curie',['Rosalind Franklin','Ada Lovelace','Jane Goodall'],'Física (1903) y Química (1911).'],
+ ['Geografía',3,1,'¿Cuál es la capital de Australia?','Canberra',['Sídney','Melbourne','Perth'],'Sídney es la ciudad más grande, pero no la capital.'],
+ ['Geografía',3,1,'¿Qué país es el más poblado del mundo desde 2023?','India',['China','Estados Unidos','Indonesia'],'La India superó a China en 2023.'],
+ ['Historia',2,2,'¿En qué año se aprobó la Constitución española actual?','1978',['1975','1982','1931'],'Se votó en referéndum el 6 de diciembre de 1978.'],
+ ['Ciencia',2,2,'¿Qué molécula contiene la información genética?','El ADN',['La glucosa','La hemoglobina','El colesterol'],'Ácido desoxirribonucleico.'],
+ ['Economía',2,2,'¿En qué año empezaron a circular los billetes y monedas de euro?','2002',['1999','2000','2004'],'Como moneda contable ya existía desde 1999.'],
+ ['Arte',3,2,'¿Quién pintó el «Guernica»?','Pablo Picasso',['Salvador Dalí','Joan Miró','Diego Velázquez'],'Lo pintó en 1937; está en el Museo Reina Sofía.'],
+ ['Literatura',3,2,'¿Quién escribió «Cien años de soledad»?','Gabriel García Márquez',['Mario Vargas Llosa','Isabel Allende','Julio Cortázar'],'Escritor colombiano, Nobel de Literatura en 1982.'],
+ ['Ciencia',3,2,'¿Cuál es el elemento más abundante del universo?','El hidrógeno',['El oxígeno','El helio','El carbono'],'Forma la mayor parte de las estrellas.'],
+ ['Geografía',3,2,'¿Cuál es el río más caudaloso del mundo?','El Amazonas',['El Nilo','El Misisipi','El Yangtsé'],'Lleva más agua que los siguientes siete juntos.'],
+ ['Historia',3,2,'¿En qué año cayó el muro de Berlín?','1989',['1991','1985','1961'],'Fue el 9 de noviembre de 1989.'],
+ ['Mates',3,2,'¿Cuánto vale aproximadamente el número π?','3,1416',['2,7183','1,6180','3,1614'],'Es la relación entre la circunferencia y el diámetro.'],
+];
+function bankFor(curso,k){if(k==='musica')return{bank:MUSICA,id:'mus',kind:'mus'};return curso==='2eso'?{bank:TRIVIA,id:'t2eso',kind:'class'}:{bank:GENERAL,id:'gen',kind:'gen'}}
+const BANKS={t2eso:()=>TRIVIA,gen:()=>GENERAL,mus:()=>MUSICA};
+
+/* ================= EFECTOS DE SONIDO DIVERTIDOS ================= */
+function sfx(kind){
+ const c=audio();if(!c)return;const T=c.currentTime+0.02;
+ const tone=(f,t,d,w='sawtooth',v=0.08,f2)=>{const o=c.createOscillator(),g=c.createGain();o.type=w;o.frequency.setValueAtTime(f,T+t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,T+t+d);g.gain.setValueAtTime(0.0001,T+t);g.gain.exponentialRampToValueAtTime(v,T+t+0.02);g.gain.setValueAtTime(v,T+t+d*0.7);g.gain.exponentialRampToValueAtTime(0.0001,T+t+d);o.connect(g);g.connect(c.destination);o.start(T+t);o.stop(T+t+d+0.05)};
+ const noise=(t,d,v,fq)=>{const n=c.createBuffer(1,Math.floor(c.sampleRate*d),c.sampleRate),a=n.getChannelData(0);for(let i=0;i<a.length;i++)a[i]=(Math.random()*2-1)*Math.pow(1-i/a.length,3);const s=c.createBufferSource(),bf=c.createBiquadFilter(),g=c.createGain();s.buffer=n;bf.type='bandpass';bf.frequency.value=fq||1500;bf.Q.value=0.8;g.gain.value=v;s.connect(bf);bf.connect(g);g.connect(c.destination);s.start(T+t)};
+ switch(kind){
+  case 'fanfare':[[523,0,.14],[659,.14,.14],[784,.28,.14],[1047,.42,.5]].forEach(([f,t,d])=>{tone(f,t,d,'square',0.05);tone(f/2,t,d,'triangle',0.06)});break;
+  case 'applause':for(let i=0;i<70;i++)noise(Math.random()*1.6,0.05+Math.random()*0.05,0.25+Math.random()*0.3,1200+Math.random()*1800);break;
+  case 'airhorn':[0,.42].forEach(t=>{[466,470,698].forEach(f=>tone(f,t,.36,'sawtooth',0.035))});break;
+  case 'laugh':[[520,0],[470,.14],[430,.28],[400,.42],[370,.56]].forEach(([f,t])=>{tone(f,t,.11,'sawtooth',0.06,f*0.82);tone(f*2.4,t,.09,'sine',0.02,f*1.9)});break;
+  case 'trombone':[[311,0,.42],[294,.45,.42],[277,.9,.42],[262,1.35,1.1]].forEach(([f,t,d])=>{tone(f,t,d,'sawtooth',0.07,t>1?f*0.94:undefined);tone(f/2,t,d,'triangle',0.05)});break;
+  case 'drumroll':for(let i=0;i<18;i++)noise(i*0.04,0.05,0.5,300+i*20);noise(0.75,0.4,0.9,180);tone(1047,0.78,.4,'triangle',0.05);break;
+ }
+}
+const TAUNTS_UP=['👑 ¡Aquí manda quien manda!','😎 Demasiado fácil…','🔥 ¡Nadie te para!','🚀 ¡A la cima!','😏 ¿Alguien más quiere probar?'];
+const TAUNTS_PASS=n=>[`😜 ¡Has adelantado a ${n}!`,`😂 ¡Lo siento, ${n}!`,`🏃 ${n} se ha quedado atrás…`][Math.floor(Math.random()*3)];
+const TAUNTS_DOWN=n=>[`😤 ${n} va por delante… ¿lo vas a permitir?`,`🎺 Buah-buah… ${n} te gana. ¡Revancha mañana!`,`🙃 ${n} te ha pillado hoy. ¡Mañana más!`][Math.floor(Math.random()*3)];
+const pickTaunt=a=>a[Math.floor(Math.random()*a.length)];
+
 /* ================= GRUPOS ONLINE (Firebase) ================= */
 const FB_CONFIG={apiKey:"AIzaSyC_w6N8t0x1Fv7NcDTpSTzOb1dLI0qaMZU",authDomain:"gimnasio-mental.firebaseapp.com",projectId:"gimnasio-mental",storageBucket:"gimnasio-mental.firebasestorage.app",messagingSenderId:"440628226820",appId:"1:440628226820:web:28f25f62fa630e9c567e51"};
 let fb=null,fbLoading=null;
@@ -1176,7 +1290,7 @@ async function fbInit(){
 const fbErr=e=>e&&e.message==='noconfig'?'Los grupos todavía se están configurando. ¡Muy pronto estarán listos!':e&&e.message==='script'?'No se han podido cargar los grupos. Comprueba la conexión a internet (y que usas la app instalada, no la vista previa).':'No hay conexión con los grupos ahora mismo. Revisa internet e inténtalo otra vez.';
 const GEMOJI=['👯','👨‍👩‍👧','🎤','⚽','🎮','🌈','🐱','🔥','📚','🦄'];
 const newGid=()=>{const a=new Uint8Array(10);crypto.getRandomValues(a);return [...a].map(x=>'abcdefghijkmnpqrstuvwxyz23456789'[x%32]).join('')};
-const myAvatar=()=>{const a=st.artist||{};return{genre:a.genre,skin:a.skin,hair:a.hair,hairColor:a.hairColor,outfit:a.outfit,outfitColor:a.outfitColor,face:a.face,eyeColor:a.eyeColor,acc:(a.acc||[]).slice(0,8)}};
+const myAvatar=()=>{const a=st.artist||{};return{genre:a.genre,skin:a.skin,hair:a.hair,hairColor:a.hairColor,outfit:a.outfit,outfitColor:a.outfitColor,face:a.face,eyeColor:a.eyeColor,eyes:a.eyes,acc:(a.acc||[]).slice(0,8)}};
 const gRef=gid=>fb.db.collection('groups').doc(gid);
 let pendingGroup=null;
 function loadingScreen(t){return screen(t,'<div class="intro"><div class="big">⏳</div><p>Cargando…</p></div>')}
@@ -1185,27 +1299,30 @@ function errorScreen(t,e,back){screen(t,`<div class="intro"><div class="big">�
 async function groupsHome(){
  loadingScreen('👥 Mis grupos');
  const gs=st.groups||[];
- const b=screen('👥 Mis grupos',`<p class="lead">Crea grupos con tus amigas, tu familia… e invítalas con un enlace. En cada grupo podréis lanzar retos y ver quién va primera.</p>
+ const b=screen('👥 Mis grupos',`<p class="lead">Crea grupos con tu clase, tus amigos o tu familia e invítalos con un código. Cada día tendréis los mismos juegos y las mismas preguntas para ver quién va en cabeza.</p>
  <div class="cards" id="gl">${gs.length?gs.map(g=>`<button class="card" data-g="${g.gid}"><div class="ic" style="background:#f3eeff">${g.emoji||'👥'}</div><div><h3>${esc(g.name)}</h3><p id="gp-${g.gid}">Toca para entrar</p></div></button>`).join(''):'<div class="intro"><div class="big">👥</div><p>Todavía no tienes grupos. ¡Crea el primero!</p></div>'}</div>
  <div class="row"><button class="btn" id="gNew">➕ Crear grupo</button><button class="btn ghost" id="gJoin">🔗 Unirme</button></div>
  <button class="card" id="gLocal" style="margin-top:16px"><div class="ic" style="background:#fff1d6">📱</div><div><h3>Jugar en un mismo móvil</h3><p>De 2 a 8 personas pasándoos el móvil, sin internet.</p></div></button>`);
  b.querySelectorAll('[data-g]').forEach(x=>x.onclick=()=>groupScreen(x.dataset.g));
  $('#gNew').onclick=createGroupScreen;$('#gJoin').onclick=joinByCode;$('#gLocal').onclick=groupSetup;
  // retos pendientes de cada grupo (en segundo plano)
- if(gs.length)try{await fbInit();for(const g of gs){const ch=await gRef(g.gid).collection('challenges').orderBy('at','desc').limit(15).get();let pend=0;for(const d of ch.docs){const r=await d.ref.collection('results').doc(fb.uid).get();if(!r.exists)pend++}const p=$('#gp-'+g.gid);if(p)p.innerHTML=pend?`<b style="color:#d61f69">🔔 ${pend} ${pend===1?'reto pendiente':'retos pendientes'}</b>`:'✅ Al día'}}catch(e){}
+ if(gs.length)try{await fbInit();for(const g of gs){const sn=await dayRef(g.gid).get();const n=sn.size,mine=sn.docs.find(d=>d.id===fb.uid);const p=$('#gp-'+g.gid);if(p)p.innerHTML=mine?`✅ Hoy ya has jugado · ${n} ${n===1?'persona ha':'personas han'} jugado`:`<b style="color:#d61f69">🔔 ¡Tu entreno de hoy te espera!</b> ${n?`(${n} ya ${n===1?'ha':'han'} jugado)`:''}`}}catch(e){}
 }
 function createGroupScreen(){
  let emoji=GEMOJI[0];
  screen('➕ Crear grupo',`<div class="lab" style="margin-top:0">Nombre del grupo</div><input type="text" id="gn" maxlength="30" placeholder="Ej.: Las de clase, Familia…">
+ <div class="lab">Tipo de grupo</div><div class="chips" id="gty"><button class="chip sel" data-v="curso">🎒 Mismo curso o edad</button><button class="chip" data-v="familia">👨‍👩‍👧 Familia (edades mezcladas)</button></div>
+ <div id="gcur"><div class="lab">Curso del grupo</div><div class="chips" id="gcu">${CURSOS.map(c=>`<button class="chip${c[0]===myCurso()?' sel':''}" data-v="${c[0]}">${c[1]}</button>`).join('')}</div></div>
+ <p class="lead" id="gtyd" style="font-size:13px;margin-top:8px">Todos los juegos, con preguntas de ese curso.</p>
  <div class="lab">Icono</div><div class="chips" id="ge">${GEMOJI.map((e,i)=>`<button class="chip${i?'':' sel'}" data-v="${e}" style="font-size:20px">${e}</button>`).join('')}</div>
  <button class="btn wide" id="gc" style="margin-top:18px">Crear e invitar</button><div class="fb" id="gfb" style="color:var(--bad)"></div>`);
- bindChips('ge',v=>emoji=v);
+ bindChips('ge',v=>emoji=v);let gtype='curso',gcurso=myCurso();bindChips('gcu',v=>gcurso=v);bindChips('gty',v=>{gtype=v;$('#gcur').style.display=v==='familia'?'none':'block';$('#gtyd').textContent=v==='familia'?'Solo los juegos que puede hacer todo el mundo: Memoria, Cálculo, Colores trampa, Series y Trivial musical.':'Todos los juegos, con preguntas de ese curso.'});
  $('#gc').onclick=async()=>{const name=$('#gn').value.trim();if(!name){$('#gfb').textContent='Ponle un nombre al grupo 🙂';return}
   $('#gc').disabled=true;$('#gc').textContent='Creando…';
   try{await fbInit();const gid=newGid();
-   await gRef(gid).set({name,emoji,by:fb.uid,at:Date.now()});
-   await gRef(gid).collection('members').doc(fb.uid).set({name:artistName().slice(0,30),avatar:myAvatar(),at:Date.now()});
-   st.groups=[...(st.groups||[]),{gid,name,emoji}];save();inviteScreen({gid,name,emoji},true);
+   await gRef(gid).set({name,emoji,by:fb.uid,at:Date.now(),type:gtype,curso:gtype==='familia'?'':gcurso});
+   await gRef(gid).collection('members').doc(fb.uid).set(memberDoc());
+   st.groups=[...(st.groups||[]),{gid,name,emoji,type:gtype,curso:gcurso,loaded:true}];save();inviteScreen({gid,name,emoji},true);
   }catch(e){$('#gc').disabled=false;$('#gc').textContent='Crear e invitar';$('#gfb').textContent=fbErr(e)}};
 }
 function inviteScreen(g,fresh){
@@ -1225,45 +1342,134 @@ async function joinScreen(gid){
  try{await fbInit();const d=await gRef(gid).get();
   if(!d.exists){screen('👥 Invitación','<div class="intro"><div class="big">🤔</div><p>No encuentro ese grupo. Pide que te vuelvan a mandar el enlace.</p></div>');return}
   const g=d.data(),mem=await gRef(gid).collection('members').get();
-  screen('👥 Invitación',`<div style="text-align:center"><div style="font-size:60px">${g.emoji||'👥'}</div><h2 class="f" style="font-size:24px;margin:6px 0">Te han invitado a «${esc(g.name)}»</h2><div class="avs">${mem.docs.slice(0,8).map(m=>`<div>${avatarSVG(Object.assign(defaultArtist(),m.data().avatar||{}))}<small>${esc(m.data().name)}</small></div>`).join('')}</div><p class="lead">${mem.size} ${mem.size===1?'persona':'personas'} en el grupo. Aparecerás como <b>${esc(artistName())}</b>.</p><button class="btn wide" id="jn">¡Unirme!</button></div>`);
-  $('#jn').onclick=async()=>{$('#jn').disabled=true;try{await gRef(gid).collection('members').doc(fb.uid).set({name:artistName().slice(0,30),avatar:myAvatar(),at:Date.now()});st.groups=[...(st.groups||[]),{gid,name:g.name,emoji:g.emoji||'👥'}];save();confetti();groupScreen(gid)}catch(e){$('#jn').disabled=false;toast(fbErr(e))}};
+  screen('👥 Invitación',`<div style="text-align:center"><div style="font-size:60px">${g.emoji||'👥'}</div><h2 class="f" style="font-size:24px;margin:6px 0">Te han invitado a «${esc(g.name)}»</h2><div class="avs">${mem.docs.slice(0,8).map(m=>`<div>${avatarSVG(Object.assign(defaultArtist(),m.data().avatar||{}))}<small>${esc(m.data().name)}</small></div>`).join('')}</div><p class="lead">${g.type==='familia'?'👨‍👩‍👧 Grupo familiar':'🎒 '+cursoName(g.curso||'2eso')} · ${mem.size} ${mem.size===1?'persona':'personas'}. Aparecerás como <b>${esc(artistName())}</b>.</p><button class="btn wide" id="jn">¡Unirme!</button></div>`);
+  $('#jn').onclick=async()=>{$('#jn').disabled=true;try{await gRef(gid).collection('members').doc(fb.uid).set(memberDoc());st.groups=[...(st.groups||[]),{gid,name:g.name,emoji:g.emoji||'👥',type:g.type||'curso',curso:g.curso||'2eso',loaded:true}];save();confetti();groupScreen(gid)}catch(e){$('#jn').disabled=false;toast(fbErr(e))}};
  }catch(e){errorScreen('👥 Invitación',e,()=>joinScreen(gid))}
 }
 const PTS=[5,3,2];
 function rankResults(rs){const s=rs.slice().sort((a,b)=>b.score-a.score);let pos=0;return s.map((r,i)=>{if(i>0&&r.score<s[i-1].score)pos=i;return Object.assign({pos},r)})}
-async function groupScreen(gid){
+/* ---- grupos v2: entreno diario con las mismas preguntas ---- */
+const hashSeed=str=>{let h=2166136261;for(const ch of str){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}return (h>>>0)%2147483000+1};
+const WD_OFF=[0,-1,0,0,1,1,2];const WD_TXT=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+const groupType=g=>g.type||'curso';
+const groupCurso=g=>g.curso||myCurso();
+const groupGames=g=>groupType(g)==='familia'?FAMILY_GAMES:Object.keys(GAMES);
+function groupLv(g){const base=groupType(g)==='familia'?4:({pri:3,eso:5,adult:6})[bandOf(groupCurso(g))];return Math.max(1,Math.min(10,base+WD_OFF[new Date().getDay()]))}
+const dayRef=(gid,day)=>gRef(gid).collection('days').doc(day||today()).collection('scores');
+const myStats=()=>({xp:st.xp,stage:rankOf(st.xp),streak:(st.lastDay===today()||st.lastDay===yesterday())?st.streak:0,lv:Object.fromEntries(Object.keys(GAMES).map(k=>[k,st.games[k].lv])),discos:Object.keys(st.discos||{}).length,last:today(),curso:myCurso()});
+const memberDoc=at=>({name:artistName().slice(0,30),avatar:myAvatar(),stats:myStats(),at:at||Date.now()});
+const posPts=rs=>{const r=rankResults(rs);return r.map(x=>Object.assign(x,{pts:PTS[x.pos]||1}))};
+function lastDays(n){const out=[];for(let i=0;i<n;i++){const d=new Date();d.setDate(d.getDate()-i);out.push(dayStr(d))}return out}
+const ago=d=>{if(!d)return 'nunca';if(d===today())return 'hoy';if(d===yesterday())return 'ayer';const n=Math.round((new Date(today())-new Date(d))/864e5);return `hace ${n} días`};
+
+async function groupScreen(gid,tab){
  const g=(st.groups||[]).find(x=>x.gid===gid);if(!g)return groupsHome();
- loadingScreen(`${g.emoji} ${esc(g.name)}`);
+ tab=tab||'hoy';loadingScreen(`${g.emoji} ${esc(g.name)}`);
  try{
   await fbInit();
-  const [mem,ch]=await Promise.all([gRef(gid).collection('members').get(),gRef(gid).collection('challenges').orderBy('at','desc').limit(30).get()]);
+  // datos del grupo (tipo/curso) por si es antiguo
+  if(!g.loaded){const gd=await gRef(gid).get();if(gd.exists){const D=gd.data();g.type=D.type||'curso';g.curso=D.curso||'2eso';g.loaded=true;save()}}
+  const [mem,todayS]=await Promise.all([gRef(gid).collection('members').get(),dayRef(gid).get()]);
   const members={};mem.docs.forEach(d=>members[d.id]=d.data());
-  // mantener al día mi nombre y avatar
-  const me=members[fb.uid];if(me&&(me.name!==artistName()||JSON.stringify(me.avatar)!==JSON.stringify(myAvatar()))){gRef(gid).collection('members').doc(fb.uid).set({name:artistName().slice(0,30),avatar:myAvatar(),at:me.at||Date.now()}).catch(()=>{});members[fb.uid]=Object.assign({},me,{name:artistName(),avatar:myAvatar()})}
-  const chs=await Promise.all(ch.docs.map(async d=>{const rs=await d.ref.collection('results').get();return Object.assign({id:d.id,results:rs.docs.map(r=>Object.assign({uid:r.id},r.data()))},d.data())}));
-  const league={};Object.entries(members).forEach(([u,m])=>league[u]={name:m.name,pts:0,wins:0,played:0});
-  chs.forEach(c=>rankResults(c.results).forEach(r=>{const L=league[r.uid]=league[r.uid]||{name:r.name,pts:0,wins:0,played:0};L.played++;L.pts+=PTS[r.pos]||1;if(r.pos===0&&c.results.length>1)L.wins++}));
-  const lg=Object.entries(league).sort((a,b)=>b[1].pts-a[1].pts||b[1].wins-a[1].wins);
-  const pend=chs.filter(c=>!c.results.some(r=>r.uid===fb.uid));
-  const done=chs.filter(c=>c.results.some(r=>r.uid===fb.uid));
-  const chCard=(c,isP)=>{const G=GAMES[c.game]||{icon:'🎲',name:c.game};const rr=rankResults(c.results);const mine=rr.find(r=>r.uid===fb.uid);
-   return `<div class="gch${isP?' pend':''}"><div class="gchh"><span class="ic2">${G.icon}</span><div><b>${G.name}</b><small>Reto de ${esc(c.byName||'alguien')} · nivel ${c.lv} · ${new Date(c.at).toLocaleDateString('es-ES',{day:'numeric',month:'short'})}</small></div>${isP?`<button class="btn" data-play="${c.id}" style="padding:10px 14px;font-size:15px">¡Jugar!</button>`:''}</div>
-   ${rr.length?`<div class="gres">${rr.map(r=>`<span class="${r.uid===fb.uid?'me':''}">${MED[r.pos]||r.pos+1+'º'} ${esc(r.name)} <em>${isP?'?':r.score}</em></span>`).join('')}</div>`:''}
-   ${!isP&&mine?`<small style="color:var(--muted);font-weight:700">Quedaste ${mine.pos+1}º de ${rr.length}</small>`:''}</div>`};
-  const b=screen(`${g.emoji} ${esc(g.name)}`,`
-   <div class="avs">${Object.entries(members).slice(0,12).map(([u,m])=>`<div>${avatarSVG(Object.assign(defaultArtist(),m.avatar||{}))}<small>${esc(m.name)}${u===fb.uid?' (tú)':''}</small></div>`).join('')}</div>
-   <div class="row"><button class="btn" id="gNewCh">⚔️ Nuevo reto</button><button class="btn ghost" id="gInv">📨 Invitar</button></div>
-   ${pend.length?`<div class="lab">🔔 Retos pendientes</div>${pend.map(c=>chCard(c,true)).join('')}`:''}
-   <div class="lab">🏆 Clasificación del grupo</div>
-   ${lg.length?`<table class="tbl"><tr><th></th><th>Nombre</th><th>Retos</th><th>🥇</th><th>Pts</th></tr>${lg.map(([u,L],i)=>`<tr class="${u===fb.uid?'meRow':''}"><td>${MED[i]||i+1+'º'}</td><td><b>${esc(L.name)}</b></td><td>${L.played}</td><td>${L.wins}</td><td><b>${L.pts}</b></td></tr>`).join('')}</table><p class="lead" style="font-size:12.5px;margin-top:6px">En cada reto: 1.º 5 puntos, 2.º 3, 3.º 2 y el resto 1 por participar.</p>`:''}
-   <div class="lab">📜 Retos jugados</div>${done.length?done.map(c=>chCard(c,false)).join(''):'<p class="lead">Aún no hay retos jugados. ¡Lanza el primero!</p>'}
-   <button class="chip" id="gLeave" style="margin-top:18px">🚪 Salir del grupo</button><div id="gLc"></div>`);
-  $('#exit').onclick=groupsHome;
-  $('#gNewCh').onclick=()=>newGroupChallenge(g);$('#gInv').onclick=()=>inviteScreen(g);
-  b.querySelectorAll('[data-play]').forEach(x=>x.onclick=()=>{const c=chs.find(cc=>cc.id===x.dataset.play);launch(c.game,{mode:'gplay',lv:c.lv,seed:c.seed,gid,cid:c.id,gname:g.name,banner:`${g.emoji} Reto de <b>${esc(c.byName||'')}</b> en «${esc(g.name)}». ¡Solo tienes un intento!`})});
-  $('#gLeave').onclick=()=>{$('#gLc').innerHTML=`<p style="font-weight:700">¿Seguro que quieres salir de «${esc(g.name)}»? Podrás volver si te invitan otra vez.</p><div class="row"><button class="btn ghost" id="lno">No</button><button class="btn" id="lyes" style="background:var(--bad);box-shadow:0 6px 0 #a3272b">Salir</button></div>`;$('#lno').onclick=()=>$('#gLc').innerHTML='';$('#lyes').onclick=async()=>{try{await gRef(gid).collection('members').doc(fb.uid).delete()}catch(e){}st.groups=(st.groups||[]).filter(x=>x.gid!==gid);save();groupsHome()}};
- }catch(e){errorScreen(`${g.emoji} ${esc(g.name)}`,e,()=>groupScreen(gid))}
+  const me=members[fb.uid];const md=memberDoc(me&&me.at);
+  if(!me||me.name!==md.name||JSON.stringify(me.avatar)!==JSON.stringify(md.avatar)||!me.stats||me.stats.last!==today()||me.stats.xp!==st.xp){gRef(gid).collection('members').doc(fb.uid).set(md).catch(()=>{});members[fb.uid]=md}
+  const tday={};todayS.docs.forEach(d=>tday[d.id]=d.data());
+  const G=groupGames(g),lv=groupLv(g);
+  const tabs=[['hoy','🎯 Hoy'],['ranking','🏆 Ranking'],['miembros','👥 Miembros'],['retos','⚔️ Retos'],['preguntas','📊 Preguntas']];
+  const b=screen(`${g.emoji} ${esc(g.name)}`,`<div class="gsub">${groupType(g)==='familia'?'👨‍👩‍👧 Grupo familiar · juegos para todas las edades':'🎒 '+cursoName(groupCurso(g))} · ${Object.keys(members).length} ${Object.keys(members).length===1?'miembro':'miembros'}</div>
+   <div class="chips gtabs" id="gt">${tabs.map(([v,l])=>`<button class="chip${v===tab?' sel':''}" data-v="${v}">${l}</button>`).join('')}</div><div id="gbody"></div>
+   <div class="row" style="margin-top:18px"><button class="btn ghost" id="gInv">📨 Invitar</button><button class="chip" id="gLeave">🚪 Salir</button></div><div id="gLc"></div>`);
+  $('#exit').onclick=groupsHome;$('#gInv').onclick=()=>inviteScreen(g);
+  $('#gt').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{$('#gt').querySelectorAll('.chip').forEach(x=>x.classList.remove('sel'));c.classList.add('sel');render(c.dataset.v)});
+  $('#gLeave').onclick=()=>{$('#gLc').innerHTML=`<p style="font-weight:700">¿Seguro que quieres salir de «${esc(g.name)}»?</p><div class="row"><button class="btn ghost" id="lno">No</button><button class="btn" id="lyes" style="background:var(--bad);box-shadow:0 6px 0 #a3272b">Salir</button></div>`;$('#lno').onclick=()=>$('#gLc').innerHTML='';$('#lyes').onclick=async()=>{try{await gRef(gid).collection('members').doc(fb.uid).delete()}catch(e){}st.groups=(st.groups||[]).filter(x=>x.gid!==gid);save();groupsHome()}};
+  const nm=u=>(members[u]&&members[u].name)||(tday[u]&&tday[u].name)||'¿?';
+  function render(t){
+   const body=$('#gbody');
+   if(t==='hoy'){
+    // ranking del día por puntos de posición
+    const tot={};G.forEach(k=>{const rs=Object.entries(tday).filter(([u,d])=>d[k]).map(([u,d])=>({uid:u,name:nm(u),score:d[k].s}));posPts(rs).forEach(r=>{tot[r.uid]=(tot[r.uid]||0)+r.pts})});
+    const order=Object.entries(tot).sort((a,b)=>b[1]-a[1]);const played=Object.keys(tday).length,nMem=Object.keys(members).length;
+    const myDone=G.filter(k=>tday[fb.uid]&&tday[fb.uid][k]).length;
+    // ¿quién me ha superado hoy?
+    const beaten=[];G.forEach(k=>{const mine=tday[fb.uid]&&tday[fb.uid][k];if(!mine)return;Object.entries(tday).forEach(([u,d])=>{if(u!==fb.uid&&d[k]&&d[k].s>mine.s)beaten.push([nm(u),GAMES[k].name])})});
+    body.innerHTML=`<div class="gnews">📅 <b>Entreno del ${WD_TXT[new Date().getDay()]}</b> · nivel ${lv}${new Date().getDay()===6?' (¡sábado difícil! 😈)':new Date().getDay()===1?' (lunes suave 😌)':''}<br>🔥 Hoy han jugado <b>${played} de ${nMem}</b>. Tú llevas <b>${myDone} de ${G.length}</b> juegos.${beaten.length?`<br>😤 Hoy te gana: ${beaten.slice(0,3).map(([n,gm])=>`<b>${esc(n)}</b> en ${gm}`).join(', ')}${beaten.length>3?'…':''}`:''}</div>
+     <div class="ggames">${G.map(k=>{const GG=GAMES[k],mine=tday[fb.uid]&&tday[fb.uid][k];const lead=Object.entries(tday).filter(([u,d])=>d[k]).sort((a,b)=>b[1][k].s-a[1][k].s)[0];
+      return `<button class="gg${mine?' done':''}" data-k="${k}"><span class="ggi">${GG.icon}</span><b>${GG.name}</b><small>${mine?`✅ ${mine.s} pts`:'▶️ ¡Jugar!'}</small><small class="gl">${lead?`👑 ${esc(nm(lead[0]))} ${lead[1][k].s}`:'Nadie aún'}</small></button>`}).join('')}</div>
+     <div class="lab">🏁 Clasificación de hoy</div>${order.length?`<div class="ranking">${order.map(([u,p],i)=>`<div class="${u===fb.uid?'meR':''}"><span>${MED[i]||i+1+'º'}</span><b>${esc(nm(u))}${u===fb.uid?' (tú)':''}</b><em>${p} pts</em></div>`).join('')}</div><p class="lead" style="font-size:12.5px;margin-top:6px">En cada juego: 1.º 5 puntos, 2.º 3, 3.º 2 y el resto 1. Solo cuenta tu primera partida del día.</p>`:'<p class="lead">Nadie ha jugado todavía hoy. ¡Sé la primera persona!</p>'}`;
+    body.querySelectorAll('[data-k]').forEach(x=>x.onclick=()=>{const k=x.dataset.k,mine=tday[fb.uid]&&tday[fb.uid][k];
+     if(mine)return toast(`Ya has jugado ${GAMES[k].name} hoy en este grupo (${mine.s} pts). ¡Mañana habrá preguntas nuevas!`);
+     launch(k,{mode:'gday',lv,seed:hashSeed(gid+'|'+today()+'|'+k),gid,gname:g.name,gemoji:g.emoji,curso:groupType(g)==='familia'?'adulto':groupCurso(g),answers:[],banner:`${g.emoji} Entreno de «${esc(g.name)}»: todo el grupo tiene hoy las mismas preguntas. <b>¡Solo cuenta este intento!</b>`})});
+   }
+   if(t==='miembros'){
+    const list=Object.entries(members).sort((a,b)=>((b[1].stats||{}).xp||0)-((a[1].stats||{}).xp||0));
+    body.innerHTML=`<p class="lead">Así va cada persona del grupo (se actualiza cuando entra en el grupo).</p>`+list.map(([u,m],i)=>{const S=m.stats||{},stg=RANKS[S.stage||0]||RANKS[0];
+     return `<div class="mcardm${u===fb.uid?' me':''}"><div class="mav">${avatarSVG(Object.assign(defaultArtist(),m.avatar||{}))}</div><div class="mi"><b>${MED[i]||''} ${esc(m.name)}${u===fb.uid?' (tú)':''}</b>
+      <small>${stg[2]} ${stg[1]} · 🙌 ${S.xp||0} fans · 🔥 ${S.streak||0} · 💿 ${S.discos||0}</small><small>Última vez: ${ago(S.last)}</small>
+      <div class="mlv">${G.map(k=>`<span title="${GAMES[k].name}">${GAMES[k].icon}<i style="width:${((S.lv||{})[k]||1)*10}%;background:${GAMES[k].col}"></i><em>${(S.lv||{})[k]||1}</em></span>`).join('')}</div></div></div>`}).join('');
+   }
+   if(t==='ranking')renderWeek(body);
+   if(t==='retos')renderChallenges(body);
+   if(t==='preguntas')renderQStats(body);
+  }
+  async function renderWeek(body){
+   body.innerHTML='<p class="lead">⏳ Calculando la semana…</p>';
+   const days=lastDays(7),snaps=await Promise.all(days.map(d=>dayRef(gid,d).get()));
+   const tot={},daysPlayed={},best={};
+   snaps.forEach((sn,di)=>{const dd={};sn.docs.forEach(x=>dd[x.id]=x.data());
+    G.forEach(k=>{const rs=Object.entries(dd).filter(([u,d])=>d[k]).map(([u,d])=>({uid:u,name:d.name,score:d[k].s}));posPts(rs).forEach(r=>tot[r.uid]=(tot[r.uid]||0)+r.pts);
+     rs.forEach(r=>{if(!best[k]||r.score>best[k].score)best[k]=Object.assign({day:days[di]},r)})});
+    Object.keys(dd).forEach(u=>daysPlayed[u]=(daysPlayed[u]||0)+1)});
+   const order=Object.entries(tot).sort((a,b)=>b[1]-a[1]),constant=Object.entries(daysPlayed).sort((a,b)=>b[1]-a[1])[0];
+   body.innerHTML=`<div class="lab" style="margin-top:4px">🏆 Ranking de los últimos 7 días</div>${order.length?`<div class="ranking">${order.map(([u,p],i)=>`<div class="${u===fb.uid?'meR':''}"><span>${MED[i]||i+1+'º'}</span><b>${esc(nm(u))}${u===fb.uid?' (tú)':''}</b><em>${p} pts · ${daysPlayed[u]||0} días</em></div>`).join('')}</div>`:'<p class="lead">Aún no hay partidas esta semana.</p>'}
+    ${order.length?`<div class="gnews" style="margin-top:12px">⭐ <b>Estrella de la semana:</b> ${esc(nm(order[0][0]))}${constant?`<br>📅 <b>Más constante:</b> ${esc(nm(constant[0]))} (${constant[1]} de 7 días)`:''}</div>`:''}
+    <div class="lab">🥇 Récords de la semana</div><div class="hist">${G.map(k=>`<div><span>${GAMES[k].icon}</span><div><b>${GAMES[k].name}</b><small>${best[k]?`${esc(best[k].name)} · ${ago(best[k].day)}`:'Sin récord todavía'}</small></div><em>${best[k]?best[k].score:'—'}</em></div>`).join('')}</div>`;
+  }
+  async function renderQStats(body){
+   body.innerHTML='<p class="lead">⏳ Analizando respuestas…</p>';
+   const days=lastDays(14),snaps=await Promise.all(days.map(d=>dayRef(gid,d).get()));
+   const agg={};snaps.forEach(sn=>sn.docs.forEach(x=>{const d=x.data();['trivia','musica'].forEach(k=>{if(d[k]&&d[k].a&&d[k].b){(d[k].a||[]).forEach(v=>{const qi=Math.floor(v/2),ok=v%2;const key=d[k].b+'|'+qi;const A=agg[key]=agg[key]||{n:0,ok:0};A.n++;A.ok+=ok})}})}));
+   const rows=Object.entries(agg).filter(([k,a])=>a.n>=2).map(([k,a])=>{const [bid,qi]=k.split('|');const Q=(BANKS[bid]||(()=>[]))()[+qi];return Q?{Q,a,p:a.ok/a.n}:null}).filter(Boolean).sort((x,y)=>x.p-y.p);
+   body.innerHTML=`<p class="lead">Porcentaje de aciertos de todo el grupo en los trivials de las últimas dos semanas. Sirve para ver qué preguntas son <b>demasiado difíciles</b> (o demasiado fáciles) para vuestro nivel.</p>`+(rows.length?`<div class="hist">${rows.map(r=>`<div><span>${r.p<0.3?'🔴':r.p<0.7?'🟡':'🟢'}</span><div><b style="font-size:14px">${r.Q[3]}</b><small>${r.Q[0]} · respuesta: ${r.Q[4]} · ${r.a.ok}/${r.a.n} aciertos</small></div><em>${Math.round(r.p*100)}%</em></div>`).join('')}</div>`:'<div class="intro"><div class="big">📊</div><p>Cuando al menos dos personas hayan jugado los trivials del entreno diario, aquí verás qué preguntas cuestan más.</p></div>');
+  }
+  async function renderChallenges(body){
+   body.innerHTML='<p class="lead">⏳ Cargando retos…</p>';
+   const ch=await gRef(gid).collection('challenges').orderBy('at','desc').limit(20).get();
+   const chs=await Promise.all(ch.docs.map(async d=>{const rs=await d.ref.collection('results').get();return Object.assign({id:d.id,results:rs.docs.map(r=>Object.assign({uid:r.id},r.data()))},d.data())}));
+   const pend=chs.filter(c=>!c.results.some(r=>r.uid===fb.uid)),done=chs.filter(c=>c.results.some(r=>r.uid===fb.uid));
+   const chCard=(c,isP)=>{const GG=GAMES[c.game]||{icon:'🎲',name:c.game};const rr=rankResults(c.results);const mine=rr.find(r=>r.uid===fb.uid);
+    return `<div class="gch${isP?' pend':''}"><div class="gchh"><span class="ic2">${GG.icon}</span><div><b>${GG.name}</b><small>Reto de ${esc(c.byName||'alguien')} · nivel ${c.lv} · ${new Date(c.at).toLocaleDateString('es-ES',{day:'numeric',month:'short'})}</small></div>${isP?`<button class="btn" data-play="${c.id}" style="padding:10px 14px;font-size:15px">¡Jugar!</button>`:''}</div>
+    ${rr.length?`<div class="gres">${rr.map(r=>`<span class="${r.uid===fb.uid?'me':''}">${MED[r.pos]||r.pos+1+'º'} ${esc(r.name)} <em>${isP?'?':r.score}</em></span>`).join('')}</div>`:''}${!isP&&mine?`<small style="color:var(--muted);font-weight:700">Quedaste en posición ${mine.pos+1} de ${rr.length}</small>`:''}</div>`};
+   body.innerHTML=`<p class="lead">Además del entreno diario, puedes lanzar un reto especial al grupo con el juego y la dificultad que quieras.</p><button class="btn wide" id="gNewCh">⚔️ Lanzar un reto</button>
+    ${pend.length?`<div class="lab">🔔 Retos pendientes</div>${pend.map(c=>chCard(c,true)).join('')}`:''}<div class="lab">📜 Retos jugados</div>${done.length?done.map(c=>chCard(c,false)).join(''):'<p class="lead">Todavía no hay retos jugados.</p>'}`;
+   $('#gNewCh').onclick=()=>newGroupChallenge(g);
+   body.querySelectorAll('[data-play]').forEach(x=>x.onclick=()=>{const c=chs.find(cc=>cc.id===x.dataset.play);launch(c.game,{mode:'gplay',lv:c.lv,seed:c.seed,gid,cid:c.id,gname:g.name,curso:groupType(g)==='familia'?'adulto':groupCurso(g),banner:`${g.emoji} Reto de <b>${esc(c.byName||'')}</b> en «${esc(g.name)}». ¡Solo tienes un intento!`})});
+  }
+  render(tab);
+ }catch(e){errorScreen(`${g.emoji} ${esc(g.name)}`,e,()=>groupScreen(gid,tab))}
 }
+async function groupDayDone(k,score,r0){
+ const c=ctx;loadingScreen('💾 Guardando…');
+ try{
+  await fbInit();
+  const ref=dayRef(c.gid).doc(fb.uid);const ex=await ref.get();const prev=ex.exists?ex.data():{};
+  // ranking ANTES de mi partida (para picar)
+  const before=await dayRef(c.gid).get();const others=before.docs.filter(d=>d.id!==fb.uid&&d.data()[k]).map(d=>({uid:d.id,name:d.data().name,score:d.data()[k].s}));
+  if(!prev[k]){const entry={s:Math.round(score)};if(c.answers&&c.answers.length&&(k==='trivia'||k==='musica')){entry.a=c.answers.slice(0,15).map(([qi,ok])=>qi*2+ok);entry.b=bankFor(c.curso||myCurso(),k).id}
+   await ref.set({name:artistName().slice(0,30),[k]:entry},{merge:true})}
+  gRef(c.gid).collection('members').doc(fb.uid).set(memberDoc()).catch(()=>{});
+  const all=rankResults([...others,{uid:fb.uid,name:artistName(),score:prev[k]?prev[k].s:Math.round(score)}]);
+  const mine=all.find(r=>r.uid===fb.uid),passed=others.filter(o=>o.score<score),ahead=others.filter(o=>o.score>score).sort((a,b)=>a.score-b.score);
+  const first=mine.pos===0&&others.length>0;
+  const taunt=prev[k]?'Ya habías jugado este juego hoy: cuenta tu primera partida.':first?pickTaunt(TAUNTS_UP):passed.length?TAUNTS_PASS(passed[0].name):ahead.length?TAUNTS_DOWN(ahead[0].name):'¡Eres la primera persona en jugar hoy! A ver quién te supera 😏';
+  screen(`${c.gemoji||'👥'} ${esc(c.gname)}`,`<div class="result"><div class="big">${first?'👑':passed.length?'😜':ahead.length?'😤':'🎯'}</div><h2 class="f">${score} puntos</h2><div class="taunt">${taunt}</div>
+   <div class="lab" style="text-align:left">${GAMES[k].icon} ${GAMES[k].name} · hoy</div><div class="ranking">${all.map(r=>`<div class="${r.uid===fb.uid?'meR':''}"><span>${MED[r.pos]||r.pos+1+'º'}</span><b>${esc(r.name)}${r.uid===fb.uid?' (tú)':''}</b><em>${r.score} pts</em></div>`).join('')}</div>
+   <button class="btn wide" id="bg" style="margin-top:16px">Volver al grupo</button></div>`);
+  $('#bg').onclick=()=>groupScreen(c.gid);$('#exit').onclick=()=>groupScreen(c.gid);
+  if(!prev[k]){if(first){confetti();sfx('airhorn');setTimeout(()=>sfx('applause'),900)}else if(passed.length){sfx('laugh');setTimeout(()=>sfx('applause'),700)}else if(ahead.length)sfx('trombone');else sfx('fanfare')}
+  celebrate(r0,false,false);
+ }catch(e){screen('💾 Guardar',`<div class="intro"><div class="big">📡</div><p>${fbErr(e)}</p><p class="lead">Tu puntuación: <b>${score}</b>.</p><button class="btn" id="rt">Reintentar</button></div>`);$('#rt').onclick=()=>groupDayDone(k,score,r0)}
+}
+
 function newGroupChallenge(g){
  let k='trivia',lv=5;
  screen('⚔️ Nuevo reto',`<p class="lead">Elige juego y dificultad. Juegas tú primero y después el reto les aparecerá a todas las del grupo <b>${esc(g.name)}</b>, con exactamente las mismas preguntas.</p>
@@ -1282,12 +1488,13 @@ async function groupChDone(k,score,r0){
   const rs=rankResults((await gRef(c.gid).collection('challenges').doc(cid).collection('results').get()).docs.map(d=>Object.assign({uid:d.id},d.data())));
   const mine=rs.find(r=>r.uid===fb.uid);
   const link=`${APP_URL}#grupo-${c.gid}`;
-  const msg=c.mode==='gnew'?`${c.gemoji||'👥'} ¡Nuevo reto en «${c.gname}»! He hecho ${score} puntos en ${GAMES[k].name}. ¿Quién me supera? 😏\n\nEntra en la app → 👥 Mis grupos → ${c.gname}`:`${GAMES[k].icon} He jugado el reto de ${GAMES[k].name} en «${c.gname}»: ${score} puntos (voy ${mine.pos+1}.ª de ${rs.length}). ¡Entra en la app y juégalo!`;
+  const msg=c.mode==='gnew'?`${c.gemoji||'👥'} ¡Nuevo reto en «${c.gname}»! He hecho ${score} puntos en ${GAMES[k].name}. ¿Quién me supera? 😏\n\nEntra en la app → 👥 Mis grupos → ${c.gname}`:`${GAMES[k].icon} He jugado el reto de ${GAMES[k].name} en «${c.gname}»: ${score} puntos (voy en posición ${mine.pos+1} de ${rs.length}). ¡Entra en la app y juégalo!`;
   screen(c.mode==='gnew'?'🚀 ¡Reto lanzado!':'⚔️ Resultado del reto',`<div class="result"><div class="big">${c.mode==='gnew'?'🚀':mine.pos===0?'🏆':'💪'}</div><h2 class="f">${score} puntos</h2>
-   <p class="lead">${c.mode==='gnew'?`El reto ya está en el grupo «${esc(c.gname)}». ¡Avisa por WhatsApp para que lo jueguen!`:mine.pos===0?'¡Vas primera en este reto!':`Vas ${mine.pos+1}.ª de ${rs.length} en este reto.`}</p>
+   <p class="lead">${c.mode==='gnew'?`El reto ya está en el grupo «${esc(c.gname)}». ¡Avisa por WhatsApp para que lo jueguen!`:mine.pos===0?'¡Vas en primera posición!':`Vas en posición ${mine.pos+1} de ${rs.length} en este reto.`}</p>
    <div class="ranking">${rs.map(r=>`<div><span>${MED[r.pos]||r.pos+1+'º'}</span><b>${esc(r.name)}${r.uid===fb.uid?' (tú)':''}</b><em>${r.score} pts</em></div>`).join('')}</div></div>
    ${shareBox(msg,'<button class="btn ghost wide" id="bg" style="margin-top:12px">Volver al grupo</button>')}`);
   bindCopy(msg);$('#bg').onclick=()=>groupScreen(c.gid);$('#exit').onclick=()=>groupScreen(c.gid);
+  if(mine&&mine.pos===0&&rs.length>1){sfx('airhorn')}else if(rs.length>1&&c.mode==='gplay')sfx('trombone');
   celebrate(r0,false,mine&&mine.pos===0&&rs.length>1);
  }catch(e){screen('⚔️ Reto',`<div class="intro"><div class="big">📡</div><p>${fbErr(e)}</p><p class="lead">Tu puntuación: <b>${score}</b>.</p><button class="btn" id="rt">Reintentar guardar</button></div>`);$('#rt').onclick=()=>groupChDone(k,score,r0)}
 }
@@ -1295,19 +1502,19 @@ async function groupChDone(k,score,r0){
 /* ---------- pantallas ---------- */
 function nameScreen(edit){
  curView='name';
- view.innerHTML=`<div class="panel pop" style="margin-top:40px;text-align:center"><div style="font-size:64px">🧠✨</div><h1 class="f" style="font-size:28px;margin-top:8px">Gimnasio Mental</h1><p style="color:var(--muted);line-height:1.5">Juegos cortos para entrenar la memoria, la atención, la lógica y la forma de resolver problemas. ¡10 minutos al día y verás cómo creces!</p><form id="nf"><input type="text" id="nm" maxlength="20" placeholder="¿Cómo te llamas?" value="${esc(st.name)}" autocomplete="off"><button class="btn wide" type="submit">${edit?'Guardar':'¡Vamos!'}</button></form>${edit?'':'<button class="chip" id="nRestore" style="margin-top:14px">¿Ya jugabas? Recuperar con copia de seguridad</button>'}</div>`;
+ view.innerHTML=`<div class="panel pop" style="margin-top:40px;text-align:center"><div style="font-size:64px">🧠✨</div><h1 class="f" style="font-size:28px;margin-top:8px">Gimnasio Mental</h1><p style="color:var(--muted);line-height:1.5">Juegos cortos para entrenar la memoria, la atención, la lógica y la forma de resolver problemas. ¡10 minutos al día y verás cómo creces!<br><small>Usa un nombre o apodo, no hace falta tu nombre completo.</small></p><form id="nf"><input type="text" id="nm" maxlength="20" placeholder="¿Cómo te llamas?" value="${esc(st.name)}" autocomplete="off"><button class="btn wide" type="submit">${edit?'Guardar':'¡Vamos!'}</button></form>${edit?'':'<button class="chip" id="nRestore" style="margin-top:14px">¿Ya jugabas? Recuperar con copia de seguridad</button>'}</div>`;
  if($('#nRestore'))$('#nRestore').onclick=()=>backupScreen('restore');
- $('#nf').onsubmit=e=>{e.preventDefault();const v=$('#nm').value.trim();if(!v){$('#nm').focus();return}st.name=v;save();if(!st.artist)return artistEditor(true);if(!openPending())home()};
+ $('#nf').onsubmit=e=>{e.preventDefault();const v=$('#nm').value.trim();if(!v){$('#nm').focus();return}st.name=v;save();if(!st.profile)return cursoScreen(true);if(!st.artist)return artistEditor(true);if(!openPending())home()};
  later(()=>$('#nm')&&$('#nm').focus(),100);
 }
 function settings(){
  const root=$('#modalRoot');
- root.innerHTML=`<div class="modal"><div class="panel pop"><h3 class="f" style="font-size:20px">Ajustes</h3><div style="display:grid;gap:10px;margin-top:14px"><div class="status">${storageStatus()[0]} ${storageStatus()[1]}</div><button class="btn ghost wide" id="sArt">🎨 Mi artista</button><button class="btn ghost wide" id="sSound">${st.sound!==false?'🔊 Sonidos: activados':'🔇 Sonidos: desactivados'}</button><button class="btn ghost wide" id="sBackup">📦 Copia de seguridad</button><button class="btn ghost wide" id="sName">Cambiar nombre</button><button class="btn ghost wide" id="sReset" style="color:var(--bad);border-color:var(--bad)">Borrar todo el progreso</button><button class="btn wide" id="sClose">Cerrar</button></div><div id="sConf"></div></div></div>`;
+ root.innerHTML=`<div class="modal"><div class="panel pop"><h3 class="f" style="font-size:20px">Ajustes</h3><div style="display:grid;gap:10px;margin-top:14px"><div class="status">${storageStatus()[0]} ${storageStatus()[1]}</div><button class="btn ghost wide" id="sArt">🎨 Mi artista</button><button class="btn ghost wide" id="sCurso">🎒 Mi curso: ${cursoName(myCurso())}</button><button class="btn ghost wide" id="sSound">${st.sound!==false?'🔊 Sonidos: activados':'🔇 Sonidos: desactivados'}</button><button class="btn ghost wide" id="sBackup">📦 Copia de seguridad</button><button class="btn ghost wide" id="sName">Cambiar nombre</button><button class="btn ghost wide" id="sReset" style="color:var(--bad);border-color:var(--bad)">Borrar todo el progreso</button><button class="btn wide" id="sClose">Cerrar</button></div><div id="sConf"></div></div></div>`;
  const close=()=>root.innerHTML='';
  $('#sClose').onclick=close;
  $('#sName').onclick=()=>{close();nameScreen(true)};
  $('#sBackup').onclick=()=>{close();backupScreen()};
- $('#sArt').onclick=()=>{close();artistEditor(false)};
+ $('#sArt').onclick=()=>{close();artistEditor(false)};$('#sCurso').onclick=()=>{close();cursoScreen(false)};
  $('#sSound').onclick=()=>{st.sound=st.sound===false;save();$('#sSound').textContent=st.sound?'🔊 Sonidos: activados':'🔇 Sonidos: desactivados';if(st.sound)jingle('level')};
  $('#sReset').onclick=()=>{$('#sConf').innerHTML=`<p style="font-weight:700">¿Seguro? Se borrarán niveles, puntos y racha.</p><div class="row" style="margin-top:6px"><button class="btn ghost" id="cNo">No</button><button class="btn" id="cYes" style="background:var(--bad);box-shadow:0 6px 0 #a3272b">Sí, borrar</button></div>`;
   $('#cNo').onclick=()=>$('#sConf').innerHTML='';$('#cYes').onclick=()=>{const n=st.name;st=def();st.name=n;save();close();home()}};
@@ -1353,7 +1560,7 @@ function home(){
  <div class="cards">${Object.entries(GAMES).map(([k,g])=>`<button class="card${d.game===k&&!d.done?' daily':''}" data-k="${k}">${d.game===k&&!d.done?'<span class="badge">🎯 Reto del día · fans extra</span>':''}<div class="ic" style="background:${g.bg}">${g.icon}</div><div><h3>${g.name}</h3><p>${g.desc}</p></div><span class="lv">Nv ${st.games[k].lv}</span></button>`).join('')}</div>
  <div class="section">Con amig@s</div>
  <div class="cards">
-  <button class="card" id="fGroups"><div class="ic" style="background:#f3eeff">👥</div><div><h3>Mis grupos</h3><p>Tus grupos de amigas, familia… Lanzad retos y mirad quién va primera en cada grupo.</p></div></button>
+  <button class="card" id="fGroups"><div class="ic" style="background:#f3eeff">👥</div><div><h3>Mis grupos</h3><p>Tus grupos de clase, amigos o familia: entreno diario con las mismas preguntas, rankings y retos.</p></div></button>
   <button class="card" id="fGroup"><div class="ic" style="background:#fff1d6">📱</div><div><h3>Jugar en un mismo móvil</h3><p>De 2 a 8 personas pasándoos el móvil. Al final, ¡podio!</p></div></button>
   <button class="card" id="fSend"><div class="ic" style="background:#ffe6ee">⚔️</div><div><h3>Retar a una persona</h3><p>Juega una partida y envía un código por WhatsApp. Tu amig@ jugará exactamente los mismos retos.</p></div></button>
   <button class="card" id="fRank"><div class="ic" style="background:#fff6cc">🏅</div><div><h3>Mis retos y rankings</h3><p>Tu historial de retos, la liga con tus amig@s y la liga del Modo grupo.</p></div></button>
@@ -1432,7 +1639,7 @@ function challengeDone(k,score,cheer,r0){
  <button class="btn wide" id="rev" style="background:#ff6b8b;box-shadow:0 6px 0 #d84467;margin-top:6px">⚔️ Devolver el reto</button>
  <button class="btn ghost wide" id="hm" style="margin-top:12px">Inicio</button></div>`);
  $('#tell').onclick=()=>resultShare(k,lv,seed,R,score);
- celebrate(r0,false,win);
+ celebrate(r0,false,win);if(!win&&!tie)setTimeout(()=>sfx('trombone'),300);
  $('#rev').onclick=()=>launch(k,{mode:'send',lv,banner:`⚔️ Revancha contra <b>${esc(R.name)}</b>`});$('#hm').onclick=home;
 }
 /* --- Devolver el resultado al que retó --- */
@@ -1583,7 +1790,7 @@ function openInApp(){
  $('#oCopy').onclick=async()=>{try{await navigator.clipboard.writeText(code);$('#oFb').textContent='✅ ¡Copiado! Ahora abre la app y pégalo en «Tengo un código».'}catch(e){$('#oFb').textContent='Mantén pulsado el código para copiarlo.'}};
  $('#oHere').onclick=()=>{try{sessionStorage.setItem('gm-here','1')}catch(e){}if(!st.name)return nameScreen();if(!st.artist)return artistEditor(true);if(!openPending())home()};
 }
-function boot(){readHash();const linked=pendingGroup||pending||pendingRes;let here=false;try{here=sessionStorage.getItem('gm-here')==='1'}catch(e){}
+function boot(){applyProfile();readHash();const linked=pendingGroup||pending||pendingRes;let here=false;try{here=sessionStorage.getItem('gm-here')==='1'}catch(e){}
  if(linked&&!isApp()&&!here)return openInApp();
  if(!st.name)return nameScreen();if(!openPending())home()}
 window.addEventListener('hashchange',()=>{readHash();if(st.name){cleanup();openPending()}});
