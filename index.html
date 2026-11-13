@@ -1029,66 +1029,268 @@ const TRIVIA=[
  ['Tecnología',2,2,'¿Cuál de estos materiales conduce bien la electricidad?','El cobre',['La madera','El plástico','El vidrio'],'Por eso los cables son de cobre recubierto de plástico.'],
  ['Tecnología',3,3,'¿En qué unidad se mide la resistencia eléctrica?','Ohmios (Ω)',['Voltios','Amperios','Vatios'],'La ley de Ohm relaciona voltaje, intensidad y resistencia: V = I · R.'],
 ];
-const MUSICA=[
- // [categoría, dificultad, —, pregunta, correcta, incorrectas, explicación]
- ['Música en clase',1,0,'¿Cuántas líneas tiene un pentagrama?','5',['4','6','7'],'Penta = cinco.'],
- ['Música en clase',1,0,'¿Cuántas notas musicales naturales hay?','7',['5','8','12'],'Do, re, mi, fa, sol, la, si.'],
- ['Música en clase',1,0,'En un compás de 4/4, ¿qué figura dura 4 tiempos?','La redonda',['La blanca','La negra','La corchea'],'Redonda 4, blanca 2, negra 1, corchea ½.'],
- ['Música en clase',1,0,'¿Qué figura dura 1 tiempo?','La negra',['La redonda','La blanca','La semicorchea'],'Dos corcheas equivalen a una negra.'],
- ['Música en clase',1,0,'¿Cuántas cuerdas tiene una guitarra española?','6',['4','5','12'],'El violín tiene 4.'],
- ['Música en clase',1,0,'¿A qué familia de instrumentos pertenece la trompeta?','Viento metal',['Viento madera','Cuerda','Percusión'],'También el trombón, la tuba y la trompa.'],
- ['Música en clase',2,0,'¿A qué familia pertenece la flauta travesera, aunque sea de metal?','Viento madera',['Viento metal','Cuerda','Percusión'],'Se clasifica por cómo produce el sonido, no por su material.'],
- ['Música en clase',2,0,'¿Qué significa «piano» en una partitura?','Suave',['Rápido','Fuerte','Lento'],'«Forte» significa fuerte.'],
- ['Música en clase',2,0,'¿Cuál es el instrumento más grave de la familia del violín?','El contrabajo',['La viola','El violonchelo','El violín'],'Violín, viola, violonchelo y contrabajo, de agudo a grave.'],
- ['Música en clase',2,0,'¿Qué compositor siguió componiendo a pesar de quedarse sordo?','Beethoven',['Mozart','Vivaldi','Bach'],'Compuso su Novena Sinfonía casi totalmente sordo.'],
- ['Música en clase',2,0,'¿Quién compuso «Las cuatro estaciones»?','Vivaldi',['Mozart','Chopin','Beethoven'],'Antonio Vivaldi, compositor barroco italiano.'],
- ['Música en clase',3,0,'¿En qué ciudad nació Mozart?','Salzburgo',['Viena','Berlín','París'],'Salzburgo está en Austria.'],
- ['Música en clase',3,0,'¿Qué nota se escribe en la segunda línea del pentagrama con clave de sol?','Sol',['Mi','Do','La'],'¡Por eso se llama clave de sol!'],
- ['Cantantes',1,0,'¿De qué provincia es Rosalía?','Barcelona',['Madrid','Sevilla','Valencia'],'Es de Sant Esteve Sesrovires, en el Baix Llobregat.'],
- ['Cantantes',1,0,'¿De qué país es Bad Bunny?','Puerto Rico',['México','España','Colombia'],'Es puertorriqueño.'],
- ['Cantantes',1,0,'¿De qué país es Shakira?','Colombia',['Argentina','México','Venezuela'],'Nació en Barranquilla.'],
- ['Cantantes',1,0,'¿En qué programa de televisión se dio a conocer Aitana?','Operación Triunfo',['La Voz','Factor X','Got Talent'],'Participó en Operación Triunfo 2017.'],
- ['Cantantes',1,0,'¿De qué país es el grupo BTS?','Corea del Sur',['Japón','China','Tailandia'],'Es uno de los grupos de K-pop más famosos del mundo.'],
- ['Cantantes',1,0,'¿Quién era el cantante de Queen?','Freddie Mercury',['Elton John','Mick Jagger','David Bowie'],'Una de las voces más famosas del rock.'],
- ['Cantantes',1,0,'¿A quién llaman «el Rey del Pop»?','Michael Jackson',['Elvis Presley','Justin Bieber','Prince'],'A Elvis lo llaman «el Rey del Rock and Roll».'],
- ['Cantantes',1,0,'¿Quién canta «Espresso» (2024)?','Sabrina Carpenter',['Taylor Swift','Dua Lipa','Olivia Rodrigo'],'Fue una de las canciones del verano de 2024.'],
- ['Cantantes',1,0,'¿Quién canta «Flowers» (2023)?','Miley Cyrus',['Selena Gomez','Ariana Grande','Billie Eilish'],'Ganó el Grammy a la grabación del año.'],
- ['Cantantes',1,0,'¿De quién es el disco «Motomami»?','Rosalía',['Aitana','Karol G','Lola Índigo'],'Salió en 2022.'],
- ['Cantantes',1,0,'¿De quién es el disco «Un verano sin ti»?','Bad Bunny',['J Balvin','Quevedo','Ozuna'],'Salió en 2022 y batió récords de escuchas.'],
- ['Cantantes',2,0,'¿Cómo se llamaba la gira mundial de Taylor Swift de 2023 y 2024?','The Eras Tour',['The Love Tour','Midnights World','Red Tour Forever'],'Recorría todas las «eras» de su carrera.'],
- ['Cantantes',2,0,'¿Con qué productor argentino hizo Quevedo su famosa «Music Session» de 2022?','Bizarrap',['Tiësto','Calvin Harris','David Guetta'],'Es la sesión número 52 de Bizarrap.'],
- ['Cantantes',2,0,'¿Con quién compone Billie Eilish sus canciones?','Con su hermano Finneas',['Con su madre','Con Ed Sheeran','Con su mejor amiga'],'Empezaron grabando en el dormitorio de casa.'],
- ['Cantantes',2,0,'¿De qué ciudad eran los Beatles?','Liverpool',['Londres','Manchester','Dublín'],'Una ciudad portuaria del noroeste de Inglaterra.'],
- ['Cantantes',2,0,'¿De qué ciudad son los hermanos de Estopa?','Cornellà de Llobregat',['Madrid','Sabadell','Badalona'],'Los hermanos Muñoz son de Cornellà.'],
- ['Cantantes',2,0,'¿De qué país es Karol G?','Colombia',['Puerto Rico','España','Chile'],'Es de Medellín.'],
- ['Cantantes',2,0,'¿En qué ciudad nació Dua Lipa?','Londres',['Tirana','Nueva York','Berlín'],'Su familia es de Kosovo.'],
- ['Cantantes',2,0,'¿Qué instrumento suele tocar Ed Sheeran en sus conciertos?','La guitarra',['El piano','La batería','El violín'],'Además, usa un pedal para grabar capas de sonido en directo.'],
- ['Cantantes',2,0,'¿En qué idioma cantan grupos como Oques Grasses, Txarango o Manel?','Catalán',['Euskera','Gallego','Inglés'],'Hay muchísimos grupos que cantan en catalán.'],
- ['Cantantes',2,0,'¿Cuántas componentes tiene el grupo de K-pop BLACKPINK?','4',['3','5','7'],'Jisoo, Jennie, Rosé y Lisa.'],
- ['Cantantes',2,0,'¿Quién cantaba «Despacito» junto a Daddy Yankee?','Luis Fonsi',['Enrique Iglesias','Maluma','Nicky Jam'],'Fue un éxito mundial en 2017.'],
- ['Cantantes',3,0,'¿Qué país ganó Eurovisión en 2024?','Suiza',['Suecia','Italia','Ucrania'],'Lo ganó Nemo con «The Code».'],
- ['Cantantes',3,0,'¿Con qué canción quedó España en tercer lugar en Eurovisión 2022?','«SloMo» de Chanel',['«Eaea» de Blanca Paloma','«Zorra» de Nebulossa','«Voy a quedarme» de Blas Cantó'],'Fue el mejor resultado de España en muchos años.'],
- ['Cantantes',3,0,'¿Quién canta «drivers license»?','Olivia Rodrigo',['Billie Eilish','Lorde','Taylor Swift'],'Fue su primer gran éxito, en 2021.'],
- ['Música y Barcelona',2,0,'¿Qué edificio modernista de Barcelona es una famosa sala de conciertos?','El Palau de la Música Catalana',['La Casa Batlló','La Pedrera','El Park Güell'],'Lo diseñó el arquitecto Lluís Domènech i Montaner.'],
- ['Música y Barcelona',2,0,'¿Qué festival de música electrónica se celebra cada año en Barcelona?','Sónar',['Coachella','Tomorrowland','Glastonbury'],'Coachella es en EE. UU., Tomorrowland en Bélgica y Glastonbury en Inglaterra.'],
- ['Música y Barcelona',3,0,'¿Qué gran teatro de ópera hay en La Rambla de Barcelona?','El Gran Teatre del Liceu',['La Scala','El Teatro Real','La Ópera de Sídney'],'La Scala está en Milán y el Teatro Real en Madrid.'],
+/* ================= BANCOS DE CLASE POR CURSO ================= */
+// [asignatura, dificultad, trimestre (0 = repaso/todo el curso), pregunta, correcta, incorrectas, explicación]
+const BANK_PRI=[
+ ['Mates',1,0,'¿Cuánto es 3/4 de 20?','15',['12','5','16'],'20 ÷ 4 = 5, y 5 × 3 = 15.'],
+ ['Mates',1,0,'¿Cuál es el perímetro de un cuadrado de 5 cm de lado?','20 cm',['25 cm','10 cm','15 cm'],'Perímetro = suma de los lados: 4 × 5 = 20 cm.'],
+ ['Mates',1,0,'¿Cuánto es 2,5 + 1,75?','4,25',['3,25','4,75','3,75'],'Coloca bien las comas: 2,50 + 1,75 = 4,25.'],
+ ['Mates',1,0,'¿Cuántos centímetros hay en 3 metros?','300',['30','3.000','0,3'],'1 metro = 100 centímetros.'],
+ ['Mates',1,0,'¿Cuánto es 144 ÷ 12?','12',['14','11','13'],'12 × 12 = 144.'],
+ ['Mates',1,0,'¿Cuál de estos números es múltiplo de 7?','49',['45','52','27'],'7 × 7 = 49.'],
+ ['Mates',1,0,'¿Cuántos lados tiene un hexágono?','6',['5','8','7'],'Hexa = seis.'],
+ ['Mates',2,0,'¿Cómo se llama un ángulo de 90°?','Recto',['Agudo','Obtuso','Llano'],'Agudo: menos de 90°. Obtuso: más de 90°. Llano: 180°.'],
+ ['Mates',2,0,'¿Qué fracción es la mayor?','3/4',['2/3','1/2','5/8'],'3/4 = 0,75; 2/3 ≈ 0,67; 5/8 = 0,625; 1/2 = 0,5.'],
+ ['Mates',2,0,'Redondea 4,68 a las décimas','4,7',['4,6','5','4,68'],'Como la centésima (8) es 5 o más, la décima sube.'],
+ ['Ciencias',1,0,'¿Qué órganos usamos para respirar?','Los pulmones',['El estómago','El hígado','Los riñones'],'El aire entra por la nariz y llega a los pulmones.'],
+ ['Ciencias',1,0,'¿Cómo se llaman los animales que solo comen plantas?','Herbívoros',['Carnívoros','Omnívoros','Insectívoros'],'Como las vacas o los conejos.'],
+ ['Ciencias',1,0,'¿Qué planeta está más cerca del Sol?','Mercurio',['Venus','Marte','La Tierra'],'Después vienen Venus, la Tierra y Marte.'],
+ ['Ciencias',1,0,'¿Cuánto tarda la Tierra en dar una vuelta alrededor del Sol?','Un año',['Un día','Un mes','Una semana'],'Y en girar sobre sí misma tarda un día.'],
+ ['Ciencias',1,0,'¿Qué parte de la planta absorbe el agua del suelo?','La raíz',['La hoja','La flor','El tallo'],'Después el agua sube por el tallo hasta las hojas.'],
+ ['Ciencias',2,0,'¿Cómo se llaman los animales que tienen columna vertebral?','Vertebrados',['Invertebrados','Moluscos','Artrópodos'],'Peces, anfibios, reptiles, aves y mamíferos.'],
+ ['Sociales',1,0,'¿Cuántas provincias tiene Catalunya?','4',['3','5','6'],'Barcelona, Girona, Lleida y Tarragona.'],
+ ['Sociales',1,0,'¿Qué cordillera separa España de Francia?','Los Pirineos',['Los Alpes','Sierra Nevada','Los Andes'],'Allí está la Pica d\'Estats, el pico más alto de Catalunya.'],
+ ['Sociales',1,0,'¿Qué mar baña la costa de Barcelona?','El Mediterráneo',['El Cantábrico','El Atlántico','El mar del Norte'],'El Mediterráneo baña toda la costa catalana.'],
+ ['Sociales',2,0,'¿Qué pueblo fundó la ciudad de Barcino, la actual Barcelona?','Los romanos',['Los griegos','Los vikingos','Los egipcios'],'Aún se pueden ver restos de la muralla romana.'],
+ ['Sociales',2,0,'¿Cómo se llama la etapa de la historia anterior a la escritura?','La Prehistoria',['La Edad Media','La Edad Moderna','La Edad Antigua'],'La historia empieza con la invención de la escritura.'],
+ ['Lengua',1,0,'¿Qué tipo de palabra es «correr»?','Un verbo',['Un sustantivo','Un adjetivo','Un adverbio'],'Los verbos expresan acciones.'],
+ ['Lengua',1,0,'¿Cuál es un sinónimo de «contento»?','Alegre',['Triste','Cansado','Enfadado'],'Sinónimos: palabras con significado parecido.'],
+ ['Lengua',1,0,'¿Cuál está bien escrita?','Bicicleta',['Vicicleta','Bicicletta','Bisicleta'],'Bicicleta, con b y con c.'],
+ ['Català',1,0,'Com es diu «ventana» en català?','Finestra',['Ventana','Porta','Paret'],'Finestra!'],
+ ['Inglés',1,0,'How do you say «manzana» in English?','Apple',['Orange','Pear','Banana'],'An apple a day…'],
+ ['Inglés',1,0,'I ___ ten years old.','am',['is','are','be'],'I am, you are, he/she is.'],
+ ['Inglés',2,0,'What is the plural of «mouse»?','mice',['mouses','mices','mouse'],'It\'s an irregular plural.'],
 ];
+const BANK_E1=[
+ ['Mates',1,0,'¿Cuánto es 5²?','25',['10','7','52'],'5² = 5 × 5 = 25.'],
+ ['Mates',1,1,'¿Cuál es el máximo común divisor de 12 y 18?','6',['3','36','2'],'Divisores comunes: 1, 2, 3 y 6. El mayor es 6.'],
+ ['Mates',1,1,'¿Cuánto es (−7) + 4?','−3',['3','−11','11'],'Partes de −7 y subes 4: llegas a −3.'],
+ ['Mates',1,1,'¿Cuál de estos números es primo?','13',['15','21','27'],'Solo se puede dividir entre 1 y entre sí mismo.'],
+ ['Mates',2,1,'¿Cuánto es 2/5 + 1/5?','3/5',['3/10','2/25','1/5'],'Con el mismo denominador, se suman los numeradores.'],
+ ['Mates',2,2,'¿Qué fracción es igual a 0,25?','1/4',['1/25','2/5','25/10'],'0,25 = 25/100 = 1/4.'],
+ ['Mates',2,2,'¿Cuánto es el 10% de 350?','35',['3,5','350','10'],'El 10% es dividir entre 10.'],
+ ['Mates',1,3,'¿Cuántos grados mide un ángulo llano?','180°',['90°','360°','45°'],'Un ángulo llano es media vuelta.'],
+ ['Mates',2,3,'¿Cuál es el área de un triángulo de base 8 cm y altura 5 cm?','20 cm²',['40 cm²','13 cm²','26 cm²'],'Área = base × altura ÷ 2 = 40 ÷ 2 = 20.'],
+ ['Ciencias',1,1,'¿Qué planeta es el tercero desde el Sol?','La Tierra',['Marte','Venus','Júpiter'],'Mercurio, Venus, la Tierra…'],
+ ['Ciencias',1,1,'¿Cómo se llama la capa de gases que rodea la Tierra?','La atmósfera',['La hidrosfera','La litosfera','La biosfera'],'La hidrosfera es el agua y la litosfera, la capa rocosa.'],
+ ['Ciencias',2,1,'¿Cómo se llama la roca fundida del interior de la Tierra?','Magma',['Granito','Mármol','Arcilla'],'Cuando sale por un volcán se llama lava.'],
+ ['Ciencias',1,2,'¿Cuál es la unidad básica de todos los seres vivos?','La célula',['El átomo','El órgano','El tejido'],'Todos los seres vivos están formados por células.'],
+ ['Ciencias',2,2,'¿Qué parte de la célula vegetal hace la fotosíntesis?','El cloroplasto',['La mitocondria','El núcleo','La vacuola'],'Contiene clorofila, que le da el color verde.'],
+ ['Ciencias',2,2,'¿A qué reino pertenecen las setas?','Hongos',['Plantas','Animales','Moneras'],'No son plantas: no hacen la fotosíntesis.'],
+ ['Ciencias',1,3,'¿Qué tipo de animal es una ballena?','Un mamífero',['Un pez','Un anfibio','Un reptil'],'Respira aire y amamanta a sus crías.'],
+ ['Ciencias',1,3,'¿Qué grupo de animales tiene el cuerpo cubierto de plumas?','Las aves',['Los reptiles','Los mamíferos','Los anfibios'],'Las plumas son exclusivas de las aves.'],
+ ['Sociales',1,1,'¿Cuál es el continente más grande?','Asia',['África','América','Europa'],'Asia ocupa casi un tercio de la tierra firme.'],
+ ['Sociales',1,1,'¿Cuál es el río más largo de África?','El Nilo',['El Congo','El Níger','El Zambeze'],'Recorre más de 6.000 km.'],
+ ['Sociales',2,1,'¿Cómo se llaman las líneas imaginarias paralelas al ecuador?','Paralelos',['Meridianos','Husos horarios','Longitudes'],'Los meridianos van de polo a polo.'],
+ ['Sociales',1,2,'¿En qué período de la Prehistoria aparecieron la agricultura y la ganadería?','El Neolítico',['El Paleolítico','La Edad de los Metales','La Edad Media'],'Los humanos se hicieron sedentarios.'],
+ ['Sociales',1,2,'¿Qué río fue fundamental para la civilización egipcia?','El Nilo',['El Tigris','El Ebro','El Danubio'],'Sus crecidas fertilizaban los campos.'],
+ ['Sociales',2,2,'¿Qué escritura usaban los antiguos egipcios?','La jeroglífica',['La cuneiforme','La latina','La griega'],'La cuneiforme era la de Mesopotamia.'],
+ ['Sociales',1,3,'¿En qué ciudad griega nació la democracia?','Atenas',['Esparta','Roma','Troya'],'Aunque no todo el mundo podía votar: ni mujeres ni esclavos.'],
+ ['Sociales',1,3,'¿Qué idioma hablaban los antiguos romanos?','El latín',['El griego','El castellano','El árabe'],'Del latín vienen el catalán, el castellano, el francés…'],
+ ['Català',2,1,'Quin és el plural de «llapis»?','Llapis',['Llapisos','Llapises','Llapissos'],'És invariable: un llapis, dos llapis.'],
+ ['Castellano',1,1,'¿Qué es un sustantivo?','Una palabra que nombra personas, animales o cosas',['Una palabra que indica una acción','Una palabra que describe cualidades','Una palabra que une oraciones'],'Por ejemplo: mesa, gato, Laura.'],
+ ['Castellano',2,2,'¿Qué género literario cuenta una historia a través de un narrador?','La narrativa',['La lírica','El teatro','El ensayo'],'Cuentos, novelas, leyendas…'],
+ ['Inglés',1,1,'She ___ a sister.','has',['have','is','are'],'Third person: he/she has.'],
+ ['Inglés',1,1,'«It\'s half past three» means…','3:30',['3:15','2:30','3:45'],'Half past = y media.'],
+ ['Inglés',2,2,'What is the past simple of «play»?','played',['plaied','playd','plays'],'Regular verb: + ed.'],
+];
+const BANK_E3=[
+ ['Mates',1,1,'En la progresión 4, 7, 10, 13… ¿cuál es la diferencia?','3',['4','7','1'],'Cada término suma 3 al anterior.'],
+ ['Mates',2,1,'¿Cuánto es (x + 3)²?','x² + 6x + 9',['x² + 9','x² + 3x + 9','2x + 6'],'Cuadrado de una suma: a² + 2ab + b².'],
+ ['Mates',2,2,'Resuelve: x² = 49','x = 7 o x = −7',['Solo x = 7','x = 24,5','Solo x = −7'],'Tanto 7² como (−7)² dan 49.'],
+ ['Mates',2,2,'Resuelve el sistema: x + y = 10; x − y = 2','x = 6, y = 4',['x = 4, y = 6','x = 5, y = 5','x = 8, y = 2'],'Sumando las dos ecuaciones: 2x = 12.'],
+ ['Mates',2,2,'¿Cuántas soluciones puede tener como máximo una ecuación de segundo grado?','2',['1','3','Infinitas'],'Puede tener 2, 1 o ninguna solución real.'],
+ ['Mates',1,3,'¿Cuál es la pendiente de la recta y = 3x + 2?','3',['2','5','1/3'],'En y = mx + n, la pendiente es m.'],
+ ['Mates',1,3,'¿Qué probabilidad hay de sacar un 6 con un dado?','1/6',['1/2','6','1/3'],'Un caso favorable entre seis posibles.'],
+ ['Ciencias',1,1,'¿Qué partículas forman el núcleo del átomo?','Protones y neutrones',['Electrones y protones','Solo electrones','Neutrones y electrones'],'Los electrones están en la corteza.'],
+ ['Ciencias',1,1,'¿Qué indica el número atómico?','El número de protones',['El número de neutrones','El número de moléculas','El número de enlaces'],'Cada elemento tiene un número atómico distinto.'],
+ ['Ciencias',2,1,'¿Quién creó la primera tabla periódica de los elementos?','Mendeléyev',['Einstein','Newton','Darwin'],'Dmitri Mendeléyev, en 1869.'],
+ ['Ciencias',2,1,'¿Cuál es el símbolo químico del sodio?','Na',['So','S','Sd'],'Viene del latín natrium.'],
+ ['Ciencias',3,1,'¿En qué grupo de la tabla periódica están los gases nobles?','18',['1','2','17'],'Helio, neón, argón… casi no reaccionan.'],
+ ['Ciencias',2,2,'Según Lavoisier, ¿qué se conserva en una reacción química?','La masa',['El volumen','El color','La temperatura'],'«La materia ni se crea ni se destruye, solo se transforma».'],
+ ['Ciencias',1,2,'¿Qué células de la sangre transportan el oxígeno?','Los glóbulos rojos',['Los glóbulos blancos','Las plaquetas','Las neuronas'],'Contienen hemoglobina.'],
+ ['Ciencias',2,2,'¿Dónde se intercambian el oxígeno y el CO₂ en los pulmones?','En los alvéolos',['En la tráquea','En los bronquios','En la laringe'],'Son pequeños sacos rodeados de capilares.'],
+ ['Ciencias',2,2,'¿Dónde se absorben la mayoría de los nutrientes?','En el intestino delgado',['En el estómago','En el esófago','En el intestino grueso'],'Sus vellosidades aumentan mucho la superficie.'],
+ ['Ciencias',3,3,'¿Qué glándula produce la insulina?','El páncreas',['El hígado','La tiroides','El riñón'],'La insulina regula el azúcar en sangre.'],
+ ['Ciencias',3,3,'¿Cuál es la unidad que filtra la sangre en el riñón?','La nefrona',['La neurona','El alvéolo','La vellosidad'],'Cada riñón tiene alrededor de un millón.'],
+ ['Sociales',1,1,'¿Qué sector económico incluye la agricultura y la pesca?','El primario',['El secundario','El terciario','El cuaternario'],'El secundario es la industria y el terciario, los servicios.'],
+ ['Sociales',1,1,'¿Qué movimiento cultural surgió en Italia en los siglos XV y XVI?','El Renacimiento',['El Barroco','El Románico','La Ilustración'],'Recuperaba la cultura grecorromana.'],
+ ['Sociales',2,1,'¿Qué navegante inició la primera vuelta al mundo, que completó Elcano?','Fernando de Magallanes',['Vasco da Gama','Cristóbal Colón','Américo Vespucio'],'La expedición salió en 1519 y volvió en 1522.'],
+ ['Sociales',2,2,'¿Quién inició la Reforma protestante en 1517?','Martín Lutero',['Calvino','Erasmo','Enrique VIII'],'Criticó la venta de indulgencias.'],
+ ['Sociales',2,2,'¿Qué dinastía reinó en España en los siglos XVI y XVII?','Los Austrias',['Los Borbones','Los Trastámara','Los Saboya'],'Carlos I, Felipe II…'],
+ ['Sociales',2,3,'¿Quién pintó «Las Meninas»?','Diego Velázquez',['El Greco','Goya','Murillo'],'Una obra maestra del Barroco.'],
+ ['Inglés',1,1,'I have ___ to London twice.','been',['went','go','gone to'],'Present perfect for experiences: have been.'],
+ ['Inglés',2,1,'While I ___ TV, the phone rang.','was watching',['watched','am watching','watch'],'Past continuous for an action in progress.'],
+ ['Inglés',2,2,'You ___ wear a helmet: it\'s the law.','must',['might','could','would'],'Must = obligation.'],
+ ['Mates',1,1,'¿Cuál es el término general de 2, 4, 6, 8…?','2n',['n + 2','n²','2 + n²'],'Cada término es el doble de su posición.'],
+ ['Mates',2,1,'¿Cuánto es (x − 2)(x + 2)?','x² − 4',['x² + 4','x² − 4x + 4','2x'],'Suma por diferencia = diferencia de cuadrados.'],
+ ['Ciencias',1,1,'¿Qué partícula del átomo tiene carga positiva?','El protón',['El electrón','El neutrón','El fotón'],'El electrón es negativo y el neutrón no tiene carga.'],
+ ['Ciencias',2,1,'¿Cuál es el símbolo químico del potasio?','K',['P','Po','Pt'],'Viene del latín kalium.'],
+ ['Sociales',1,1,'¿En qué año llegó Colón a América?','1492',['1453','1517','1500'],'Marca el inicio de la Edad Moderna.'],
+ ['Sociales',2,1,'¿Quién pintó «La Gioconda»?','Leonardo da Vinci',['Miguel Ángel','Rafael','Botticelli'],'Un genio del Renacimiento.'],
+ ['Inglés',1,1,'She has ___ finished her homework.','already',['yet','ever','ago'],'«Already» en frases afirmativas con present perfect.'],
+];
+const BANK_E4=[
+ ['Sociales',2,1,'¿Qué movimiento del siglo XVIII defendía la razón frente a la tradición?','La Ilustración',['El Romanticismo','El Barroco','El Renacimiento'],'Voltaire, Montesquieu, Rousseau…'],
+ ['Sociales',2,1,'¿Qué documento de 1789 proclamó los derechos de las personas en Francia?','La Declaración de los Derechos del Hombre y del Ciudadano',['La Carta Magna','La Constitución de Cádiz','El Tratado de Utrecht'],'Fue uno de los grandes logros de la Revolución francesa.'],
+ ['Sociales',2,1,'¿En qué año se aprobó la Constitución de Cádiz, «la Pepa»?','1812',['1808','1789','1876'],'Se aprobó el día de San José: por eso «la Pepa».'],
+ ['Ciencias',1,1,'¿Cuál es aproximadamente la aceleración de la gravedad en la Tierra?','9,8 m/s²',['98 m/s²','1 m/s²','3,6 m/s²'],'Por eso a veces se redondea a 10 m/s².'],
+ ['Mates',2,1,'¿Cuánto es √50 simplificado?','5√2',['25√2','2√5','10√5'],'√50 = √(25 · 2) = 5√2.'],
+ ['Inglés',1,1,'I ___ to the cinema tomorrow: I already have the tickets.','am going',['go','went','have gone'],'Para planes ya decididos: present continuous o «going to».'],
+ ['Sociales',1,1,'¿En qué año empezó la Revolución francesa?','1789',['1776','1808','1848'],'Con la toma de la Bastilla, el 14 de julio.'],
+ ['Sociales',1,1,'¿En qué país empezó la Revolución industrial?','Gran Bretaña',['Francia','Alemania','Estados Unidos'],'A finales del siglo XVIII.'],
+ ['Sociales',1,1,'¿Qué invento fue clave en la primera Revolución industrial?','La máquina de vapor',['La electricidad','El ordenador','El motor eléctrico'],'Movía fábricas, trenes y barcos.'],
+ ['Sociales',1,2,'¿En qué año empezó la Primera Guerra Mundial?','1914',['1918','1939','1905'],'Duró hasta 1918.'],
+ ['Sociales',2,2,'¿En qué año se proclamó la Segunda República española?','1931',['1936','1923','1939'],'El 14 de abril de 1931.'],
+ ['Sociales',1,2,'¿En qué año empezó la Guerra Civil española?','1936',['1931','1939','1923'],'Duró hasta 1939.'],
+ ['Sociales',2,3,'¿Cómo se llamó el enfrentamiento entre EE. UU. y la URSS sin guerra directa entre ellos?','La Guerra Fría',['La Gran Guerra','La guerra de los Cien Años','La guerra de Secesión'],'Desde 1945 hasta 1991, aproximadamente.'],
+ ['Sociales',2,3,'¿En qué año murió Franco?','1975',['1978','1982','1969'],'Después llegó la Transición a la democracia.'],
+ ['Ciencias',1,1,'¿Cómo se llama la teoría que explica el movimiento de los continentes?','Tectónica de placas',['Big Bang','Evolución','Relatividad'],'Las placas se mueven unos centímetros al año.'],
+ ['Ciencias',1,1,'¿Cuál es la unidad de fuerza en el Sistema Internacional?','El newton',['El julio','El vatio','El pascal'],'El julio es de energía y el vatio, de potencia.'],
+ ['Ciencias',2,1,'Según la segunda ley de Newton, F = …','m · a',['m / a','m · v','½ · m · v²'],'Fuerza = masa × aceleración.'],
+ ['Ciencias',2,1,'Un coche va a 72 km/h. ¿Cuántos m/s son?','20 m/s',['72 m/s','7,2 m/s','36 m/s'],'Se divide entre 3,6.'],
+ ['Ciencias',2,2,'¿Qué energía tiene un objeto por estar a cierta altura?','Potencial gravitatoria',['Cinética','Térmica','Eléctrica'],'Ep = m · g · h.'],
+ ['Ciencias',1,2,'¿Quién es considerado el padre de la genética?','Gregor Mendel',['Charles Darwin','James Watson','Lamarck'],'Hizo sus experimentos con guisantes.'],
+ ['Ciencias',1,2,'¿Qué molécula tiene forma de doble hélice?','El ADN',['El ARN','La glucosa','La hemoglobina'],'Contiene la información genética.'],
+ ['Ciencias',1,3,'¿Quién propuso la evolución por selección natural?','Charles Darwin',['Gregor Mendel','Louis Pasteur','Isaac Newton'],'«El origen de las especies», 1859.'],
+ ['Mates',1,1,'¿Cuánto vale log₁₀ 1000?','3',['10','100','30'],'10³ = 1000.'],
+ ['Mates',1,1,'Resuelve: 2ˣ = 16','x = 4',['x = 8','x = 2','x = 32'],'2 × 2 × 2 × 2 = 16.'],
+ ['Mates',2,2,'¿Cuánto es sen²α + cos²α?','1',['0','2','tan α'],'Es la identidad fundamental de la trigonometría.'],
+ ['Mates',2,2,'En un triángulo rectángulo, el seno de un ángulo es…','Cateto opuesto / hipotenusa',['Cateto contiguo / hipotenusa','Cateto opuesto / cateto contiguo','Hipotenusa / cateto opuesto'],'El coseno es cateto contiguo / hipotenusa.'],
+ ['Mates',1,3,'¿Cuál es la mediana de 3, 7, 8, 10 y 15?','8',['7','8,6','10'],'Es el valor central de los datos ordenados.'],
+ ['Castellano',2,2,'¿Qué autor de la Generación del 27 escribió «Romancero gitano»?','Federico García Lorca',['Antonio Machado','Rafael Alberti','Miguel Hernández'],'Lo publicó en 1928.'],
+ ['Català',2,2,'Qui va escriure el poema «Canigó»?','Jacint Verdaguer',['Àngel Guimerà','Joan Maragall','Mercè Rodoreda'],'És una obra clau de la Renaixença.'],
+ ['Català',2,3,'Qui va escriure «La plaça del Diamant»?','Mercè Rodoreda',['Caterina Albert','Montserrat Roig','Maria-Mercè Marçal'],'Publicada el 1962.'],
+ ['Inglés',2,1,'If I ___ rich, I would travel the world.','were',['am','will be','be'],'Second conditional: if + past.'],
+ ['Inglés',2,2,'The book ___ written by Cervantes.','was',['is being','has','were'],'Passive voice in the past: was + participle.'],
+];
+
+const MSTYLES=[['pop','🎤 Pop'],['rock','🎸 Rock'],['reggaeton','💃 Reguetón y latino'],['clasica','🎻 Clásica'],['electro','🎛️ Electrónica y techno'],['rap','🎧 Rap y hip-hop'],['kpop','✨ K-pop']];
+// [categoría, dificultad, estilo, pregunta, correcta, incorrectas, explicación]
+const MUSICA=[
+ // --- música en clase / general ---
+ ['Música en clase',1,'teoria','¿Cuántas líneas tiene un pentagrama?','5',['4','6','7'],'Penta = cinco.'],
+ ['Música en clase',1,'teoria','¿Cuántas notas musicales naturales hay?','7',['5','8','12'],'Do, re, mi, fa, sol, la, si.'],
+ ['Música en clase',1,'teoria','En un compás de 4/4, ¿qué figura dura 4 tiempos?','La redonda',['La blanca','La negra','La corchea'],'Redonda 4, blanca 2, negra 1, corchea ½.'],
+ ['Música en clase',1,'teoria','¿Qué figura dura 1 tiempo?','La negra',['La redonda','La blanca','La semicorchea'],'Dos corcheas equivalen a una negra.'],
+ ['Música en clase',1,'teoria','¿Cuántas cuerdas tiene una guitarra española?','6',['4','5','12'],'El violín tiene 4.'],
+ ['Música en clase',1,'teoria','¿A qué familia de instrumentos pertenece la trompeta?','Viento metal',['Viento madera','Cuerda','Percusión'],'También el trombón, la tuba y la trompa.'],
+ ['Música en clase',2,'teoria','¿A qué familia pertenece la flauta travesera, aunque sea de metal?','Viento madera',['Viento metal','Cuerda','Percusión'],'Se clasifica por cómo produce el sonido, no por su material.'],
+ ['Música en clase',2,'teoria','¿Qué significa «piano» en una partitura?','Suave',['Rápido','Fuerte','Lento'],'«Forte» significa fuerte.'],
+ ['Música en clase',2,'teoria','¿Cuál es el instrumento más grave de la familia del violín?','El contrabajo',['La viola','El violonchelo','El violín'],'Violín, viola, violonchelo y contrabajo, de agudo a grave.'],
+ ['Música en clase',3,'teoria','¿Qué nota se escribe en la segunda línea del pentagrama con clave de sol?','Sol',['Mi','Do','La'],'¡Por eso se llama clave de sol!'],
+ ['Música y Barcelona',2,'general','¿Qué edificio modernista de Barcelona es una famosa sala de conciertos?','El Palau de la Música Catalana',['La Casa Batlló','La Pedrera','El Park Güell'],'Lo diseñó Lluís Domènech i Montaner.'],
+ ['Música y Barcelona',3,'general','¿Qué gran teatro de ópera hay en La Rambla de Barcelona?','El Gran Teatre del Liceu',['La Scala','El Teatro Real','La Ópera de Sídney'],'La Scala está en Milán y el Teatro Real, en Madrid.'],
+ ['Eurovisión',3,'general','¿Qué país ganó Eurovisión en 2024?','Suiza',['Suecia','Italia','Ucrania'],'Lo ganó Nemo con «The Code».'],
+ ['Eurovisión',3,'general','¿Con qué canción quedó España tercera en Eurovisión 2022?','«SloMo» de Chanel',['«Eaea» de Blanca Paloma','«Zorra» de Nebulossa','«Voy a quedarme» de Blas Cantó'],'Fue el mejor resultado de España en muchos años.'],
+ // --- pop ---
+ ['Pop',1,'pop','¿Quién canta «Espresso» (2024)?','Sabrina Carpenter',['Taylor Swift','Dua Lipa','Olivia Rodrigo'],'Fue una de las canciones del verano de 2024.'],
+ ['Pop',1,'pop','¿Quién canta «Flowers» (2023)?','Miley Cyrus',['Selena Gomez','Ariana Grande','Billie Eilish'],'Ganó el Grammy a la grabación del año.'],
+ ['Pop',1,'pop','¿En qué programa de televisión se dio a conocer Aitana?','Operación Triunfo',['La Voz','Factor X','Got Talent'],'En Operación Triunfo 2017.'],
+ ['Pop',1,'pop','¿A quién llaman «el Rey del Pop»?','Michael Jackson',['Elvis Presley','Justin Bieber','Prince'],'Su disco «Thriller» es uno de los más vendidos de la historia.'],
+ ['Pop',2,'pop','¿Cómo se llamaba la gira mundial de Taylor Swift de 2023 y 2024?','The Eras Tour',['The Love Tour','Midnights World','Red Tour Forever'],'Recorría todas las «eras» de su carrera.'],
+ ['Pop',2,'pop','¿Con quién compone Billie Eilish sus canciones?','Con su hermano Finneas',['Con su madre','Con Ed Sheeran','Con su mejor amiga'],'Empezaron grabando en un dormitorio de casa.'],
+ ['Pop',2,'pop','¿En qué ciudad nació Dua Lipa?','Londres',['Tirana','Nueva York','Berlín'],'Su familia es de Kosovo.'],
+ ['Pop',2,'pop','¿En qué grupo cantaba Harry Styles antes de ir en solitario?','One Direction',['Coldplay','The Wanted','Backstreet Boys'],'El grupo salió del programa «The X Factor».'],
+ ['Pop',2,'pop','¿Quién canta «drivers license»?','Olivia Rodrigo',['Billie Eilish','Lorde','Taylor Swift'],'Fue su primer gran éxito, en 2021.'],
+ ['Pop',2,'pop','¿De qué país son Justin Bieber y The Weeknd?','Canadá',['Estados Unidos','Reino Unido','Australia'],'¡Los dos son canadienses!'],
+ ['Pop',3,'pop','¿Quién canta «Blinding Lights»?','The Weeknd',['Bruno Mars','Drake','Shawn Mendes'],'Fue una de las canciones más escuchadas de la historia de Spotify.'],
+ ['Pop',3,'pop','¿Para qué película cantó Lady Gaga «Shallow»?','Ha nacido una estrella',['Barbie','La La Land','Frozen'],'Ganó el Óscar a la mejor canción.'],
+ // --- rock ---
+ ['Rock',1,'rock','¿Quién era el cantante de Queen?','Freddie Mercury',['Elton John','Mick Jagger','David Bowie'],'Una de las voces más famosas del rock.'],
+ ['Rock',1,'rock','¿De qué ciudad eran los Beatles?','Liverpool',['Londres','Manchester','Dublín'],'Una ciudad portuaria del noroeste de Inglaterra.'],
+ ['Rock',1,'rock','¿A quién llaman «el Rey del Rock and Roll»?','Elvis Presley',['Michael Jackson','Chuck Berry','Johnny Cash'],'Famoso por su forma de bailar.'],
+ ['Rock',2,'rock','¿Quién es el cantante de los Rolling Stones?','Mick Jagger',['Bono','Freddie Mercury','Paul McCartney'],'Su logo es una boca con la lengua fuera.'],
+ ['Rock',2,'rock','¿De qué ciudad son los hermanos de Estopa?','Cornellà de Llobregat',['Madrid','Sabadell','Badalona'],'Los hermanos Muñoz son de Cornellà.'],
+ ['Rock',2,'rock','¿De qué país es el grupo AC/DC?','Australia',['Estados Unidos','Reino Unido','Canadá'],'Se formó en Sídney en 1973.'],
+ ['Rock',2,'rock','¿Quién es el cantante de Coldplay?','Chris Martin',['Bono','Dan Reynolds','Brandon Flowers'],'Coldplay es un grupo británico.'],
+ ['Rock',2,'rock','¿Qué grupo canta «Believer»?','Imagine Dragons',['Coldplay','Maroon 5','OneRepublic'],'Es un grupo de Las Vegas.'],
+ ['Rock',3,'rock','¿Qué grupo italiano de rock ganó Eurovisión en 2021?','Måneskin',['Il Volo','Negramaro','The Kolors'],'Con la canción «Zitti e buoni».'],
+ ['Rock',3,'rock','¿Qué guitarrista es famoso por tocar con los dientes y prender fuego a su guitarra?','Jimi Hendrix',['Eric Clapton','Slash','Brian May'],'Una leyenda de la guitarra eléctrica.'],
+ ['Rock',3,'rock','¿Qué grupo grabó «Smells Like Teen Spirit»?','Nirvana',['Pearl Jam','Green Day','Oasis'],'Su cantante era Kurt Cobain.'],
+ // --- reguetón y latino ---
+ ['Reguetón y latino',1,'reggaeton','¿De qué país es Bad Bunny?','Puerto Rico',['México','España','Colombia'],'Es puertorriqueño.'],
+ ['Reguetón y latino',1,'reggaeton','¿De qué país es Shakira?','Colombia',['Argentina','México','Venezuela'],'Nació en Barranquilla.'],
+ ['Reguetón y latino',1,'reggaeton','¿De quién es el disco «Un verano sin ti»?','Bad Bunny',['J Balvin','Quevedo','Ozuna'],'Salió en 2022 y batió récords de escuchas.'],
+ ['Reguetón y latino',1,'reggaeton','¿Quién cantaba «Despacito» junto a Daddy Yankee?','Luis Fonsi',['Enrique Iglesias','Maluma','Nicky Jam'],'Fue un éxito mundial en 2017.'],
+ ['Reguetón y latino',1,'reggaeton','¿De quién es el disco «Motomami»?','Rosalía',['Aitana','Karol G','Lola Índigo'],'Salió en 2022.'],
+ ['Reguetón y latino',2,'reggaeton','¿De qué provincia es Rosalía?','Barcelona',['Madrid','Sevilla','Valencia'],'Es de Sant Esteve Sesrovires, en el Baix Llobregat.'],
+ ['Reguetón y latino',2,'reggaeton','¿De qué ciudad es Karol G?','Medellín',['Bogotá','San Juan','Buenos Aires'],'Es colombiana.'],
+ ['Reguetón y latino',2,'reggaeton','¿Con qué productor argentino hizo Quevedo su famosa «Music Session» de 2022?','Bizarrap',['Tiësto','Calvin Harris','David Guetta'],'Es la sesión número 52 de Bizarrap.'],
+ ['Reguetón y latino',2,'reggaeton','¿Qué canción de Daddy Yankee (2004) ayudó a hacer famoso el reguetón en todo el mundo?','«Gasolina»',['«Despacito»','«Tusa»','«La Bicicleta»'],'¡Todavía suena en todas las fiestas!'],
+ ['Reguetón y latino',3,'reggaeton','¿De qué país es J Balvin?','Colombia',['Puerto Rico','Panamá','México'],'También es de Medellín.'],
+ ['Reguetón y latino',3,'reggaeton','¿De qué país es Ozuna?','Puerto Rico',['República Dominicana','Colombia','Cuba'],'Como Bad Bunny y Daddy Yankee.'],
+ // --- clásica ---
+ ['Clásica',1,'clasica','¿Qué compositor siguió componiendo a pesar de quedarse sordo?','Beethoven',['Mozart','Vivaldi','Bach'],'Compuso su Novena Sinfonía casi totalmente sordo.'],
+ ['Clásica',1,'clasica','¿Quién compuso «Las cuatro estaciones»?','Vivaldi',['Mozart','Chopin','Beethoven'],'Antonio Vivaldi, compositor barroco italiano.'],
+ ['Clásica',1,'clasica','¿Qué usa el director de orquesta para dirigir?','La batuta',['El arco','La baqueta','El diapasón'],'El arco es para los instrumentos de cuerda.'],
+ ['Clásica',2,'clasica','¿En qué ciudad nació Mozart?','Salzburgo',['Viena','Berlín','París'],'Salzburgo está en Austria.'],
+ ['Clásica',2,'clasica','¿Qué compositor escribió los ballets «El lago de los cisnes» y «El cascanueces»?','Chaikovski',['Mozart','Bach','Debussy'],'Fue un compositor ruso.'],
+ ['Clásica',2,'clasica','¿Qué melodía de Beethoven es el himno de la Unión Europea?','El «Himno de la alegría»',['«Para Elisa»','«Claro de luna»','La Quinta Sinfonía'],'Es parte de su Novena Sinfonía.'],
+ ['Clásica',2,'clasica','¿Qué instrumento tocaba el músico catalán Pau Casals?','El violonchelo',['El piano','El violín','La guitarra'],'Es uno de los mejores violonchelistas de la historia.'],
+ ['Clásica',3,'clasica','¿Con qué cantante de rock grabó Montserrat Caballé la canción «Barcelona»?','Freddie Mercury',['Elton John','Bono','Mick Jagger'],'Fue el himno de los Juegos Olímpicos de 1992.'],
+ ['Clásica',3,'clasica','¿Qué compositor polaco es famoso por sus obras para piano?','Chopin',['Liszt','Händel','Haydn'],'Frédéric Chopin, del Romanticismo.'],
+ ['Clásica',3,'clasica','¿A qué época musical pertenece Johann Sebastian Bach?','El Barroco',['El Romanticismo','El Clasicismo','El Renacimiento'],'Vivió entre 1685 y 1750.'],
+ // --- electrónica / techno ---
+ ['Electrónica',1,'electro','¿Qué significa «DJ»?','Disc jockey',['Digital jazz','Dance judge','Disco jam'],'La persona que pincha la música.'],
+ ['Electrónica',1,'electro','¿Qué festival de música electrónica se celebra cada año en Barcelona?','Sónar',['Coachella','Tomorrowland','Glastonbury'],'Coachella es en EE. UU., Tomorrowland en Bélgica y Glastonbury en Inglaterra.'],
+ ['Electrónica',1,'electro','¿Qué DJ lleva un casco blanco con una cara sonriente?','Marshmello',['Daft Punk','Deadmau5','Skrillex'],'Nadie sabía quién era al principio.'],
+ ['Electrónica',2,'electro','¿De qué país es el DJ David Guetta?','Francia',['Países Bajos','Alemania','Suecia'],'Es uno de los DJ más famosos del mundo.'],
+ ['Electrónica',2,'electro','¿Qué significa BPM?','Beats per minute (pulsaciones por minuto)',['Bass power music','Best party mix','Big pop machine'],'Mide la velocidad de una canción.'],
+ ['Electrónica',2,'electro','¿Qué dúo francés actuaba siempre con cascos de robot?','Daft Punk',['The Chemical Brothers','Justice','Disclosure'],'Famosos por «Get Lucky».'],
+ ['Electrónica',2,'electro','¿En qué país se celebra el festival Tomorrowland?','Bélgica',['Países Bajos','Alemania','España'],'Se celebra en la ciudad de Boom.'],
+ ['Electrónica',2,'electro','¿Qué isla española es famosa en todo el mundo por sus discotecas de electrónica?','Ibiza',['Tenerife','Menorca','Lanzarote'],'Muchos de los mejores DJ del mundo pinchan allí.'],
+ ['Electrónica',3,'electro','¿En qué ciudad de Estados Unidos nació el techno?','Detroit',['Nueva York','Los Ángeles','Miami'],'En los años 80.'],
+ ['Electrónica',3,'electro','¿De qué país era el DJ Avicii, autor de «Wake Me Up»?','Suecia',['Noruega','Dinamarca','Países Bajos'],'Tim Bergling, de Estocolmo.'],
+ ['Electrónica',3,'electro','¿Qué DJ holandés se hizo famoso muy joven con «Animals»?','Martin Garrix',['Tiësto','Armin van Buuren','Hardwell'],'¡Tenía solo 17 años!'],
+ // --- rap / hip-hop ---
+ ['Rap y hip-hop',1,'rap','¿Qué significa improvisar rimas en el momento?','Hacer freestyle',['Hacer playback','Hacer un remix','Hacer karaoke'],'Como en las batallas de gallos.'],
+ ['Rap y hip-hop',1,'rap','¿Cómo se llaman las competiciones de rap improvisado?','Batallas de gallos',['Concursos de coros','Duelos de DJ','Jam sessions'],'La más famosa en español es la Red Bull Batalla.'],
+ ['Rap y hip-hop',2,'rap','¿En qué barrio de Nueva York nació el hip-hop?','El Bronx',['Manhattan','Brooklyn','Queens'],'En los años 70.'],
+ ['Rap y hip-hop',2,'rap','¿De qué país es Bizarrap?','Argentina',['México','España','Chile'],'Sus «BZRP Music Sessions» son famosísimas.'],
+ ['Rap y hip-hop',2,'rap','¿De qué ciudad es Eminem?','Detroit',['Los Ángeles','Nueva York','Chicago'],'Su película «8 Mile» transcurre allí.'],
+ ['Rap y hip-hop',2,'rap','¿De qué país es Duki, uno de los referentes del trap?','Argentina',['Puerto Rico','España','Colombia'],'Empezó en las batallas de gallos.'],
+ ['Rap y hip-hop',3,'rap','¿Con qué canción ganó Eminem un Óscar?','«Lose Yourself»',['«Without Me»','«Stan»','«Rap God»'],'Era de la película «8 Mile».'],
+ ['Rap y hip-hop',3,'rap','¿Qué rapero ganó el premio Pulitzer de música en 2018?','Kendrick Lamar',['Drake','Kanye West','Jay-Z'],'Por su disco «DAMN.».'],
+ ['Rap y hip-hop',3,'rap','¿De qué país es Drake?','Canadá',['Estados Unidos','Jamaica','Reino Unido'],'Es de Toronto.'],
+ // --- k-pop ---
+ ['K-pop',1,'kpop','¿De qué país es el grupo BTS?','Corea del Sur',['Japón','China','Tailandia'],'Es uno de los grupos de K-pop más famosos del mundo.'],
+ ['K-pop',1,'kpop','¿Cuántas componentes tiene BLACKPINK?','4',['3','5','7'],'Jisoo, Jennie, Rosé y Lisa.'],
+ ['K-pop',1,'kpop','¿Qué canción coreana de 2012 tenía un baile «a caballo» que se hizo viral?','«Gangnam Style»',['«Dynamite»','«Butter»','«How You Like That»'],'La cantaba PSY.'],
+ ['K-pop',2,'kpop','¿Cuántos miembros tiene BTS?','7',['5','4','9'],'RM, Jin, Suga, j-hope, Jimin, V y Jungkook.'],
+ ['K-pop',2,'kpop','¿Cómo se llama el fandom de BTS?','ARMY',['BLINK','ONCE','STAY'],'BLINK es el fandom de BLACKPINK.'],
+ ['K-pop',2,'kpop','¿Cómo se llama el fandom de BLACKPINK?','BLINK',['ARMY','ONCE','CARAT'],'Mezcla de «black» y «pink».'],
+ ['K-pop',2,'kpop','¿Cuál es la capital de Corea del Sur, donde están muchas discográficas de K-pop?','Seúl',['Busan','Tokio','Pekín'],'Seúl es la capital y la ciudad más grande.'],
+ ['K-pop',3,'kpop','¿Cómo se llama el grupo de chicas de la película «KPop Demon Hunters»?','HUNTR/X',['Saja Boys','TWICE','NewJeans'],'Los Saja Boys son el grupo rival.'],
+ ['K-pop',3,'kpop','¿Qué canción de BTS fue su primer número 1 en Estados Unidos, en 2020?','«Dynamite»',['«Butter»','«Fake Love»','«Boy With Luv»'],'Fue su primera canción entera en inglés.'],
+];
+function musicPrefsScreen(after){
+ cleanup();curView='mprefs';let sel=(st.musicPrefs||[]).slice();
+ const b=screen('🎵 Tu música',`<p class="lead">¿Qué música te gusta? Elige <b>hasta 3 estilos</b> y el trivial musical te preguntará sobre todo de ellos (más algunas preguntas de clase de música).</p>
+ <div class="chips" id="mp">${MSTYLES.map(([v,l])=>`<button class="chip${sel.includes(v)?' sel':''}" data-v="${v}">${l}</button>`).join('')}</div><div class="fb" id="mpf"></div>
+ <button class="btn wide" id="mpOk" style="margin-top:16px">Guardar</button>`);
+ $('#mp').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{const v=c.dataset.v;if(sel.includes(v)){sel=sel.filter(x=>x!==v);c.classList.remove('sel')}else{if(sel.length>=3){$('#mpf').textContent='Máximo 3 estilos 🙂';return}sel.push(v);c.classList.add('sel')}$('#mpf').textContent=''});
+ $('#mpOk').onclick=()=>{if(!sel.length){$('#mpf').textContent='Elige al menos un estilo';return}st.musicPrefs=sel;save();after?after():home()};
+}
+
 const TRIM=['repaso de 1º','1.er trimestre','2.º trimestre','3.er trimestre'];
 function curTrim(){const m=new Date().getMonth()+1;return m>=9?1:m<=3?2:m<=6?3:3}
 /* --- trivial de clase adaptativo --- */
-const bucketOf=Q=>Q[0]+'|'+Q[2];
-const bucketName=key=>{const [s,t]=key.split('|');return `${s} · ${TRIM[+t]}`};
+let ABANK={bank:TRIVIA,id:'t2eso'};
+const bucketOf=Q=>(ABANK.id==='t2eso'?'':ABANK.id+'/')+Q[0]+'|'+Q[2];
+const qkey=i=>ABANK.id==='t2eso'?i:ABANK.id+':'+i;
+const bucketName=key=>{const [s,t]=key.replace(/^[a-z0-9]+\//,'').split('|');return `${s} · ${TRIM[+t]}`};
 function tq(){st.tq=st.tq||{q:{},notYet:{},subj:{}};return st.tq}
 const addDays=n=>{const d=new Date();d.setDate(d.getDate()+n);return dayStr(d)};
 function notYetActive(key){const until=tq().notYet[key];return until&&until>today()}
-function bucketStats(key){let ok=0,ko=0;TRIVIA.forEach((Q,i)=>{if(bucketOf(Q)===key){const r=tq().q[i];if(r){ok+=r.ok;ko+=r.ko}}});return{ok,ko,n:ok+ko,acc:ok+ko?ok/(ok+ko):null}}
+function bucketStats(key){let ok=0,ko=0;ABANK.bank.forEach((Q,i)=>{if(bucketOf(Q)===key){const r=tq().q[qkey(i)];if(r){ok+=r.ok;ko+=r.ko}}});return{ok,ko,n:ok+ko,acc:ok+ko?ok/(ok+ko):null}}
 const bucketLow=key=>{const b=bucketStats(key);return b.n>=3&&b.acc<0.35};
 function subjLevel(subj,base){const h=(tq().subj[subj]||[]);if(h.length<5)return base;const acc=h.reduce((a,b)=>a+b,0)/h.length;return Math.max(1,Math.min(3,base+(acc>=0.8?1:acc<0.4?-1:0)))}
 function pickAdaptive(allowed,N,base){
  const T=tq(),cand=allowed.filter(([Q])=>!notYetActive(bucketOf(Q)));
  const src=cand.length>=N?cand:allowed;
  const w=src.map(([Q,i])=>{
-  const r=T.q[i],sl=subjLevel(Q[0],base);let x=Q[1]<=sl?1:Q[1]===sl+1?0.35:0.08;
+  const r=T.q[qkey(i)],sl=subjLevel(Q[0],base);let x=Q[1]<=sl?1:Q[1]===sl+1?0.35:0.08;
   if(bucketLow(bucketOf(Q)))x*=0.2;
   if(r){if(r.ko>r.ok&&r.last!==today())x*=2.5;else if(r.ok>=2&&r.ko===0)x*=0.25;if(r.last===today())x*=0.1}
   return x});
@@ -1100,25 +1302,27 @@ function pickAdaptive(allowed,N,base){
  }
  return out;
 }
-function recordTQ(i,Q,good){const T=tq(),r=T.q[i]=T.q[i]||{ok:0,ko:0,last:''};good?r.ok++:r.ko++;r.last=today();const h=T.subj[Q[0]]=(T.subj[Q[0]]||[]);h.push(good?1:0);if(h.length>8)h.shift()}
+function recordTQ(i,Q,good){const T=tq(),r=T.q[qkey(i)]=T.q[qkey(i)]||{ok:0,ko:0,last:''};good?r.ok++:r.ko++;r.last=today();const h=T.subj[Q[0]]=(T.subj[Q[0]]||[]);h.push(good?1:0);if(h.length>8)h.shift()}
 function quizTopics(){
- const tr=curTrim(),keys=[...new Set(TRIVIA.filter(Q=>Q[2]<=tr).map(bucketOf))];
+ const tr=curTrim(),BKq=bankFor(myCurso(),'trivia');if(BKq.kind!=='class')return home();ABANK={bank:BKq.bank,id:BKq.id};const keys=[...new Set(ABANK.bank.filter(Q=>Q[2]<=tr).map(bucketOf))];
  const row=key=>{const b=bucketStats(key),ny=notYetActive(key),low=!ny&&bucketLow(key);
   const state=ny?`🙈 Aún no lo habéis dado · vuelve a salir el ${tq().notYet[key].split('-').reverse().join('/')}`:low?'🤔 Fallas bastante: sale menos (¿quizá aún no lo habéis dado?)':'✅ Activo';
   return `<div><span>${ny?'🙈':low?'🤔':'✅'}</span><div><b>${bucketName(key)}</b><small>${state}${b.n?` · ${b.ok}/${b.n} aciertos`:''}</small></div><button class="chip" data-k="${key}" data-ny="${ny?1:0}">${ny?'Ya lo hemos dado':'Aún no'}</button></div>`};
  screen('📚 Temas del trivial',`<p class="lead">Aquí ves los temas que pueden salir ahora mismo. Si un tema todavía no lo habéis dado en clase, márcalo con <b>«Aún no»</b> y no saldrá durante 3 semanas. Cuando lo deis, pulsa <b>«Ya lo hemos dado»</b>.</p><div class="hist" id="tl">${keys.map(row).join('')}</div>`);
- $('#tl').querySelectorAll('button').forEach(bt=>bt.onclick=()=>{const T=tq();if(bt.dataset.ny==='1'){delete T.notYet[bt.dataset.k];const b=bucketStats(bt.dataset.k);if(bucketLow(bt.dataset.k))TRIVIA.forEach((Q,i)=>{if(bucketOf(Q)===bt.dataset.k&&T.q[i])T.q[i].ko=0})}else T.notYet[bt.dataset.k]=addDays(21);save();quizTopics()});
+ $('#tl').querySelectorAll('button').forEach(bt=>bt.onclick=()=>{const T=tq();if(bt.dataset.ny==='1'){delete T.notYet[bt.dataset.k];const b=bucketStats(bt.dataset.k);if(bucketLow(bt.dataset.k))ABANK.bank.forEach((Q,i)=>{if(bucketOf(Q)===bt.dataset.k&&T.q[qkey(i)])T.q[qkey(i)].ko=0})}else T.notYet[bt.dataset.k]=addDays(21);save();quizTopics()});
 }
 
 function playQuiz(k){
+ if(k==='musica'&&ctx.mode==='solo'&&!(st.musicPrefs&&st.musicPrefs.length))return musicPrefsScreen(()=>launch('musica'));
  const lv=ctx.lv,N=10,BK=bankFor(ctx.curso||myCurso(),k),bank=BK.bank,tr=curTrim(),maxD=lv<=3?1:lv<=6?2:3,band=BANDIDX[bandOf(ctx.curso||myCurso())];
  const allowed=bank.map((q,i)=>[q,i]).filter(([q])=>BK.kind==='class'?q[2]<=tr:BK.kind==='gen'?q[2]<=band:true);
  let pool=allowed.filter(([q])=>q[1]<=maxD);if(pool.length<N)pool=allowed;
- const adapt=BK.kind==='class'&&ctx.mode==='solo';
- const extra=BK.kind==='gen'?`Preguntas de cultura general para ${cursoName(ctx.curso||myCurso())}. Al responder verás la explicación.`:k==='trivia'?`Preguntas de lo que se suele dar hasta ahora en 2º de ESO (<b>${TRIM[tr]}</b>) y repaso de 1º.${adapt?' Si te sale algo que aún no habéis dado, pulsa <b>«🙈 Aún no lo hemos dado»</b> y no contará como fallo.<br><br><button class="chip" id="qTopics">📚 Ver y elegir los temas</button>':''}`:'Cantantes, canciones, instrumentos y lo que das en clase de música. Al responder verás la explicación.';
+ const adapt=BK.kind==='class'&&ctx.mode==='solo';ABANK={bank:BK.bank,id:BK.id};
+ const extra=BK.kind==='mus'?(ctx.mode==='solo'?`Preguntas de tu música${st.musicPrefs&&st.musicPrefs.length?' ('+st.musicPrefs.map(v=>(MSTYLES.find(m=>m[0]===v)||[0,''])[1]).join(', ')+')':''} y de clase de música.<br><br><button class="chip" id="mPrefs">🎵 Cambiar mi música</button>`:'Preguntas de todos los estilos de música (en grupo y en los retos, todo el mundo tiene las mismas).'):BK.kind==='gen'?`Preguntas de cultura general para ${cursoName(ctx.curso||myCurso())}. Al responder verás la explicación.`:k==='trivia'?`Preguntas de lo que se suele dar hasta ahora en ${cursoName(ctx.curso||myCurso())} (<b>${TRIM[tr]}</b>)${BK.id==='t2eso'?' y repaso de 1º':''}.${adapt?' Si te sale algo que aún no habéis dado, pulsa <b>«🙈 Aún no lo hemos dado»</b> y no contará como fallo.<br><br><button class="chip" id="qTopics">📚 Ver y elegir los temas</button>':''}`:'Cantantes, canciones, instrumentos y lo que das en clase de música. Al responder verás la explicación.';
  intro(k,`Son ${N} preguntas. ${extra}`,()=>{
   const seenK='quiz_'+k,seen=ctx.mode==='solo'?((st.quizSeen||{})[seenK]||[]):[];
-  const list=adapt?pickAdaptive(allowed,N,maxD):shuffle(pool).sort((a,b)=>seen.includes(a[1])-seen.includes(b[1])).slice(0,N);
+  const prefs=BK.kind==='mus'&&ctx.mode==='solo'&&st.musicPrefs&&st.musicPrefs.length?st.musicPrefs:null;
+  const list=prefs?(()=>{const lvOk=([Q])=>Q[1]<=Math.max(maxD,2);const fav=shuffle(allowed.filter(([Q])=>prefs.includes(Q[2])&&lvOk([Q]))),rest=shuffle(allowed.filter(([Q])=>(Q[2]==='teoria'||Q[2]==='general')&&lvOk([Q])));const out=[...fav.slice(0,7),...rest.slice(0,3)];return shuffle(out.length>=N?out:[...out,...shuffle(allowed.filter(x=>!out.includes(x)))].slice(0,N))})():adapt?pickAdaptive(allowed,N,maxD):shuffle(pool).sort((a,b)=>seen.includes(a[1])-seen.includes(b[1])).slice(0,N);
   const roundRes={},lowBefore=adapt?new Set([...new Set(allowed.map(([Q])=>bucketOf(Q)))].filter(bucketLow)):new Set();
   if(ctx.mode==='solo'&&!adapt){st.quizSeen=st.quizSeen||{};st.quizSeen[seenK]=[...seen,...list.map(x=>x[1])].slice(-Math.floor(allowed.length*0.7));save()}
   const S={i:0,ok:0,score:0,t0:0,skip:0};const b=frame(k,false);
@@ -1154,7 +1358,7 @@ function playQuiz(k){
    }else lines.push('⚡ Si respondes en menos de 8 segundos ganas puntos extra.');
    finish(k,S.score,S.ok/n>=0.8?1:S.ok/n<=0.4?-1:0,lines,cheerFor(S.ok/n),S.ok===list.length&&list.length>=8)}
  });
- const tb=$('#qTopics');if(tb)tb.onclick=quizTopics;
+ const tb=$('#qTopics');if(tb)tb.onclick=quizTopics;const mpb=$('#mPrefs');if(mpb)mpb.onclick=()=>musicPrefsScreen(()=>launch('musica'));
 }
 
 /* ================= COFRE DIARIO ================= */
@@ -1187,7 +1391,7 @@ const myCurso=()=>(st.profile&&st.profile.curso)||'2eso';
 const FAMILY_GAMES=['mem','calc','stroop','series','musica'];
 function applyProfile(){
  const c=myCurso();
- if(c==='2eso'){GAMES.trivia.name='Trivial de clase';GAMES.trivia.desc='Preguntas del temario de 2º de ESO: mates, ciencias, sociales, lenguas, inglés y tecnología.';GAMES.trivia.area='Cultura de clase'}
+ if(CLASSBANK[c]){GAMES.trivia.name='Trivial de clase';GAMES.trivia.desc=`Preguntas del temario de ${cursoName(c)}: mates, ciencias, sociales, lenguas e inglés.`;GAMES.trivia.area='Cultura de clase'}
  else{GAMES.trivia.name='Trivial de cultura';GAMES.trivia.desc=`Preguntas de cultura general para tu edad (${cursoName(c)}): ciencia, geografía, historia, mates…`;GAMES.trivia.area='Cultura general'}
 }
 function cursoScreen(first){
@@ -1195,12 +1399,12 @@ function cursoScreen(first){
  view.innerHTML=`<div class="panel pop" style="margin-top:30px"><div style="text-align:center;font-size:54px">🎒</div><h2 class="f" style="text-align:center;font-size:24px;margin:6px 0">¿En qué curso estás?</h2>
  <p class="lead" style="text-align:center">Así las preguntas y los juegos se adaptan a tu edad. Lo puedes cambiar cuando quieras en ⚙️ Ajustes.</p>
  <div class="chips" id="cc" style="justify-content:center;margin-top:10px">${CURSOS.map(c=>`<button class="chip${c[0]===myCurso()&&!first?' sel':''}" data-v="${c[0]}">${c[1]}</button>`).join('')}</div>
- <div id="ccAge" style="display:none;margin-top:14px"><div class="lab">¿Cuántos años tienes? (opcional)</div><input type="text" id="age" inputmode="numeric" maxlength="3" placeholder="Edad"></div>
+ <div id="ccAge" style="display:none;margin-top:14px"><div class="lab">¿Cuántos años tienes?</div><input type="text" id="age" inputmode="numeric" maxlength="3" placeholder="Edad"></div>
  <button class="btn wide" id="ccOk" style="margin-top:18px" disabled>Continuar</button></div>`;
- let sel=first?null:myCurso();if(sel)$('#ccOk').disabled=false;
- bindChips('cc',v=>{sel=v;$('#ccOk').disabled=false;$('#ccAge').style.display=v==='adulto'?'block':'none'});
- $('#ccOk').onclick=()=>{if(!sel)return;const isNew=!st.profile;st.profile=Object.assign(st.profile||{},{curso:sel});
-  if(sel==='adulto'){const a=parseInt($('#age').value);if(a>0&&a<120)st.profile.edad=a}
+ let sel=first?null:myCurso();if(sel)$('#ccOk').disabled=false;if(sel==='adulto'){$('#ccAge').style.display='block';if(st.profile&&st.profile.edad)$('#age').value=st.profile.edad}
+ bindChips('cc',v=>{sel=v;$('#ccOk').disabled=false;$('#ccAge').style.display=v==='adulto'?'block':'none';if(v==='adulto')later(()=>$('#age').focus(),50)});
+ $('#ccOk').onclick=()=>{if(!sel)return;const isNew=!st.profile||!st.profile.chosen;st.profile=Object.assign(st.profile||{},{curso:sel,chosen:true});
+  if(sel==='adulto'){const a=parseInt($('#age').value);if(!(a>=18&&a<120)){toast('Escribe tu edad (18 o más) 🙂');$('#age').focus();return}st.profile.edad=a}else delete st.profile.edad;
   if(isNew&&bandOf(sel)==='adult'&&st.stats.plays===0)Object.values(st.games).forEach(g=>g.lv=Math.max(g.lv,3));
   save();applyProfile();if(!st.artist)return artistEditor(true);if(!openPending())home()};
 }
@@ -1247,8 +1451,9 @@ const GENERAL=[
  ['Historia',3,2,'¿En qué año cayó el muro de Berlín?','1989',['1991','1985','1961'],'Fue el 9 de noviembre de 1989.'],
  ['Mates',3,2,'¿Cuánto vale aproximadamente el número π?','3,1416',['2,7183','1,6180','3,1614'],'Es la relación entre la circunferencia y el diámetro.'],
 ];
-function bankFor(curso,k){if(k==='musica')return{bank:MUSICA,id:'mus',kind:'mus'};return curso==='2eso'?{bank:TRIVIA,id:'t2eso',kind:'class'}:{bank:GENERAL,id:'gen',kind:'gen'}}
-const BANKS={t2eso:()=>TRIVIA,gen:()=>GENERAL,mus:()=>MUSICA};
+const CLASSBANK={'5pri':['pri',()=>BANK_PRI],'6pri':['pri',()=>BANK_PRI],'1eso':['e1',()=>BANK_E1],'2eso':['t2eso',()=>TRIVIA],'3eso':['e3',()=>BANK_E3],'4eso':['e4',()=>BANK_E4]};
+function bankFor(curso,k){if(k==='musica')return{bank:MUSICA,id:'mus',kind:'mus'};const cb=CLASSBANK[curso];return cb?{bank:cb[1](),id:cb[0],kind:'class'}:{bank:GENERAL,id:'gen',kind:'gen'}}
+const BANKS={t2eso:()=>TRIVIA,pri:()=>BANK_PRI,e1:()=>BANK_E1,e3:()=>BANK_E3,e4:()=>BANK_E4,gen:()=>GENERAL,mus:()=>MUSICA};
 
 /* ================= EFECTOS DE SONIDO DIVERTIDOS ================= */
 function sfx(kind){
@@ -1509,12 +1714,12 @@ function nameScreen(edit){
 }
 function settings(){
  const root=$('#modalRoot');
- root.innerHTML=`<div class="modal"><div class="panel pop"><h3 class="f" style="font-size:20px">Ajustes</h3><div style="display:grid;gap:10px;margin-top:14px"><div class="status">${storageStatus()[0]} ${storageStatus()[1]}</div><button class="btn ghost wide" id="sArt">🎨 Mi artista</button><button class="btn ghost wide" id="sCurso">🎒 Mi curso: ${cursoName(myCurso())}</button><button class="btn ghost wide" id="sSound">${st.sound!==false?'🔊 Sonidos: activados':'🔇 Sonidos: desactivados'}</button><button class="btn ghost wide" id="sBackup">📦 Copia de seguridad</button><button class="btn ghost wide" id="sName">Cambiar nombre</button><button class="btn ghost wide" id="sReset" style="color:var(--bad);border-color:var(--bad)">Borrar todo el progreso</button><button class="btn wide" id="sClose">Cerrar</button></div><div id="sConf"></div></div></div>`;
+ root.innerHTML=`<div class="modal"><div class="panel pop"><h3 class="f" style="font-size:20px">Ajustes</h3><div style="display:grid;gap:10px;margin-top:14px"><div class="status">${storageStatus()[0]} ${storageStatus()[1]}</div><button class="btn ghost wide" id="sArt">🎨 Mi artista</button><button class="btn ghost wide" id="sMus">🎵 Mi música</button><button class="btn ghost wide" id="sCurso">🎒 Mi curso: ${cursoName(myCurso())}${st.profile&&st.profile.edad?' ('+st.profile.edad+' años)':''}</button><button class="btn ghost wide" id="sSound">${st.sound!==false?'🔊 Sonidos: activados':'🔇 Sonidos: desactivados'}</button><button class="btn ghost wide" id="sBackup">📦 Copia de seguridad</button><button class="btn ghost wide" id="sName">Cambiar nombre</button><button class="btn ghost wide" id="sReset" style="color:var(--bad);border-color:var(--bad)">Borrar todo el progreso</button><button class="btn wide" id="sClose">Cerrar</button></div><div id="sConf"></div></div></div>`;
  const close=()=>root.innerHTML='';
  $('#sClose').onclick=close;
  $('#sName').onclick=()=>{close();nameScreen(true)};
  $('#sBackup').onclick=()=>{close();backupScreen()};
- $('#sArt').onclick=()=>{close();artistEditor(false)};$('#sCurso').onclick=()=>{close();cursoScreen(false)};
+ $('#sArt').onclick=()=>{close();artistEditor(false)};$('#sCurso').onclick=()=>{close();cursoScreen(false)};$('#sMus').onclick=()=>{close();musicPrefsScreen()};
  $('#sSound').onclick=()=>{st.sound=st.sound===false;save();$('#sSound').textContent=st.sound?'🔊 Sonidos: activados':'🔇 Sonidos: desactivados';if(st.sound)jingle('level')};
  $('#sReset').onclick=()=>{$('#sConf').innerHTML=`<p style="font-weight:700">¿Seguro? Se borrarán niveles, puntos y racha.</p><div class="row" style="margin-top:6px"><button class="btn ghost" id="cNo">No</button><button class="btn" id="cYes" style="background:var(--bad);box-shadow:0 6px 0 #a3272b">Sí, borrar</button></div>`;
   $('#cNo').onclick=()=>$('#sConf').innerHTML='';$('#cYes').onclick=()=>{const n=st.name;st=def();st.name=n;save();close();home()}};
@@ -1792,7 +1997,7 @@ function openInApp(){
 }
 function boot(){applyProfile();readHash();const linked=pendingGroup||pending||pendingRes;let here=false;try{here=sessionStorage.getItem('gm-here')==='1'}catch(e){}
  if(linked&&!isApp()&&!here)return openInApp();
- if(!st.name)return nameScreen();if(!openPending())home()}
+ if(!st.name)return nameScreen();if(!(st.profile&&st.profile.chosen))return cursoScreen(true);if(!openPending())home()}
 window.addEventListener('hashchange',()=>{readHash();if(st.name){cleanup();openPending()}});
 boot();initCloud();
 </script>
