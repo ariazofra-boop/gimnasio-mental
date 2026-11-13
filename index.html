@@ -1168,7 +1168,8 @@ async function fbInit(){
   if(!firebase.apps.length)firebase.initializeApp(FB_CONFIG);
   let user=await new Promise(res=>{const un=firebase.auth().onAuthStateChanged(u=>{un();res(u)})});
   if(!user)user=(await firebase.auth().signInAnonymously()).user;
-  fb={db:firebase.firestore(),uid:user.uid};return fb;
+  const db=firebase.firestore();try{db.settings({experimentalForceLongPolling:true,merge:true})}catch(e){}
+  fb={db,uid:user.uid};return fb;
  })();
  try{return await withTimeout(fbLoading,15000)}catch(e){fbLoading=null;throw e}
 }
