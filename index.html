@@ -1210,8 +1210,8 @@ function createGroupScreen(){
 }
 function inviteScreen(g,fresh){
  const link=`${APP_URL}#grupo-${g.gid}`;
- const msg=`${g.emoji} ¡Únete a mi grupo «${g.name}» en Gimnasio Mental! Haremos retos entre nosotr@s 🎤🧠\n\n${link}`;
- screen(fresh?'🎉 ¡Grupo creado!':'📨 Invitar al grupo',`<div style="text-align:center"><div style="font-size:54px">${g.emoji}</div><h2 class="f" style="font-size:22px">${esc(g.name)}</h2><p class="lead">Manda este enlace a quien quieras invitar (por ejemplo, al grupo de WhatsApp). Cualquiera que tenga el enlace podrá unirse, así que compártelo solo con quien tú quieras.</p></div>${shareBox(msg,'<button class="btn ghost wide" id="gg" style="margin-top:12px">Ir al grupo</button>')}`);
+ const msg=`${g.emoji} ¡Únete a mi grupo «${g.name}» en Gimnasio Mental! Haremos retos entre nosotr@s 🎤🧠\n\n👉 Si ya tienes la app: ábrela, ve a «Tengo un código» y pega este código: ${g.gid.toUpperCase()}\n\n👉 Si aún no la tienes: abre este enlace en Chrome o Safari y añádela a la pantalla de inicio:\n${link}`;
+ screen(fresh?'🎉 ¡Grupo creado!':'📨 Invitar al grupo',`<div style="text-align:center"><div style="font-size:54px">${g.emoji}</div><h2 class="f" style="font-size:22px">${esc(g.name)}</h2><div class="code" style="text-align:center">${g.gid.toUpperCase()}</div><p class="lead">Este es el <b>código del grupo</b>. Manda el mensaje a quien quieras invitar (por ejemplo, al grupo de WhatsApp). Cualquiera que tenga el enlace podrá unirse, así que compártelo solo con quien tú quieras.</p></div>${shareBox(msg,'<button class="btn ghost wide" id="gg" style="margin-top:12px">Ir al grupo</button>')}`);
  bindCopy(msg);$('#gg').onclick=()=>groupScreen(g.gid);
 }
 function joinByCode(){
@@ -1282,7 +1282,7 @@ async function groupChDone(k,score,r0){
   const rs=rankResults((await gRef(c.gid).collection('challenges').doc(cid).collection('results').get()).docs.map(d=>Object.assign({uid:d.id},d.data())));
   const mine=rs.find(r=>r.uid===fb.uid);
   const link=`${APP_URL}#grupo-${c.gid}`;
-  const msg=c.mode==='gnew'?`${c.gemoji||'👥'} ¡Nuevo reto en «${c.gname}»! He hecho ${score} puntos en ${GAMES[k].name}. ¿Quién me supera? 😏\n\n${link}`:`${GAMES[k].icon} He jugado el reto de ${GAMES[k].name} en «${c.gname}»: ${score} puntos (voy ${mine.pos+1}.ª de ${rs.length}).\n\n${link}`;
+  const msg=c.mode==='gnew'?`${c.gemoji||'👥'} ¡Nuevo reto en «${c.gname}»! He hecho ${score} puntos en ${GAMES[k].name}. ¿Quién me supera? 😏\n\nEntra en la app → 👥 Mis grupos → ${c.gname}`:`${GAMES[k].icon} He jugado el reto de ${GAMES[k].name} en «${c.gname}»: ${score} puntos (voy ${mine.pos+1}.ª de ${rs.length}). ¡Entra en la app y juégalo!`;
   screen(c.mode==='gnew'?'🚀 ¡Reto lanzado!':'⚔️ Resultado del reto',`<div class="result"><div class="big">${c.mode==='gnew'?'🚀':mine.pos===0?'🏆':'💪'}</div><h2 class="f">${score} puntos</h2>
    <p class="lead">${c.mode==='gnew'?`El reto ya está en el grupo «${esc(c.gname)}». ¡Avisa por WhatsApp para que lo jueguen!`:mine.pos===0?'¡Vas primera en este reto!':`Vas ${mine.pos+1}.ª de ${rs.length} en este reto.`}</p>
    <div class="ranking">${rs.map(r=>`<div><span>${MED[r.pos]||r.pos+1+'º'}</span><b>${esc(r.name)}${r.uid===fb.uid?' (tú)':''}</b><em>${r.score} pts</em></div>`).join('')}</div></div>
@@ -1403,8 +1403,8 @@ function shareScreen(k,lv,seed,score){
  $('#hm').onclick=home;
 }
 function codeEntry(){
- const b=screen('🎟️ Código de reto',`<p class="lead">Escribe el código que te han mandado: un reto (algo como <b>S5-K9X2P-95-LUCIA</b>) o un resultado que te devuelven (empieza por <b>R</b>).</p><form id="cf"><input type="text" id="ci" placeholder="Código" autocomplete="off" style="text-transform:uppercase"><button class="btn wide" type="submit">Ver el reto</button></form><div class="fb" id="cfb" style="color:var(--bad)"></div>`);
- $('#cf').onsubmit=e=>{e.preventDefault();const v=$('#ci').value,rr=parseResult(v);if(rr)return resultIntro(rr);const c=parseCode(v);if(!c){$('#cfb').textContent='Ese código no es válido. Revísalo bien 🧐';return}challengeIntro(c)};
+ const b=screen('🎟️ Tengo un código',`<p class="lead">Pega aquí el código (o el enlace) que te han mandado: una <b>invitación a un grupo</b>, un <b>reto</b> (como <b>S5-K9X2P-95-LUCIA</b>) o un <b>resultado</b> (empieza por <b>R</b>).</p><form id="cf"><input type="text" id="ci" placeholder="Código" autocomplete="off" style="text-transform:uppercase"><button class="btn wide" type="submit">¡Vamos!</button></form><div class="fb" id="cfb" style="color:var(--bad)"></div>`);
+ $('#cf').onsubmit=e=>{e.preventDefault();const v=$('#ci').value.trim(),gm=v.match(/grupo-([a-z0-9]{6,20})/i)||v.match(/^([a-z0-9]{10})$/i);if(gm)return joinScreen(gm[1].toLowerCase());const v2=v.replace(/^.*#(reto|res)-/i,''),rr=parseResult(v2);if(rr)return resultIntro(rr);const c=parseCode(v2);if(!c){$('#cfb').textContent='Ese código no es válido. Revísalo bien 🧐';return}challengeIntro(c)};
  later(()=>$('#ci')&&$('#ci').focus(),100);
 }
 function challengeIntro(c){
@@ -1568,7 +1568,24 @@ function podium(){
 /* --- arranque y enlaces de reto --- */
 function readHash(){const h=decodeURIComponent(location.hash.slice(1));if(/^reto-/i.test(h)){const c=parseCode(h);if(c)pending=c}else if(/^res-/i.test(h)){const c=parseResult(h);if(c)pendingRes=c}else{const m=h.match(/^grupo-([a-z0-9]{6,20})$/i);if(m)pendingGroup=m[1].toLowerCase()}}
 function openPending(){if(pendingGroup)return joinScreen(pendingGroup),true;if(pending)return challengeIntro(pending),true;if(pendingRes)return resultIntro(pendingRes),true;return false}
-function boot(){readHash();if(!st.name)return nameScreen();if(!openPending())home()}
+const isApp=()=>{try{return matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}};
+function openInApp(){
+ const h=decodeURIComponent(location.hash.slice(1));let code='',what='';
+ if(pendingGroup){code=pendingGroup.toUpperCase();what='una invitación a un grupo'}
+ else if(pending){code=h.replace(/^reto-/i,'').toUpperCase();what='un reto'}
+ else if(pendingRes){code=h.replace(/^res-/i,'').toUpperCase();what='un resultado'}
+ view.innerHTML=`<div class="panel pop" style="margin-top:24px;text-align:center"><div style="font-size:56px">📲</div><h1 class="f" style="font-size:24px;margin:6px 0">Te han mandado ${what}</h1>
+  <p class="lead"><b>¿Ya tienes la app Gimnasio Mental en tu pantalla de inicio?</b> Copia este código, abre la app y pégalo en <b>«🎟️ Tengo un código»</b>:</p>
+  <div class="code">${esc(code)}</div><button class="btn wide" id="oCopy">📋 Copiar código</button><div class="fb" id="oFb"></div>
+  <div style="border-top:1px dashed var(--line);margin:18px 0 12px"></div>
+  <p class="lead" style="font-size:14px"><b>¿Aún no tienes la app?</b> Si estás dentro de WhatsApp, abre este enlace en <b>Chrome</b> o <b>Safari</b> (menú ⋮ → «Abrir en el navegador»). Después añádela a la pantalla de inicio para que se guarde tu progreso.</p>
+  <button class="btn ghost wide" id="oHere">Seguir aquí</button></div>`;
+ $('#oCopy').onclick=async()=>{try{await navigator.clipboard.writeText(code);$('#oFb').textContent='✅ ¡Copiado! Ahora abre la app y pégalo en «Tengo un código».'}catch(e){$('#oFb').textContent='Mantén pulsado el código para copiarlo.'}};
+ $('#oHere').onclick=()=>{try{sessionStorage.setItem('gm-here','1')}catch(e){}if(!st.name)return nameScreen();if(!st.artist)return artistEditor(true);if(!openPending())home()};
+}
+function boot(){readHash();const linked=pendingGroup||pending||pendingRes;let here=false;try{here=sessionStorage.getItem('gm-here')==='1'}catch(e){}
+ if(linked&&!isApp()&&!here)return openInApp();
+ if(!st.name)return nameScreen();if(!openPending())home()}
 window.addEventListener('hashchange',()=>{readHash();if(st.name){cleanup();openPending()}});
 boot();initCloud();
 </script>
