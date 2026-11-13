@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gimnasio Mental</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<meta name="theme-color" content="#7c4dff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Gimnasio Mental">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2a2140;--muted:#6f6787;--card:#fff;--line:#ebe4fb;--pri:#7c4dff;--pri2:#ff6b8b;--ok:#1f9d55;--bad:#e5484d;--warn:#e69500}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:Nunito,system-ui,sans-serif;background:linear-gradient(160deg,#f3edff 0%,#fff0f4 55%,#eaf8ff 100%);color:var(--ink);min-height:100vh}
+.app{max-width:560px;margin:0 auto;padding:18px 16px 48px}
+h1,h2,h3,.f{font-family:Fredoka,Nunito,sans-serif;margin:0}
+button{font-family:inherit;cursor:pointer;border:none}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.hello{font-size:15px;color:var(--muted);font-weight:700}
+.hello b{display:block;font-family:Fredoka;font-size:26px;color:var(--ink);font-weight:600}
+.iconbtn{background:#fff;border:1px solid var(--line);width:42px;height:42px;border-radius:14px;font-size:20px;display:grid;place-items:center}
+.hero{background:linear-gradient(135deg,#7c4dff,#b25cff 55%,#ff6b8b);color:#fff;border-radius:24px;padding:18px;display:flex;gap:16px;align-items:center;box-shadow:0 10px 30px -12px #7c4dff99}
+.brain{font-size:54px;line-height:1;filter:drop-shadow(0 4px 8px #0003)}
+.hero .rank{font-family:Fredoka;font-size:22px;font-weight:600}
+.hero small{opacity:.9;font-weight:700}
+.xpbar{height:10px;background:#ffffff40;border-radius:9px;margin-top:8px;overflow:hidden}
+.xpbar i{display:block;height:100%;background:#fff;border-radius:9px;transition:width .6s}
+.pills{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.pill{background:#ffffff2e;border-radius:99px;padding:4px 10px;font-size:13px;font-weight:800}
+.section{margin:22px 0 10px;font-family:Fredoka;font-size:18px;font-weight:600}
+.areas{background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px 16px;display:grid;gap:9px}
+.area{display:grid;grid-template-columns:130px 1fr 34px;align-items:center;gap:10px;font-size:14px;font-weight:700}
+.area .bar{height:10px;background:#f1ecfb;border-radius:9px;overflow:hidden}
+.area .bar i{display:block;height:100%;border-radius:9px}
+.area span:last-child{color:var(--muted);text-align:right;font-size:13px}
+.cards{display:grid;gap:12px}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px;display:flex;gap:14px;align-items:center;text-align:left;width:100%;transition:transform .12s,box-shadow .12s;position:relative}
+.card:active{transform:scale(.98)}
+.card:hover{box-shadow:0 8px 22px -14px #7c4dff88}
+.card .ic{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-size:30px;flex:none}
+.card h3{font-size:18px;font-weight:600}
+.card p{margin:3px 0 0;font-size:13.5px;color:var(--muted);line-height:1.35}
+.card .lv{margin-left:auto;flex:none;font-weight:800;font-size:12px;background:#f3eeff;color:var(--pri);padding:5px 9px;border-radius:99px}
+.card.daily{border:2px solid #ffb84d;background:linear-gradient(#fff,#fff8ec)}
+.badge{position:absolute;top:-10px;left:14px;background:#ffb84d;color:#4a2b00;font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:99px}
+.family{margin-top:22px;font-size:13.5px;color:var(--muted);background:#ffffffaa;border:1px dashed #d8ccf5;border-radius:16px;padding:12px 14px;line-height:1.45}
+.family summary{cursor:pointer;font-weight:800;color:var(--ink)}
+
+/* game */
+.ghead{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.ghead h2{font-size:20px;font-weight:600;flex:1}
+.score{font-family:Fredoka;font-weight:600;background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 12px;font-size:16px}
+.timer{height:10px;background:#fff;border:1px solid var(--line);border-radius:9px;overflow:hidden;margin-bottom:14px}
+.timer i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#ffb84d,#ff6b8b);transition:width .1s linear}
+.panel{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px}
+.info{text-align:center;font-weight:800;color:var(--muted);min-height:24px;margin-bottom:12px}
+.intro{text-align:center}
+.intro .big{font-size:60px}
+.intro p{color:var(--muted);line-height:1.5;font-size:15.5px}
+.btn{background:var(--pri);color:#fff;font-weight:800;font-size:17px;padding:14px 22px;border-radius:16px;box-shadow:0 6px 0 #5a2fd6;transition:transform .08s}
+.btn:active{transform:translateY(3px);box-shadow:0 3px 0 #5a2fd6}
+.btn.ghost{background:#fff;color:var(--pri);border:2px solid var(--pri);box-shadow:none}
+.btn.wide{width:100%}
+/* memory */
+.grid{display:grid;gap:10px;max-width:340px;margin:0 auto}
+.cell{aspect-ratio:1;border-radius:16px;background:#f1ecfb;border:2px solid #e3d9fa;transition:background .12s,transform .12s}
+.cell.on{background:#8b5cf6;border-color:#6d3fe0;transform:scale(1.05)}
+.cell.hit{background:#5fd497;border-color:#2fb36f}
+.cell.miss{background:#ff8a8d;border-color:var(--bad)}
+.cell.hint{background:#ffd27a;border-color:#e69500}
+.lives{text-align:center;margin-top:14px;font-size:22px;letter-spacing:4px}
+/* calc */
+.problem{font-family:Fredoka;font-size:44px;text-align:center;font-weight:600;margin:6px 0}
+.answer{font-family:Fredoka;font-size:36px;text-align:center;min-height:56px;border-radius:14px;background:#f7f4ff;margin:8px auto 14px;max-width:240px;padding:6px;transition:background .2s}
+.answer.ok{background:#d6f5e3}.answer.no{background:#ffe1e2}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;max-width:330px;margin:0 auto}
+.key{background:#f3eeff;font-family:Fredoka;font-size:26px;font-weight:600;padding:14px 0;border-radius:14px;color:var(--ink)}
+.key:active{background:#e4daff}
+.key.ok{grid-column:span 3;background:var(--pri);color:#fff;font-size:22px}
+/* stroop */
+.rule{text-align:center;font-weight:800;padding:9px 12px;border-radius:12px;background:#f3eeff;margin-bottom:10px}
+.rule.alt{background:#fff1d6;color:#8a5200}
+.word{font-family:Fredoka;font-size:58px;font-weight:700;text-align:center;margin:18px 0 22px;letter-spacing:1px}
+.colors{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.colors button{padding:16px 0;border-radius:14px;color:#fff;font-weight:800;font-size:17px;text-shadow:0 1px 2px #0005}
+.fb{text-align:center;font-weight:800;min-height:24px;margin-top:10px}
+/* series */
+.seq{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:8px 0 18px}
+.seq span{font-family:Fredoka;font-weight:600;font-size:24px;background:#eef8ff;border:2px solid #cfeaff;border-radius:12px;padding:8px 12px;min-width:52px;text-align:center}
+.seq span.q{background:#fff6e0;border-color:#ffd27a}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{background:#f7f4ff;border:2px solid #e8e0fb;border-radius:14px;padding:14px 10px;font-weight:800;font-size:20px;color:var(--ink);font-family:Fredoka}
+.opt.good{background:#d6f5e3;border-color:#2fb36f}
+.opt.badc{background:#ffe1e2;border-color:var(--bad)}
+.explain{margin-top:14px;padding:12px 14px;border-radius:14px;background:#f0faff;border:1px solid #cfeaff;line-height:1.45;font-size:15px}
+/* vida */
+.mtag{font-size:12.5px;font-weight:800;color:#0f8a63;background:#dcf7ec;display:inline-block;padding:4px 10px;border-radius:99px}
+.mtitle{font-size:22px;margin:10px 0 6px;font-weight:600}
+.situ{line-height:1.5;font-size:16px;margin:0 0 6px}
+.mq{font-weight:800;margin:12px 0}
+.vopts{display:grid;gap:9px}
+.vopt{text-align:left;background:#f7f4ff;border:2px solid #e8e0fb;border-radius:14px;padding:12px 14px;font-size:15px;line-height:1.4;color:var(--ink);font-weight:600}
+.vopt.p3{background:#d6f5e3;border-color:#2fb36f}
+.vopt.p1{background:#fff4dc;border-color:#f0b43c}
+.vopt.p0{background:#ffe1e2;border-color:var(--bad)}
+.vopt:disabled{cursor:default}
+.vfb{margin-top:14px;padding:13px 14px;border-radius:14px;background:#f7f4ff;line-height:1.45;font-size:15px}
+.tool{margin-top:10px;padding:12px 14px;border-radius:14px;background:#fff8e6;border:1px solid #ffe0a3;font-size:15px;line-height:1.45}
+/* result */
+.result{text-align:center}
+.result .big{font-size:70px;margin-top:6px}
+.result h2{font-size:28px;margin:6px 0}
+.stats{display:grid;gap:8px;margin:16px 0;text-align:left}
+.stats div{background:#f7f4ff;border-radius:12px;padding:10px 14px;font-weight:700}
+.lvchange{font-family:Fredoka;font-size:19px;font-weight:600;padding:12px;border-radius:14px;margin:10px 0}
+.up{background:#d6f5e3;color:#11673a}.same{background:#f3eeff;color:#5a2fd6}.down{background:#fff1d6;color:#8a5200}
+.row{display:flex;gap:10px;margin-top:16px}.row .btn{flex:1}
+/* modal */
+.modal{position:fixed;inset:0;background:#2a214066;display:grid;place-items:center;padding:20px;z-index:10}
+.modal .panel{max-width:400px;width:100%}
+input[type=text]{width:100%;font-family:Fredoka;font-size:22px;padding:12px 14px;border-radius:14px;border:2px solid var(--line);outline:none;margin:14px 0}
+input[type=text]:focus{border-color:var(--pri)}
+/* amig@s */
+.lead{color:var(--muted);line-height:1.5;font-size:15px;margin:0 0 6px}
+.lab{font-weight:800;margin:16px 0 8px;font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:#f3eeff;border:2px solid transparent;border-radius:99px;padding:8px 13px;font-weight:800;font-size:14px;color:var(--ink)}
+.chip.sel{background:#fff;border-color:var(--pri);color:var(--pri)}
+.prow{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.prow input[type=text]{margin:0;font-size:18px;padding:10px 12px;flex:1}
+.turn{background:#fff1d6;color:#6b3e00;border-radius:14px;padding:10px 12px;font-size:17px;margin-bottom:6px}
+.code{font-family:Fredoka;font-weight:600;font-size:22px;letter-spacing:1px;background:#f3eeff;border:2px dashed #c9b6ff;border-radius:14px;padding:12px;margin:10px 0;word-break:break-all;color:var(--pri)}
+.msg{width:100%;min-height:120px;border:1px solid var(--line);border-radius:14px;padding:10px 12px;font-family:inherit;font-size:14px;color:var(--ink);resize:none;background:#fbfaff}
+.row a.btn{display:flex;align-items:center;justify-content:center}
+.vs{display:flex;align-items:center;justify-content:center;gap:18px;margin:14px 0}
+.vs div{background:#f7f4ff;border-radius:16px;padding:10px 18px;min-width:110px}
+.vs small{display:block;color:var(--muted);font-weight:800}
+.vs b{font-family:Fredoka;font-size:32px}
+.vs span{font-family:Fredoka;font-weight:600;color:var(--muted)}
+.ranking{display:grid;gap:8px;margin-top:12px;text-align:left}
+.ranking div{display:flex;align-items:center;gap:12px;background:#f7f4ff;border-radius:14px;padding:10px 14px}
+.ranking span{font-size:24px;width:34px;text-align:center;font-weight:800}
+.ranking b{flex:1;font-size:17px}
+.ranking em{font-style:normal;font-weight:800;color:var(--muted)}
+.ranking small{font-weight:800;color:var(--ok);background:#d6f5e3;border-radius:99px;padding:2px 8px}
+.tbl{width:100%;border-collapse:collapse;margin-top:10px;font-size:14.5px}
+.tbl th{font-size:12px;color:var(--muted);text-align:center;padding:6px 4px}
+.tbl td{text-align:center;padding:9px 4px;border-top:1px solid var(--line)}
+.tbl td:nth-child(2),.tbl th:nth-child(2){text-align:left}
+.tbl tr.meRow td{background:#f3eeff}
+.hist{display:grid;gap:8px}
+.hist>div{display:flex;align-items:center;gap:10px;background:#f7f4ff;border-radius:14px;padding:9px 12px}
+.hist>div>span{font-size:20px}
+.hist>div>div{flex:1}
+.hist small{display:block;color:var(--muted);font-size:12.5px;font-weight:700}
+.hist em{font-style:normal;font-family:Fredoka;font-weight:600;font-size:17px}
+.status{font-size:13.5px;line-height:1.45;background:#f7f4ff;border-radius:12px;padding:10px 12px;color:var(--muted);font-weight:700}
+.warn{display:block;width:100%;text-align:left;margin-top:14px;background:#fff1d6;color:#7a4500;border:1px solid #ffd27a;border-radius:16px;padding:12px 14px;font-weight:800;font-size:14px;line-height:1.4}
+/* música */
+.hero2{background:#fff;border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:0 12px 30px -16px #7c4dff88}
+.stagewrap{position:relative;line-height:0}
+.stage{width:100%;height:auto;display:block;aspect-ratio:340/210}
+.where{position:absolute;left:10px;top:10px;line-height:1.2;background:#000a;color:#fff;font-weight:800;font-size:12.5px;padding:4px 10px;border-radius:99px}
+.hinfo{padding:12px 16px 16px;background:linear-gradient(180deg,#fff, #faf7ff)}
+.sname{font-family:Fredoka;font-weight:700;font-size:26px;line-height:1.1}
+.hinfo>small{color:var(--muted);font-weight:700}
+.hinfo .xpbar{background:#efe9fb;margin:10px 0 4px}
+.hinfo .xpbar i{background:linear-gradient(90deg,var(--gc),#ffb84d)}
+.hinfo .pill{background:#f3eeff;color:var(--ink)}
+.hbtns{display:flex;gap:8px;margin-top:12px}
+.hbtns button{flex:1;background:#fff;border:2px solid var(--line);border-radius:14px;padding:10px 6px;font-weight:800;font-size:14px;color:var(--ink)}
+.band{display:grid;grid-template-columns:44px 1fr 40px;gap:12px;align-items:center}
+.band .bi{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:24px}
+.band .bt b{font-size:15px}.band .bt small{color:var(--muted);font-weight:700;font-size:12.5px}
+.band .bar{height:9px;background:#f1ecfb;border-radius:9px;overflow:hidden;margin:4px 0 2px}.band .bar i{display:block;height:100%;border-radius:9px}
+.blv{color:var(--muted);font-weight:800;font-size:13px;text-align:right}
+.prev{position:sticky;top:6px;z-index:3;width:150px;margin:4px auto 0;background:radial-gradient(circle at 50% 40%,#f3eeff,#fff 72%);border-radius:50%;box-shadow:0 8px 24px -10px #7c4dff66;border:3px solid #fff}
+.prev svg{width:100%;height:auto;display:block}
+.sw{display:flex;flex-wrap:wrap;gap:9px}
+.sw button{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px #ddd5ef;font-size:14px;padding:0}
+.sw button.sel{box-shadow:0 0 0 3px var(--pri)}
+.sw button.lock,.chip.lock{opacity:.55}
+.discos{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:10px}
+.disco{background:#f5f3f9;border-radius:16px;padding:12px;text-align:center;filter:grayscale(1);opacity:.6}
+.disco.got{filter:none;opacity:1;background:linear-gradient(160deg,#fff7d6,#ffe9f3)}
+.disco .dv{font-size:36px}.disco b{display:block;font-size:14px;margin-top:4px}.disco small{display:block;color:var(--muted);font-size:12px;line-height:1.3;margin-top:3px}.disco em{display:block;font-style:normal;font-size:11.5px;font-weight:800;color:#b07a00;margin-top:4px}
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
+.confetti i{position:absolute;top:-14px;height:12px;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(760deg)}}
+.toast{position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:60;background:#2a2140;color:#fff;padding:12px 16px;border-radius:16px;font-size:14.5px;line-height:1.4;box-shadow:0 10px 30px #0004;max-width:92vw;animation:tin .35s ease}
+.toast small{opacity:.85}
+.toast.out{opacity:0;transition:opacity .35s}
+@keyframes tin{from{transform:translate(-50%,-20px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
+.qtag{display:inline-block;font-size:12.5px;font-weight:800;color:#4338ca;background:#e8e9ff;padding:4px 10px;border-radius:99px}
+.qtext{font-family:Fredoka;font-weight:600;font-size:21px;line-height:1.3;margin:10px 0 14px}
+.chest{font-size:80px;animation:wobble .5s ease-in-out infinite}
+.chestOpen{font-size:80px;animation:pop .4s ease}
+@keyframes wobble{0%,100%{transform:rotate(0)}25%{transform:rotate(-12deg) scale(1.05)}75%{transform:rotate(12deg) scale(1.05)}}
+.chestpill{border:none;background:#ffb020 !important;color:#3b2500 !important;font-family:inherit;cursor:pointer;animation:wobble 1.2s ease-in-out infinite}
+.pop{animation:pop .35s ease}
+@keyframes pop{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}
+.shake{animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@media(max-width:420px){.area{grid-template-columns:110px 1fr 30px}.word{font-size:46px}.problem{font-size:38px}}
+</style>
+</head>
+<body>
+<div class="app" id="view"></div>
+<div id="modalRoot"></div>
+<script>
+const $=s=>document.querySelector(s);
+const view=$('#view');
+// Azar con semilla: así una amiga puede jugar exactamente la misma partida
+let rnd=Math.random;
+const seeded=a=>()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+const r=(a,b)=>a+Math.floor(rnd()*(b-a+1));
+const pick=a=>a[Math.floor(rnd()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const newSeed=()=>1+Math.floor(Math.random()*2147483000);
+const APP_URL=/github\.io$/.test(location.hostname)?location.origin+location.pathname.replace(/index\.html$/,''):'https://claude.ai/artifact/K4jx1qV4b2Tb9bttzFFZMA';
+const CODES={mem:'M',calc:'C',stroop:'T',series:'S',vida:'V',trivia:'Q',musica:'X'};
+const DIFF=[['Fácil',2],['Medio',5],['Difícil',8]];
+let ctx={mode:'solo',lv:1,seed:1};
+let pending=null; // reto recibido por enlace
+function launch(k,o={}){
+ cleanup();curView='game';$('#modalRoot').innerHTML='';
+ const seed=o.seed||newSeed();
+ ctx=Object.assign({k,mode:'solo',lv:st.games[k].lv},o,{seed});
+ rnd=seeded(seed);PLAY[k]();
+}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const GAMES={
+ mem:{name:'Memoria flash',icon:'🧠',area:'Memoria',col:'#8b5cf6',bg:'#f1ebff',desc:'Mira las casillas que se iluminan y repite el orden.'},
+ calc:{name:'Cálculo veloz',icon:'⚡',area:'Agilidad mental',col:'#f59e0b',bg:'#fff4dc',desc:'Resuelve todas las operaciones que puedas en 60 segundos.'},
+ stroop:{name:'Colores trampa',icon:'🎨',area:'Atención',col:'#ec4899',bg:'#ffe6f1',desc:'Pulsa el color de la tinta, no lo que pone. ¡Tu cerebro intentará engañarte!'},
+ series:{name:'Series ocultas',icon:'🔎',area:'Lógica',col:'#0ea5e9',bg:'#e3f5ff',desc:'Descubre la regla secreta y encuentra el número que falta.'},
+ trivia:{name:'Trivial de clase',icon:'📚',area:'Cultura de clase',col:'#6366f1',bg:'#e8e9ff',desc:'Preguntas del temario de 2º de ESO: mates, ciencias, sociales, lenguas, inglés y tecnología.'},
+ musica:{name:'Trivial musical',icon:'🎵',area:'Cultura musical',col:'#ff4fa0',bg:'#ffe3f0',desc:'Cantantes, canciones, instrumentos y la música que das en clase.'},
+ vida:{name:'Misiones de vida',icon:'🧭',area:'Resolver problemas',col:'#10b981',bg:'#dcf7ec',desc:'Situaciones reales: ¿cuál es la mejor manera de resolverlas?'}
+};
+const RANKS=[[0,'Tu habitación','🛏️'],[150,'El garaje','🚪'],[400,'Café del barrio','☕'],[800,'Sala de conciertos','🎟️'],[1400,'Festival','🎪'],[2200,'Estadio','🏟️'],[3200,'Gira mundial','🌍'],[4500,'Leyenda','🌟']];
+
+/* ---------- estado ---------- */
+const KEY='gimnasio-mental-v1';
+function def(){return{name:'',xp:0,streak:0,lastDay:'',daily:null,vidaSeen:[],duels:[],league:{},games:Object.fromEntries(Object.keys(GAMES).map(k=>[k,{lv:1,best:0,plays:0}]))}}
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.games){const d=def();for(const k in d.games)if(!s.games[k])s.games[k]=d.games[k];return Object.assign(d,s)}}catch(e){}return def()}
+let localOK=false;try{localStorage.setItem(KEY+'-t','1');localOK=localStorage.getItem(KEY+'-t')==='1'}catch(e){}
+function norm(s){s.stats=Object.assign({plays:0,daily:0,records:0,perfect:0,group:0,early:0,sent:0},s.stats||{});if(!s.stats.plays)s.stats.plays=Object.values(s.games).reduce((a,g)=>a+(g.plays||0),0);s.discos=s.discos||{};if(s.sound===undefined)s.sound=true;return s}
+let st=norm(load());
+/* --- guardado: navegador + nube de la cuenta (si hay sesión iniciada en Claude) --- */
+let cloudRef=null,cloudBusy=false,cloudDirty=false,cloudTimer=null,curView='';
+function save(){
+ st.savedAt=Date.now();
+ try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}
+ if(cloudRef){clearTimeout(cloudTimer);cloudTimer=setTimeout(cloudPush,1200)}
+}
+async function cloudPush(){
+ if(!cloudRef)return;
+ if(cloudBusy){cloudDirty=true;return}
+ cloudBusy=true;
+ try{await cloudRef.set({st:JSON.parse(JSON.stringify(st))})}
+ catch(e){if(e&&(e.code==='invalid_argument'||e.code==='revoked'||e.code==='not_granted'))cloudRef=null}
+ cloudBusy=false;
+ if(cloudDirty){cloudDirty=false;cloudPush()}
+}
+function mergeState(remote,local){
+ const d=def(),m=Object.assign(d,remote);
+ for(const k in d.games)if(!m.games[k])m.games[k]=def().games[k];
+ // une los retos de los dos lados para no perder ninguno
+ const seen=new Set((m.duels||[]).map(x=>x.seed+'|'+x.rival.toLowerCase()));
+ (local.duels||[]).forEach(x=>{if(!seen.has(x.seed+'|'+x.rival.toLowerCase()))m.duels.push(x)});
+ m.duels.sort((a,b)=>a.date<b.date?1:-1);
+ return norm(m);
+}
+function refreshView(){
+ if(curView==='name'&&st.name){if(!openPending())home()}
+ else if(curView==='home')home();
+ else if(curView==='rank')myRanking();
+}
+async function initCloud(){
+ try{
+  const C=window.claude;if(!C||!C.use)return;
+  const [db,user]=await Promise.all([C.use('db'),C.use('user')]);
+  if(!db||!user)return;
+  const id=await user.id();if(!id)return;
+  const ref=db.doc('data/users/'+id+'/estado');
+  const snap=await Promise.race([ref.get(),new Promise((_,rej)=>setTimeout(()=>rej({code:'timeout'}),10000))]);
+  cloudRef=ref;
+  const remote=snap.exists&&snap.data()&&snap.data().st;
+  if(remote&&remote.games&&(remote.savedAt||0)>(st.savedAt||0)){
+   st=mergeState(remote,st);try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}
+   refreshView();
+  }else if(st.name){cloudPush()}
+  if(curView==='home')home();
+ }catch(e){cloudRef=null}
+}
+const storageStatus=()=>cloudRef?['☁️','Tu progreso se guarda en tu cuenta de Claude (en la nube).']:localOK?['💾','Tu progreso se guarda en este navegador. Si borras los datos del navegador o juegas desde otro sitio, se pierde: haz copias de seguridad.']:['⚠️','Este navegador no está guardando el progreso. Haz una copia de seguridad al terminar de jugar.'];
+const toCode=o=>'GM1:'+btoa(unescape(encodeURIComponent(JSON.stringify(o))));
+function fromCode(c){c=String(c).trim();if(!c.startsWith('GM1:'))return null;try{const o=JSON.parse(decodeURIComponent(escape(atob(c.slice(4)))));return o&&o.games?o:null}catch(e){return null}}
+const dayStr=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const today=()=>dayStr(new Date());
+const yesterday=()=>{const d=new Date();d.setDate(d.getDate()-1);return dayStr(d)};
+function rankOf(xp){let i=0;RANKS.forEach((x,j)=>{if(xp>=x[0])i=j});return i}
+function daily(){
+ if(!st.daily||st.daily.day!==today()){
+  const ks=Object.keys(GAMES).sort((a,b)=>st.games[a].lv-st.games[b].lv||st.games[a].plays-st.games[b].plays||Math.random()-.5);
+  st.daily={day:today(),game:ks[0],done:false};save();
+ }
+ return st.daily;
+}
+
+/* ---------- utilidades de partida ---------- */
+let timers=[],intv=null,keyH=null;
+const later=(f,ms)=>{const t=setTimeout(f,ms);timers.push(t);return t};
+function cleanup(){timers.forEach(clearTimeout);timers=[];if(intv)clearInterval(intv);intv=null;if(keyH)document.removeEventListener('keydown',keyH);keyH=null}
+function frame(k,timer){
+ const g=GAMES[k];
+ view.innerHTML=`<div class="ghead"><button class="iconbtn" id="exit" title="Salir">✕</button><h2>${g.icon} ${g.name} <span style="font-size:14px;color:var(--muted)">· ${ctx.mode==='group'?esc(ctx.player):ctx.mode==='solo'?'nivel '+ctx.lv:'⚔️ reto'}</span></h2><div class="score" id="score">0</div></div>${timer?'<div class="timer"><i id="tbar"></i></div>':''}<div class="panel pop" id="body"></div>`;
+ $('#exit').onclick=()=>{cleanup();home()};
+ return $('#body');
+}
+const setScore=v=>{const e=$('#score');if(e)e.textContent=v};
+function intro(k,extra,start){
+ const b=frame(k,false);const g=GAMES[k];
+ b.innerHTML=`<div class="intro">${ctx.banner?`<div class="turn">${ctx.banner}</div>`:''}<div class="big">${g.icon}</div><h2 class="f" style="margin-top:6px">${g.name}</h2><p>${g.desc}${extra?'<br><br>'+extra:''}</p><button class="btn" id="go">¡Empezar!</button></div>`;
+ $('#go').onclick=start;
+}
+function startTimer(sec,onEnd){
+ const t0=Date.now(),tot=sec*1000;
+ intv=setInterval(()=>{const left=tot-(Date.now()-t0);const b=$('#tbar');if(b)b.style.width=Math.max(0,left/tot*100)+'%';if(left<=0){clearInterval(intv);intv=null;onEnd()}},100);
+}
+
+/* ---------- final de partida ---------- */
+function addStreak(){if(st.lastDay!==today()){st.streak=st.lastDay===yesterday()?st.streak+1:1;st.lastDay=today()}}
+function finish(k,score,delta,lines,cheer,perfect){
+ cleanup();
+ const r0=rankOf(st.xp);
+ st.stats.plays++;if(new Date().getHours()<9&&new Date().getHours()>=5)st.stats.early++;
+ if(ctx.mode==='group'){save();return groupDone(score)}
+ if(perfect)st.stats.perfect++;
+ if(ctx.mode==='challenge')return challengeDone(k,score,cheer,r0);
+ if(ctx.mode==='send'){st.xp+=Math.max(5,Math.round(score/4));st.stats.sent++;addStreak();save();shareScreen(k,ctx.lv,ctx.seed,score);return celebrate(r0,false,false)}
+ const g=st.games[k],old=g.lv,oldRank=r0;
+ g.lv=Math.max(1,Math.min(10,g.lv+delta));g.plays++;
+ const record=score>g.best&&g.plays>1;if(score>g.best)g.best=score;if(record)st.stats.records++;
+ let xp=Math.max(5,Math.round(score/4));
+ const d=daily();let bonus=0;
+ if(d.game===k&&!d.done){bonus=Math.round(xp*.5)+10;d.done=true;st.stats.daily++}
+ st.xp+=xp+bonus;addStreak();
+ save();
+ const newRank=rankOf(st.xp);
+ const lvTxt=g.lv>old?`<div class="lvchange up">⬆️ ¡Subes al nivel ${g.lv}! Ahora será un poco más difícil.</div>`:g.lv<old?`<div class="lvchange down">Bajamos al nivel ${g.lv} para afianzar. ¡Así se aprende! 💪</div>`:`<div class="lvchange same">Sigues en el nivel ${g.lv}. ¡Un poco más y subes!</div>`;
+ const b=frame(k,false);setScore(score);
+ b.innerHTML=`<div class="result"><div class="big">${cheer[0]}</div><h2 class="f">${cheer[1]}</h2><div style="color:var(--muted);font-weight:700">${score} puntos${record?' · 🏆 ¡Nuevo récord!':''}</div>
+ ${lvTxt}
+ <div class="stats">${lines.map(l=>`<div>${l}</div>`).join('')}<div>🙌 +${xp} fans${bonus?` &nbsp;·&nbsp; 🎯 Reto del día: +${bonus} fans extra`:''}</div>${perfect?'<div style="background:#fff1d6">🎯 ¡Actuación perfecta, sin fallos!</div>':''}${newRank>oldRank?`<div style="background:#fff1d6">${RANKS[newRank][2]} ¡Nuevo escenario: <b>${RANKS[newRank][1]}</b>!</div>`:''}</div>
+ ${bonus&&st.chestDay!==today()?'<button class="btn wide" id="chestBtn" style="background:#ffb020;box-shadow:0 6px 0 #c77f00;margin-bottom:12px">🎁 ¡Abrir el cofre del día!</button>':''}
+ <button class="btn wide" id="dare" style="background:#ff6b8b;box-shadow:0 6px 0 #d84467;margin-top:6px">⚔️ Retar a alguien con esta partida</button>
+ <div class="row"><button class="btn ghost" id="home">Inicio</button><button class="btn" id="again">Otra vez</button></div></div>`;
+ const seed=ctx.seed,lv=ctx.lv;
+ $('#home').onclick=home;$('#again').onclick=()=>launch(k);if($('#chestBtn'))$('#chestBtn').onclick=openChest;$('#dare').onclick=()=>shareScreen(k,lv,seed,score);
+ celebrate(r0,g.lv>old,false);
+}
+const cheerFor=p=>p>=.8?['🤩','¡Increíble!']:p>=.55?['😎','¡Muy bien!']:p>=.3?['🙂','¡Buen entrenamiento!']:['💪','¡Cada intento cuenta!'];
+
+/* ================= 1. MEMORIA ================= */
+function playMem(){
+ const lv=ctx.lv,n=lv<=3?3:lv<=6?4:5,ROUNDS=6;
+ intro('mem',`Son ${ROUNDS} rondas y tienes 3 vidas. Cada vez que aciertes, la secuencia será una casilla más larga.`,()=>{
+  const S={len:3+Math.floor((lv-1)*.75),round:0,lives:3,succ:0,score:0,seq:[],idx:0,accept:false,maxLen:0};
+  const b=frame('mem',false);
+  b.innerHTML=`<div class="info" id="mi"></div><div class="grid" style="grid-template-columns:repeat(${n},1fr);max-width:${n===3?280:n===4?330:360}px">${'<button class="cell"></button>'.repeat(n*n)}</div><div class="lives" id="lv"></div>`;
+  const cells=[...b.querySelectorAll('.cell')];const info=t=>$('#mi').textContent=t;
+  const lives=()=>$('#lv').textContent='❤️'.repeat(S.lives)+'🤍'.repeat(3-S.lives);lives();
+  const sp=Math.max(330,720-lv*40);
+  function next(){
+   if(S.round>=ROUNDS||S.lives<=0)return done();
+   S.round++;info(`Ronda ${S.round}/${ROUNDS} · Mira bien… (${S.len} casillas)`);
+   S.seq=[];let prev=-1;for(let i=0;i<S.len;i++){let c;do c=r(0,n*n-1);while(c===prev);S.seq.push(c);prev=c}
+   S.idx=0;S.accept=false;let i=0;
+   const step=()=>{if(i>=S.seq.length){S.accept=true;info('¡Tu turno! Repite el orden 👆');return}
+    const c=cells[S.seq[i]];c.classList.add('on');later(()=>{c.classList.remove('on');i++;later(step,170)},sp)};
+   later(step,800);
+  }
+  const flash=(c,cl,ms=350)=>{c.classList.add(cl);later(()=>c.classList.remove(cl),ms)};
+  cells.forEach((c,ci)=>c.onclick=()=>{
+   if(!S.accept)return;
+   if(ci===S.seq[S.idx]){flash(c,'hit');S.idx++;
+    if(S.idx===S.seq.length){S.accept=false;S.succ++;S.score+=S.len*10;S.maxLen=Math.max(S.maxLen,S.len);setScore(S.score);S.len++;info('¡Perfecto! 🎉');later(next,1000)}}
+   else{S.accept=false;flash(c,'miss',600);flash(cells[S.seq[S.idx]],'hint',900);S.lives--;lives();info('Uy, era la amarilla. ¡A la próxima!');later(next,1500)}
+  });
+  next();
+  function done(){finish('mem',S.score,S.succ>=5?1:S.succ<=2?-1:0,[`✅ Rondas superadas: ${S.succ} de ${S.round}`,`🧠 Secuencia más larga: ${S.maxLen||'—'} casillas`],cheerFor(S.succ/ROUNDS),S.succ===ROUNDS)}
+ });
+}
+
+/* ================= 2. CÁLCULO ================= */
+function calcProblem(lv){
+ const ops=['+','-'];const max=10+lv*10;
+ if(lv>=2)ops.push('×','×');if(lv>=4)ops.push('÷');if(lv>=6)ops.push('%');if(lv>=7)ops.push('mix');
+ const op=pick(ops);let a,b,c;
+ switch(op){
+  case '+':a=r(1,max);b=r(1,max);return{q:`${a} + ${b}`,a:a+b};
+  case '-':a=r(1,max);b=r(1,max);if(lv<5&&b>a)[a,b]=[b,a];return{q:`${a} − ${b}`,a:a-b};
+  case '×':{const t=Math.min(12,4+lv);a=r(2,t);b=r(2,lv>=6?15:t);return{q:`${a} × ${b}`,a:a*b}}
+  case '÷':b=r(2,Math.min(12,3+lv));c=r(2,10+lv);return{q:`${b*c} ÷ ${b}`,a:c};
+  case '%':{const p=pick([10,20,25,50,75]),base=r(1,10)*20;return{q:`${p}% de ${base}`,a:base*p/100}}
+  case 'mix':a=r(2,20);b=r(2,9);c=r(2,9);return{q:`${a} + ${b} × ${c}`,a:a+b*c};
+ }
+}
+function playCalc(){
+ const lv=ctx.lv;
+ intro('calc',`Tienes 60 segundos. Escribe el resultado y pulsa OK (o Enter en el teclado).${lv>=7?' Recuerda: la multiplicación va antes que la suma.':''}`,()=>{
+  const S={ok:0,bad:0,score:0,p:null,inp:'',over:false};
+  const b=frame('calc',true);
+  b.innerHTML=`<div class="problem" id="cq"></div><div class="answer" id="ca"></div><div class="keypad">${[1,2,3,4,5,6,7,8,9,'±',0,'⌫'].map(k=>`<button class="key" data-k="${k}">${k}</button>`).join('')}<button class="key ok" data-k="OK">OK</button></div>`;
+  const newP=()=>{S.p=calcProblem(lv);S.inp='';$('#cq').textContent=S.p.q+' = ?';showA()};
+  const showA=()=>$('#ca').textContent=S.inp||' ';
+  const mark=(cl,txt)=>{const e=$('#ca');e.className='answer '+cl;if(txt)e.textContent=txt;later(()=>{e.className='answer'},350)};
+  function press(k){
+   if(S.over)return;
+   if(k==='⌫')S.inp=S.inp.slice(0,-1);
+   else if(k==='±')S.inp=S.inp.startsWith('-')?S.inp.slice(1):'-'+S.inp;
+   else if(k==='OK'){if(S.inp===''||S.inp==='-')return;
+    if(Number(S.inp)===S.p.a){S.ok++;S.score+=10;setScore(S.score);mark('ok');newP();return}
+    else{S.bad++;const sol=S.p.a;newP();mark('no','era '+sol);return}}
+   else if(S.inp.replace('-','').length<6)S.inp+=k;
+   showA();
+  }
+  b.querySelectorAll('.key').forEach(x=>x.onclick=()=>press(x.dataset.k));
+  keyH=e=>{if(/^[0-9]$/.test(e.key))press(Number(e.key));else if(e.key==='Backspace')press('⌫');else if(e.key==='Enter')press('OK');else if(e.key==='-')press('±')};
+  document.addEventListener('keydown',keyH);
+  newP();
+  startTimer(60,()=>{S.over=true;const acc=S.ok/Math.max(1,S.ok+S.bad);
+   finish('calc',S.score,(S.ok>=14&&acc>=.8)?1:S.ok<=5?-1:0,[`✅ Correctas: ${S.ok}`,`❌ Fallos: ${S.bad}`,`🎯 Precisión: ${Math.round(acc*100)}%`],cheerFor(Math.min(1,S.ok/16)),S.ok>=15&&S.bad===0)});
+ });
+}
+
+/* ================= 3. COLORES TRAMPA ================= */
+function playStroop(){
+ const lv=ctx.lv;
+ let C=[{n:'ROJO',c:'#e53935'},{n:'AZUL',c:'#1e63e9'},{n:'VERDE',c:'#22994a'},{n:'AMARILLO',c:'#e0a400'}];
+ if(lv>=6)C.push({n:'MORADO',c:'#8e3bd6'});
+ const swap=lv>=4;
+ intro('stroop',`Tienes 45 segundos. Fíjate en el <b>color de la tinta</b>.${swap?'<br>⚠️ <b>A veces cambiará la regla</b> y tendrás que pulsar lo que PONE la palabra. ¡Lee bien la instrucción!':''}`,()=>{
+  const S={ok:0,bad:0,score:0,t:null,lock:false};
+  const b=frame('stroop',true);
+  b.innerHTML=`<div class="rule" id="sr"></div><div class="word" id="sw"></div><div class="colors" id="sc"></div><div class="fb" id="sf"></div>`;
+  let order=C.slice();
+  const drawBtns=()=>{$('#sc').innerHTML=order.map(x=>`<button style="background:${x.c}" data-n="${x.n}">${x.n}</button>`).join('');
+   $('#sc').querySelectorAll('button').forEach(bt=>bt.onclick=()=>answer(bt.dataset.n))};
+  function trial(){
+   if(lv>=7){order=shuffle(C);drawBtns()}
+   const w=pick(C);let ink=w;const cong=lv<3?.3:.15;
+   if(rnd()>cong){do ink=pick(C);while(ink===w)}
+   const mode=swap&&rnd()<.3?'word':'ink';
+   S.t={ans:mode==='ink'?ink.n:w.n};
+   const rl=$('#sr');rl.className='rule'+(mode==='word'?' alt':'');rl.textContent=mode==='ink'?'Pulsa el COLOR de la tinta':'¡Ojo! Pulsa lo que PONE la palabra';
+   const sw=$('#sw');sw.textContent=w.n;sw.style.color=ink.c;sw.classList.remove('pop');void sw.offsetWidth;sw.classList.add('pop');
+  }
+  function answer(n){if(S.lock||!S.t)return;
+   const f=$('#sf');
+   if(n===S.t.ans){S.ok++;S.score+=10;f.textContent='✅';f.style.color='var(--ok)'}
+   else{S.bad++;S.score=Math.max(0,S.score-5);f.textContent='❌ Era '+S.t.ans;f.style.color='var(--bad)';$('#sw').classList.add('shake')}
+   setScore(S.score);trial();
+  }
+  drawBtns();trial();
+  startTimer(45,()=>{S.lock=true;const acc=S.ok/Math.max(1,S.ok+S.bad);
+   finish('stroop',S.score,(S.ok>=22&&acc>=.85)?1:(acc<.6||S.ok<8)?-1:0,[`✅ Aciertos: ${S.ok}`,`❌ Fallos: ${S.bad}`,`🎯 Precisión: ${Math.round(acc*100)}%`,'💡 Este juego entrena el control de impulsos: frenar la primera respuesta automática y pensar.'],cheerFor(Math.min(1,S.ok/24)*acc),S.ok>=15&&S.bad===0)});
+ });
+}
+
+/* ================= 4. SERIES ================= */
+const mk=(fn,rule,n=5)=>({seq:Array.from({length:n},(_,i)=>fn(i)),ans:fn(n),rule});
+const SERIES=[
+ {min:1,f(){const a=r(1,12),d=r(2,6);return mk(i=>a+d*i,`Cada número suma <b>${d}</b> al anterior.`)}},
+ {min:1,f(){const a=r(40,90),d=r(3,8);return mk(i=>a-d*i,`Cada número resta <b>${d}</b> al anterior.`)}},
+ {min:2,f(){const a=r(1,4),k=pick([2,3]);return mk(i=>a*k**i,`Cada número se <b>multiplica por ${k}</b>.`)}},
+ {min:3,f(){const a=r(1,10),d=r(1,3);return mk(i=>a+i*d+i*(i-1)/2,`Las diferencias van creciendo: +${d}, +${d+1}, +${d+2}… <b>cada salto es uno más grande</b>.`)}},
+ {min:3,f(){const a=r(5,20),x=r(3,8),y=r(1,x-1);const fn=i=>a+Math.ceil(i/2)*x-Math.floor(i/2)*y;return mk(fn,`Se alterna: <b>+${x}</b> y luego <b>−${y}</b>.`,6)}},
+ {min:4,f(){const s=r(1,4);return mk(i=>(s+i)**2,`Son <b>números al cuadrado</b>: ${s}×${s}, ${s+1}×${s+1}, ${s+2}×${s+2}…`)}},
+ {min:4,f(){const a=r(1,3),b=r(2,5);const s=[a,b];for(let i=2;i<7;i++)s.push(s[i-1]+s[i-2]);return{seq:s.slice(0,6),ans:s[6],rule:'Cada número es <b>la suma de los dos anteriores</b> (como la serie de Fibonacci).'}}},
+ {min:5,f(){const a=r(1,9),d1=r(2,5),b=r(20,40),d2=r(2,5);const fn=i=>i%2===0?a+d1*(i/2):b-d2*((i-1)/2);return mk(fn,`Hay <b>dos series mezcladas</b>: en las posiciones impares se suma ${d1} y en las pares se resta ${d2}.`,7)}},
+ {min:6,f(){const a=r(1,4);return mk(i=>{let v=a;for(let j=0;j<i;j++)v=v*2+1;return v},'Cada número se <b>multiplica por 2 y se le suma 1</b>.')}},
+ {min:7,f(){const s=r(1,4);return mk(i=>(s+i)**2+1,'Son <b>cuadrados más 1</b>: n×n + 1.')}},
+ {min:7,f(){const a=r(2,5);return mk(i=>{let v=a;for(let j=0;j<i;j++)v=j%2===0?v*2:v+3;return v},'Se alterna: <b>×2</b> y luego <b>+3</b>.',6)}},
+];
+function playSeries(){
+ const lv=ctx.lv,N=8;
+ intro('series',`Son ${N} retos. Busca la regla que siguen los números. Después de cada uno verás la explicación: <b>¡lo importante es entender la regla!</b>`,()=>{
+  const S={q:0,ok:0,score:0,t0:0};
+  const b=frame('series',false);
+  const pool=SERIES.filter(s=>s.min<=lv);
+  function q(){
+   if(S.q>=N)return done();S.q++;
+   const easy=pool.filter(s=>s.min<=Math.max(1,lv-2)),hard=pool.filter(s=>s.min>Math.max(1,lv-2));
+   const p=(hard.length&&rnd()<.6?pick(hard):pick(easy.length?easy:pool)).f();
+   const last=p.seq[p.seq.length-1],prev=p.seq[p.seq.length-2];
+   const cand=new Set();cand.add(last+(last-prev));
+   shuffle([1,-1,2,-2,3,-3,4,5,-5,10,-10]).forEach(o=>cand.add(p.ans+o));
+   const ds=[...cand].filter(v=>v!==p.ans&&v>=0).slice(0,3);
+   const opts=shuffle([p.ans,...ds]);
+   b.innerHTML=`<div class="info">Reto ${S.q} de ${N}</div><div class="seq">${p.seq.map(v=>`<span>${v}</span>`).join('')}<span class="q">?</span></div><div class="opts">${opts.map(v=>`<button class="opt" data-v="${v}">${v}</button>`).join('')}</div><div id="ex"></div>`;
+   b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');
+   S.t0=Date.now();
+   b.querySelectorAll('.opt').forEach(o=>o.onclick=()=>{
+    b.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(+x.dataset.v===p.ans)x.classList.add('good')});
+    const good=+o.dataset.v===p.ans;
+    if(good){S.ok++;const fast=Date.now()-S.t0<8000;S.score+=10+(fast?5:0);setScore(S.score)}else o.classList.add('badc');
+    b.querySelector('.q').textContent=p.ans;
+    $('#ex').innerHTML=`<div class="explain">${good?'✅ ¡Correcto!':'❌ Esta vez no.'} ${p.rule}</div><button class="btn wide" style="margin-top:14px" id="nx">${S.q>=N?'Ver resultado':'Siguiente →'}</button>`;
+    $('#nx').onclick=q;
+   });
+  }
+  q();
+  function done(){finish('series',S.score,S.ok>=7?1:S.ok<=3?-1:0,[`✅ Aciertos: ${S.ok} de ${N}`,'⚡ Si respondes en menos de 8 segundos ganas puntos extra.'],cheerFor(S.ok/N),S.ok===N)}
+ });
+}
+
+/* ================= 5. MISIONES DE VIDA ================= */
+const MISSIONS=[
+ {id:1,tier:1,t:'La merienda',s:'Vas a organizar una merienda para 6 amigas y tienes 30 €.',q:'¿Cómo empiezas?',tip:'Divide y planifica: primero lo imprescindible, después los extras.',o:[
+  ['Hago una lista de lo que necesitamos, calculo que tengo 5 € por persona y después veo qué extras caben.',3,'¡Eso es planificar! Primero lo imprescindible, luego los caprichos. Dividir el presupuesto te da una referencia rápida.'],
+  ['Voy al súper, compro lo que me apetezca y ya veré si me llega.',0,'Sin plan es muy fácil quedarte sin dinero antes de tener lo básico (bebida, algo salado…).'],
+  ['Pido a cada amiga que traiga algo, sin decir qué.',1,'Repartir es buena idea, ¡pero sin coordinaros podéis acabar con 6 bolsas de patatas y nada para beber!'],
+  ['Me lo gasto todo en una tarta enorme.',0,'Una tarta mola, pero si te gastas todo en una sola cosa, no cubres el resto.']]},
+ {id:2,tier:1,t:'Examen en una semana',s:'El viernes que viene tienes examen de mates y entran 4 temas.',q:'¿Qué haces?',tip:'Pasos pequeños repartidos ganan a un gran esfuerzo de golpe.',o:[
+  ['Lo estudio todo el jueves por la tarde, así lo tengo fresco.',0,'Estudiar todo de golpe cansa mucho y se olvida rápido. El cerebro aprende mejor en sesiones cortas y repartidas.'],
+  ['Hago un plan: un tema por día y los dos últimos días hago ejercicios de todo.',3,'¡Genial! Repartir y practicar con ejercicios (no solo leer) es lo que mejor funciona.'],
+  ['Leo los apuntes varias veces hasta que me suenen.',1,'Que algo «te suene» no significa que sepas hacerlo. En mates hay que practicar haciendo problemas.'],
+  ['Le pregunto a una amiga qué va a estudiar ella y hago lo mismo.',1,'Pedir ideas está bien, pero tu plan tiene que basarse en lo que TÚ necesitas repasar.']]},
+ {id:3,tier:1,t:'El mensaje viral',s:'En el grupo de clase llega un mensaje: «¡Mañana no hay clase por alerta de lluvia! Pásalo».',q:'¿Qué haces?',tip:'Antes de creer o compartir algo: ¿quién lo dice? ¿Dónde puedo comprobarlo?',o:[
+  ['Lo reenvío rápido a todo el mundo.',0,'Si es falso, habrás ayudado a extender un bulo, y alguien podría faltar a clase por tu culpa.'],
+  ['Miro la web del instituto o de las autoridades, o pregunto al tutor o en casa.',3,'¡Bien! Ir a la fuente oficial es la forma más rápida de saber si es verdad.'],
+  ['Me lo creo: si lo dice tanta gente, será verdad.',0,'Que mucha gente lo comparta no lo hace verdad. Los bulos se extienden justo así.'],
+  ['Espero a ver qué hacen los demás.',1,'Es mejor que reenviarlo, pero puedes averiguarlo tú misma en un minuto.']]},
+ {id:4,tier:1,t:'Una amiga molesta',s:'Una amiga está seria contigo porque organizaste un plan y no la avisaste.',q:'¿Cómo lo afrontas?',tip:'Escucha para entender, no solo para responder.',o:[
+  ['Hago como si nada, ya se le pasará.',0,'Ignorarlo suele empeorar las cosas: ella se siente todavía más apartada.'],
+  ['Le pregunto cómo se siente, la escucho y le explico qué pasó, sin echarle la culpa.',3,'¡Muy bien! Escuchar primero hace que la otra persona se sienta comprendida, y así es mucho más fácil arreglarlo.'],
+  ['Le digo que exagera, que no es para tanto.',0,'Aunque a ti no te lo parezca, para ella sí es importante. Decirle que exagera suele cortar la conversación.'],
+  ['Le pido perdón por mensaje y ya está.',1,'Pedir perdón está bien. Hablarlo en persona y escucharla lo hace todavía mejor.']]},
+ {id:5,tier:2,t:'Aprender guitarra',s:'Quieres aprender a tocar la guitarra, pero no tienes profesor.',q:'¿Cuál es el mejor plan?',tip:'Para aprender algo nuevo: busca recursos, divide la meta en pasos y practica un poco cada día.',o:[
+  ['Busco vídeos para principiantes y una app de afinador, y practico 15 minutos al día con metas pequeñas (primero 3 acordes).',3,'¡Así se consigue! Buscar recursos y dividir la meta en pasos pequeños es la clave para aprender cualquier cosa por tu cuenta.'],
+  ['Intento tocar directamente mi canción favorita, aunque es muy difícil.',1,'La motivación es buena, pero si empiezas por lo más difícil es fácil frustrarte y abandonar.'],
+  ['Espero a tener más tiempo libre para empezar.',0,'El «momento perfecto» casi nunca llega. 15 minutos al día valen más que 3 horas un día al mes.'],
+  ['Me compro la guitarra más cara para motivarme.',0,'El material no te enseña solo. Lo que te hace avanzar es practicar con un plan.']]},
+ {id:6,tier:2,t:'El estudio del chocolate',s:'Ves un post: «Un estudio demuestra que comer chocolate hace sacar mejores notas».',q:'¿Qué piensas?',tip:'Correlación no es causa: que dos cosas coincidan no significa que una provoque la otra.',o:[
+  ['¡Genial! Lo comparto y me compro chocolate antes del examen.',0,'Antes de creértelo, conviene saber de dónde sale. Y aunque fuera verdad, el chocolate no sustituye a estudiar.'],
+  ['Busco quién hizo el estudio, con cuántas personas y si lo publica un medio fiable. Y me pregunto: ¿una cosa causa la otra o solo coinciden?',3,'¡Pensamiento crítico de nivel! Que dos cosas pasen a la vez (correlación) no significa que una cause la otra.'],
+  ['Si pone «estudio», será verdad.',0,'La palabra «estudio» no garantiza nada: hay estudios muy pequeños, mal hechos o mal contados.'],
+  ['No me lo creo: todo lo de internet es mentira.',1,'Desconfiar está bien, pero rechazarlo todo tampoco es pensar. Lo mejor es comprobar.']]},
+ {id:7,tier:2,t:'Trabajo en grupo',s:'En un trabajo en grupo, un compañero no hace su parte y quedan 4 días para la entrega.',q:'¿Qué haces?',tip:'Convierte el problema en acciones concretas: quién hace qué y para cuándo.',o:[
+  ['Hago yo su parte sin decir nada.',1,'Salvas el trabajo, pero acabas agotada y él no aprende a responsabilizarse.'],
+  ['Hablo con él, repartimos tareas concretas con fecha y, si no cumple, lo comentamos con el profe.',3,'¡Perfecto! Tareas concretas + fechas + un plan B. Así se resuelven los problemas en equipo.'],
+  ['Me quejo de él en el grupo de clase.',0,'Criticarle en público crea conflicto y no hace que el trabajo avance.'],
+  ['No hago nada, que salga lo que salga.',0,'Si no actúas, el problema no desaparece: lo pagará la nota de todo el grupo.']]},
+ {id:8,tier:2,t:'Atascada en un problema',s:'Llevas 20 minutos con un problema de mates y no hay manera.',q:'¿Qué haces?',tip:'Si te atascas: relee, dibújalo, simplifícalo… y pregunta algo concreto.',o:[
+  ['Copio la solución de internet y paso al siguiente.',0,'Tendrás la tarea hecha, pero el día del examen el problema volverá… y sin internet.'],
+  ['Lo dejo: se me dan mal las mates.',0,'«Se me da mal» es una trampa mental. Atascarse forma parte de aprender: el cerebro crece justo ahí.'],
+  ['Cambio de estrategia: releo despacio, hago un dibujo o un ejemplo más fácil y, si sigo atascada, pregunto algo concreto.',3,'¡Eso es tener recursos! Cuando una forma no funciona, pruebas otra.'],
+  ['Le pido a alguien que me lo haga.',1,'Pedir ayuda está bien, pero mejor pedir una pista que te desbloquee que la solución entera.']]},
+ {id:9,tier:3,t:'Dos extraescolares',s:'Te apetece apuntarte a teatro y a baloncesto, pero son el mismo día a la misma hora.',q:'¿Cómo decides?',tip:'Para decidir: reúne información, piensa qué te importa a ti y, si puedes, pruébalo.',o:[
+  ['Elijo lo que hagan mis amigas.',1,'Estar con amigas cuenta, pero si la actividad no te gusta, acabarás dejándola.'],
+  ['Hago una lista de pros y contras, pienso cuál me hace más ilusión y, si se puede, pruebo una clase de cada.',3,'¡Gran decisión! Información + lo que de verdad te importa + probar antes de decidir.'],
+  ['Lo echo a cara o cruz.',0,'Es rápido, pero dejas una decisión importante al azar. (Truco: si al ver el resultado te decepcionas, ¡ya sabes lo que querías de verdad!)'],
+  ['No me apunto a ninguna para no equivocarme.',0,'No decidir también es una decisión… y normalmente la peor.']]},
+ {id:10,tier:3,t:'El móvil se come el tiempo',s:'Te das cuenta de que pasas unas 4 horas al día con el móvil y no te da tiempo a estudiar ni a descansar.',q:'¿Qué haces?',tip:'Para cambiar un hábito: mide, pon una regla sencilla y cambia el entorno.',o:[
+  ['Borro todas las apps de golpe.',1,'Es valiente, pero los cambios bruscos suelen durar poco. Mejor algo que puedas mantener.'],
+  ['Miro cuánto uso cada app, me pongo límites y dejo el móvil fuera de la habitación mientras estudio.',3,'¡Muy bien! Primero medir y luego poner reglas sencillas. Alejar el móvil funciona mejor que la fuerza de voluntad.'],
+  ['No pasa nada, ya lo controlaré.',0,'Sin un plan concreto es muy difícil cambiar un hábito.'],
+  ['Estudio con el móvil al lado, pero en silencio.',1,'Mejor que nada, pero solo con tenerlo a la vista el cerebro ya se distrae.']]},
+ {id:11,tier:3,t:'Ahorrar para unos cascos',s:'Quieres unos cascos de 60 €. Te dan 10 € a la semana y sueles gastarte unos 4 €.',q:'Si sigues igual, ¿cuántas semanas tardarás en tenerlos?',tip:'Antes de calcular, pregúntate: ¿qué dato necesito de verdad? (Aquí no es lo que te dan, sino lo que ahorras).',o:[
+  ['6 semanas',0,'Cuidado: 60 ÷ 10 = 6, pero no ahorras 10 € a la semana, porque te gastas 4.'],
+  ['10 semanas',3,'¡Exacto! Ahorras 10 − 4 = 6 € por semana, y 60 ÷ 6 = 10 semanas. Si gastaras solo 2 €, ¡los tendrías en menos de 8!'],
+  ['15 semanas',0,'Eso sería si ahorraras 4 € a la semana, pero 4 € es lo que gastas. Lo que ahorras es 6 €.'],
+  ['8 semanas',1,'Cerca, pero no. Calcula primero cuánto ahorras de verdad cada semana.']]},
+ {id:12,tier:3,t:'Se me olvidó entregarlo',s:'Te das cuenta de que ayer se te olvidó entregar un trabajo importante.',q:'¿Qué haces?',tip:'Error → lo asumo → busco solución → creo un sistema para que no vuelva a pasar.',o:[
+  ['No digo nada; a lo mejor el profe no se da cuenta.',0,'Esconderlo suele salir peor: pierdes la oportunidad de arreglarlo a tiempo.'],
+  ['Hablo con el profe, asumo el error, pregunto si puedo entregarlo y empiezo a apuntar las entregas en una agenda.',3,'¡De diez! Asumir, buscar solución y crear un sistema para que no vuelva a pasar. Así se aprende de los errores.'],
+  ['Digo que fue culpa de otra persona.',0,'Echar la culpa a otro puede parecer una salida, pero hace perder la confianza y no evita que vuelva a pasar.'],
+  ['Me agobio y pienso que soy un desastre.',0,'Equivocarse no te define. Lo importante es lo que haces después.']]},
+];
+function playVida(){
+ const lv=ctx.lv,tier=lv<=2?1:lv<=4?2:3,N=3;
+ intro('vida','Vas a ver 3 situaciones de la vida real. No hay prisa: <b>piensa antes de elegir</b>. Después verás por qué cada opción funciona mejor o peor y te llevarás una herramienta mental.',()=>{
+  const solo=ctx.mode==='solo',seen=solo?(st.vidaSeen||[]):[];
+  const pool=shuffle(MISSIONS.filter(m=>m.tier<=tier)).sort((a,b)=>(seen.includes(a.id)-seen.includes(b.id))||(b.tier===tier)-(a.tier===tier));
+  const list=pool.slice(0,N);
+  if(solo){st.vidaSeen=[...seen,...list.map(m=>m.id)].slice(-8);save()}
+  const S={i:0,pts:0,score:0};
+  const b=frame('vida',false);
+  function show(){
+   if(S.i>=N)return done();
+   const m=list[S.i];S.i++;
+   const opts=shuffle(m.o);
+   b.innerHTML=`<span class="mtag">Misión ${S.i} de ${N}</span><h3 class="mtitle">${m.t}</h3><p class="situ">${m.s}</p><div class="mq">${m.q}</div><div class="vopts">${opts.map((o,j)=>`<button class="vopt" data-j="${j}">${o[0]}</button>`).join('')}</div><div id="vf"></div>`;
+   b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');
+   b.querySelectorAll('.vopt').forEach(bt=>bt.onclick=()=>{
+    const o=opts[+bt.dataset.j];S.pts+=o[1];S.score+=o[1]*10;setScore(S.score);
+    b.querySelectorAll('.vopt').forEach(x=>{x.disabled=true;const oo=opts[+x.dataset.j];if(oo[1]===3)x.classList.add('p3')});
+    if(o[1]<3)bt.classList.add(o[1]>0?'p1':'p0');
+    const best=opts.find(x=>x[1]===3);
+    $('#vf').innerHTML=`<div class="vfb">${o[1]===3?'🌟 <b>¡Muy buena elección!</b> ':o[1]>0?'🤔 <b>No está mal, pero se puede mejorar.</b> ':'🙈 <b>Mejor no.</b> '}${o[2]}${o[1]<3?`<br><br>👉 <b>La mejor opción:</b> ${best[2]}`:''}</div><div class="tool">🛠️ <b>Herramienta mental:</b> ${m.tip}</div><button class="btn wide" style="margin-top:14px" id="nx">${S.i>=N?'Ver resultado':'Siguiente misión →'}</button>`;
+    $('#nx').onclick=show;$('#vf').scrollIntoView({behavior:'smooth',block:'nearest'});
+   });
+  }
+  show();
+  function done(){finish('vida',S.score,S.pts>=8?1:S.pts<=4?-1:0,[`🧭 Puntos de decisión: ${S.pts} de ${N*3}`,'💬 Idea: comentad juntas alguna de las misiones. ¿Qué habríais hecho vosotras?'],cheerFor(S.pts/(N*3)),S.pts===N*3)}
+ });
+}
+
+const PLAY={mem:playMem,calc:playCalc,stroop:playStroop,series:playSeries,vida:playVida,trivia:()=>playQuiz('trivia'),musica:()=>playQuiz('musica')};
+
+/* ================= ARTISTA Y CARRERA MUSICAL ================= */
+const GENRES=[['pop','Pop','🎤','#ff4fa0'],['rock','Rock','🎸','#e5484d'],['indie','Indie','🌙','#7c6cf0'],['rap','Rap / Hip-hop','🎧','#f59e0b'],['electro','Electrónica','🎛️','#06b6d4'],['latino','Latino','💃','#ff7a45'],['kpop','K-pop','✨','#c084fc'],['flamenco','Flamenco','🌹','#d7263d'],['jazz','Jazz','🎷','#c08a3e'],['clasica','Clásica','🎻','#6366f1'],['metal','Metal','🤘','#64748b'],['reggae','Reggae','🌴','#16a34a'],['country','Country','🤠','#b45309']];
+const genre=id=>GENRES.find(g=>g[0]===id)||GENRES[0];
+const SKINS=['#fde3cf','#f6caa4','#e2a97f','#c0845a','#8d5636','#5f3a22'];
+const HAIRS=[['larga','Larga lisa'],['ondas','Larga con ondas'],['media','Media melena'],['coletas','Dos coletas'],['coleta','Coleta alta'],['mono','Moño'],['trenzas','Trenzas'],['rizos','Rizos'],['corta','Corta']];
+const EYES=[['#6b3e21','Marrones'],['#8a6a2b','Avellana'],['#3f8f5a','Verdes'],['#3a7bd5','Azules'],['#1fa6a6','Turquesa'],['#6b7b8c','Grises']];
+const FACES=[['risa','😁 Sonrisa grande'],['sonrisa','😊 Sonrisa'],['cool','😏 Pícara'],['guino','😉 Guiño']];
+const HAIRCOL=[['#2b1d16','Negro'],['#5a3825','Castaño'],['#9a4a26','Caoba'],['#e8c27a','Rubio'],['#d9502e','Pelirrojo'],['#ff69b4','Rosa'],['#4f7cff','Azul'],['#9b5cff','Morado'],['#2ec4a0','Verde'],['plata','Plata',{disco:'perfect'}],['arcoiris','Arcoíris',{disco:'streak7'}],['galaxia','Galaxia',{chest:'galaxia'}]];
+const OUTFITS=[['camiseta','Camiseta'],['rayas','Camiseta de rayas'],['raglan','Camiseta raglán'],['sudadera','Sudadera'],['chaqueta','Chaqueta'],['cuadros','Camisa de cuadros'],['lentejuelas','Lentejuelas ✨',{stage:4}]];
+const OUTCOL=['#1f2937','#ffffff','#e5484d','#ff8fc2','#4f7cff','#22c55e','#f5b301','#9b5cff'];
+const ACCS=[['aros','💫 Aros'],['pinzas','📎 Pinzas'],['auriculares','🎧 Auriculares'],['gafas','😎 Gafas de sol',{stage:1}],['gorra','🧢 Gorra',{disco:'ten'}],['estrellas','⭐ Brillos',{disco:'daily5'}],['micro','🎤 Micro dorado',{disco:'wins3'}],['corona','👑 Tiara',{stage:5}],['corazones','💖 Gafas de corazón',{chest:'corazones'}],['flor','🌸 Flor en el pelo',{chest:'flor'}]];
+const BAND={mem:['🥁','Batería'],calc:['🎸','Guitarra'],stroop:['🎹','Teclados'],series:['🎺','Trompeta'],trivia:['🎻','Violín'],musica:['🎷','Saxo'],vida:['🎤','Voz (tú)']};
+const tier=lv=>lv>=10?['👑','Nivel leyenda']:lv>=7?['🌟','Nivel estrella']:lv>=4?['✨','Nivel pro']:['🪵','Nivel ensayo'];
+const artistName=()=>(st.artist&&st.artist.stage)||st.name;
+const defaultArtist=()=>({stage:st.name||'',genre:'pop',skin:1,hair:'larga',hairColor:'#5a3825',outfit:'camiseta',outfitColor:'#ff5c8a',face:'risa',eyeColor:'#6b3e21',acc:['aros']});
+function isUnl(req){if(!req)return true;if(req.chest)return !!(st.chest||{})[req.chest];if(req.stage!=null)return rankOf(st.xp)>=req.stage;if(req.disco)return !!(st.discos||{})[req.disco];return true}
+function reqText(req){if(req.chest)return 'sale en el 🎁 cofre diario (completa el reto del día)';return req.stage!=null?`llega al escenario «${RANKS[req.stage][1]}»`:`consigue el disco «${DISCOS.find(d=>d.id===req.disco).n}»`}
+function shade(hex,amt){if(!/^#[0-9a-f]{6}$/i.test(hex))return hex;let n=parseInt(hex.slice(1),16),r=n>>16,g=n>>8&255,b=n&255;const f=v=>Math.max(0,Math.min(255,Math.round(amt<0?v*(1+amt):v+(255-v)*amt)));return '#'+((1<<24)+(f(r)<<16)+(f(g)<<8)+f(b)).toString(16).slice(1)}
+const hairFill=c=>c==='galaxia'?'url(#gGal)':c==='arcoiris'?'url(#gRain)':c==='plata'?'url(#gSilver)':c;
+const DEFS=`<defs><linearGradient id="gRain" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff4d6d"/><stop offset=".25" stop-color="#ffb347"/><stop offset=".5" stop-color="#ffe66d"/><stop offset=".7" stop-color="#4ade80"/><stop offset=".85" stop-color="#60a5fa"/><stop offset="1" stop-color="#a78bfa"/></linearGradient><linearGradient id="gGal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2b1055"/><stop offset=".5" stop-color="#7597de"/><stop offset="1" stop-color="#d16ba5"/></linearGradient><linearGradient id="gSilver" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f8fafc"/><stop offset="1" stop-color="#94a3b8"/></linearGradient></defs>`;
+const star=(x,y,r,f)=>{let p=[];for(let i=0;i<10;i++){const a=Math.PI/5*i-Math.PI/2,rr=i%2?r*.45:r;p.push((x+rr*Math.cos(a)).toFixed(1)+','+(y+rr*Math.sin(a)).toFixed(1))}return `<polygon points="${p.join(' ')}" fill="${f}"/>`};
+function avatarInner(a){
+ const skin=SKINS[a.skin]||SKINS[1],sk2=shade(skin,-.08),sk3=shade(skin,-.25),hc=hairFill(a.hairColor),oc=a.outfitColor,od=shade(oc,oc==='#ffffff'?-.15:-.28),acc=a.acc||[],gc=genre(a.genre)[3];
+ const solid=/^#/.test(a.hairColor),hs=solid?shade(a.hairColor,-.25):'#00000033';
+ const natural=['#2b1d16','#5a3825','#9a4a26','#e8c27a','#d9502e'].includes(a.hairColor),brow=natural?shade(a.hairColor,a.hairColor==='#e8c27a'?-.3:-.15):'#4a3326';
+ const eyeC=a.eyeColor||'#6b3e21',face=a.face||'risa';
+ let back='',top='',locks='',front='',ac='';
+ const zig=(x,y,s=1,r=0)=>`<path transform="translate(${x},${y}) rotate(${r}) scale(${s})" d="M0,4 Q9,-3 20,0 L17,2 L19,4 Q10,2 2,7 Z" fill="#ffffff" opacity="${solid?.6:.5}"/>`;
+ const tuft=`<path d="M99,37 L97,31 L100,34 L102,30 L102,36 Z" fill="${hs}" opacity=".6"/>`;
+ const sweep=`<path d="M58,92 C55,52 78,34 101,34 C125,34 145,52 142,92 C139,74 131,62 119,55 C114,67 101,77 82,81 C90,73 95,64 96,55 C82,62 66,74 58,92 Z" fill="${hc}"/>${tuft}${zig(110,46,1,-10)}`;
+ const part=`<path d="M58,94 C55,52 78,34 100,34 C122,34 145,52 142,94 C138,72 126,56 106,49 L100,45 L94,49 C74,56 62,72 58,94 Z" fill="${hc}"/><path d="M100,45 L100,36" stroke="${hs}" stroke-width="2"/>${tuft}${zig(70,62,.9,-35)}${zig(116,50,.9,10)}`;
+ switch(a.hair){
+  case 'larga':back=`<path d="M58,86 C54,46 78,30 100,30 C122,30 146,46 142,86 L146,200 L54,200 Z" fill="${hc}"/>`;locks=`<path d="M58,100 L54,200 L70,200 L68,104 Z" fill="${hc}"/><path d="M142,100 L146,200 L130,200 L132,104 Z" fill="${hc}"/><path d="M62,130 L60,190 M138,130 L140,190" stroke="${hs}" stroke-width="1.5"/>`;front=part;break;
+  case 'ondas':back=`<path d="M58,86 C54,46 78,30 100,30 C122,30 146,46 142,86 C150,110 140,124 150,140 C158,156 142,170 152,188 C130,204 70,204 48,188 C58,170 42,156 50,140 C60,124 50,110 58,86 Z" fill="${hc}"/>`;locks=`<path d="M60,100 C50,120 64,136 54,152 C46,166 60,180 56,196 C64,198 70,196 72,192 C66,178 74,166 68,152 C62,138 72,122 66,104 Z" fill="${hc}"/><path d="M140,100 C150,120 136,136 146,152 C154,166 140,180 144,196 C136,198 130,196 128,192 C134,178 126,166 132,152 C138,138 128,122 134,104 Z" fill="${hc}"/>`;front=sweep+zig(70,70,.9,-40);break;
+  case 'media':back=`<path d="M58,86 C54,46 78,30 100,30 C122,30 146,46 142,86 L146,150 L54,150 Z" fill="${hc}"/>`;locks=`<path d="M58,98 L55,150 L70,150 L67,104 Z" fill="${hc}"/><path d="M142,98 L145,150 L130,150 L133,104 Z" fill="${hc}"/>`;front=sweep;break;
+  case 'coletas':back=`<path d="M58,90 C54,48 78,32 100,32 C122,32 146,48 142,90 Z" fill="${hc}"/>`;locks=`<path d="M60,112 C44,124 40,160 48,192 C52,198 58,196 60,190 C56,166 60,140 68,120 Z" fill="${hc}"/><path d="M140,112 C156,124 160,160 152,192 C148,198 142,196 140,190 C144,166 140,140 132,120 Z" fill="${hc}"/><circle cx="64" cy="114" r="5" fill="${gc}"/><circle cx="136" cy="114" r="5" fill="${gc}"/>`;front=part;break;
+  case 'coleta':back=`<path d="M128,42 C162,34 176,86 166,130 C162,148 150,158 142,152 C154,124 154,86 130,62 Z" fill="${hc}"/>${zig(150,72,.9,70)}`;front=`<path d="M58,92 C55,52 78,36 100,36 C122,36 145,52 142,92 C136,66 120,54 100,54 C80,54 64,66 58,92 Z" fill="${hc}"/>${tuft}${zig(84,46,.9,-15)}<rect x="124" y="42" width="12" height="9" rx="4" fill="${gc}" transform="rotate(-25 130 46)"/>`;break;
+  case 'mono':top=`<circle cx="100" cy="24" r="17" fill="${hc}"/><circle cx="87" cy="19" r="7" fill="${hc}"/><circle cx="114" cy="18" r="6" fill="${hc}"/>${zig(92,20,.7,-15)}<path d="M86,38 Q100,44 114,38" stroke="${gc}" stroke-width="4" fill="none" stroke-linecap="round"/>`;front=`<path d="M58,92 C55,52 78,36 100,36 C122,36 145,52 142,92 C136,66 120,54 100,54 C80,54 64,66 58,92 Z" fill="${hc}"/>${zig(108,46,.8,10)}<path d="M62,74 C58,90 60,104 64,116 M138,74 C142,90 140,104 136,116" stroke="${hc}" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;break;
+  case 'trenzas':back=`<path d="M58,90 C54,48 78,32 100,32 C122,32 146,48 142,90 L142,112 L58,112 Z" fill="${hc}"/>`;{for(let i=0;i<9;i++){const y=114+i*10;locks+=`<ellipse cx="${62-i*.5}" cy="${y}" rx="8" ry="6.5" fill="${hc}" stroke="${hs}" stroke-width="1.2" transform="rotate(${i%2?22:-22} ${62-i*.5} ${y})"/><ellipse cx="${138+i*.5}" cy="${y}" rx="8" ry="6.5" fill="${hc}" stroke="${hs}" stroke-width="1.2" transform="rotate(${i%2?-22:22} ${138+i*.5} ${y})"/>`}locks+=`<rect x="53" y="200" width="12" height="6" rx="3" fill="${gc}"/><rect x="135" y="200" width="12" height="6" rx="3" fill="${gc}"/>`}front=part;break;
+  case 'rizos':{for(let i=0;i<=14;i++){const ang=Math.PI*(1.0+i*0.0714);back+=`<circle cx="${(100+54*Math.cos(ang)).toFixed(1)}" cy="${(84+50*Math.sin(ang)).toFixed(1)}" r="19" fill="${hc}"/>`}for(let i=0;i<5;i++){back+=`<circle cx="${48-i}" cy="${94+i*16}" r="17" fill="${hc}"/><circle cx="${152+i}" cy="${94+i*16}" r="17" fill="${hc}"/>`}
+   front=`<path d="M60,84 C60,52 80,40 100,40 C120,40 140,52 140,84 C130,66 116,60 100,61 C84,60 70,66 60,84 Z" fill="${hc}"/>`+[68,84,100,116,132].map((x,i)=>`<circle cx="${x}" cy="${54+(i%2)*6}" r="12" fill="${hc}"/>`).join('')+zig(84,44,.8,-10);break}
+  default:back=`<path d="M58,98 C54,52 78,32 100,32 C124,32 146,52 142,98 Z" fill="${hc}"/>`;front=`<path d="M58,90 C56,56 70,40 84,38 L82,30 L92,36 L96,26 L102,35 L110,28 L112,37 L122,32 L122,40 C136,46 144,62 142,90 C138,74 130,64 120,60 L122,70 L110,62 L106,72 L98,62 L90,72 L88,62 C74,66 64,76 58,90 Z" fill="${hc}"/>${zig(108,44,.9,0)}`;
+ }
+ // cuerpo: brazos, camiseta y mangas
+ const longSleeve=a.outfit==='sudadera';
+ const armL='M30,220 C30,206 34,196 40,190 L58,196 C53,204 51,212 51,220 Z',armR='M170,220 C170,206 166,196 160,190 L142,196 C147,204 149,212 149,220 Z';
+ const torso='M51,220 L51,190 C54,174 70,165 88,160 Q100,168 112,160 C130,165 146,174 149,190 L149,220 Z';
+ const slvL='M88,160 C70,164 52,170 44,182 L36,202 L58,208 L64,186 Z',slvR='M112,160 C130,164 148,170 156,182 L164,202 L142,208 L136,186 Z';
+ const full=`${torso} ${slvL} ${slvR}`;
+ let pattern='',slvCol=oc,extra='',hood='';
+ switch(a.outfit){
+  case 'rayas':{for(let y=166;y<222;y+=12)pattern+=`<rect x="20" y="${y}" width="160" height="6" fill="${od}"/>`;break}
+  case 'raglan':slvCol=oc==='#1f2937'?'#9ca3af':'#374151';break;
+  case 'cuadros':{for(let x=36;x<170;x+=16)pattern+=`<rect x="${x}" y="150" width="6" height="80" fill="${od}" opacity=".55"/>`;for(let y=168;y<222;y+=16)pattern+=`<rect x="20" y="${y}" width="160" height="6" fill="${od}" opacity=".45"/>`;extra=`<path d="M88,162 Q100,170 112,162 L108,220 L92,220 Z" fill="#ffffff"/>`;break}
+  case 'chaqueta':extra=`<path d="M88,162 Q100,170 112,162 L108,220 L92,220 Z" fill="${oc==='#1f2937'?'#f3f4f6':'#1f2937'}"/><path d="M87,159 L74,172 L90,208 L92,164 Z" fill="${od}"/><path d="M113,159 L126,172 L110,208 L108,164 Z" fill="${od}"/>`;break;
+  case 'sudadera':hood=`<path d="M66,172 C62,146 138,146 134,172 Q100,158 66,172 Z" fill="${od}"/>`;extra=`<path d="M94,168 L92,198 M106,168 L108,198" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="92" cy="199" r="2.4" fill="#fff"/><circle cx="108" cy="199" r="2.4" fill="#fff"/><path d="M72,212 Q100,204 128,212 L132,220 L68,220 Z" fill="${od}" opacity=".45"/>`;break;
+  case 'lentejuelas':{for(let y=166;y<222;y+=8)for(let x=36+(y%16?4:0);x<168;x+=8)pattern+=`<circle cx="${x}" cy="${y}" r="2" fill="${(x+y)%3?'#ffffff':'#ffd54a'}" opacity=".7"/>`;break}
+  default:extra=star(100,196,9,oc===gc?'#ffffff':gc);
+ }
+ const shirt=`<g transform="matrix(1 0 0 1.1667 0 -36.67)">${hood}<path d="${armL}" fill="${longSleeve?oc:sk2}"/><path d="${armR}" fill="${longSleeve?oc:sk2}"/>
+  <path d="${torso}" fill="${oc}" ${oc==='#ffffff'?'stroke="#d9dbe3" stroke-width="2"':''}/>
+  <path d="${slvL}" fill="${slvCol}" ${oc==='#ffffff'&&slvCol===oc?'stroke="#d9dbe3" stroke-width="2"':''}/><path d="${slvR}" fill="${slvCol}" ${oc==='#ffffff'&&slvCol===oc?'stroke="#d9dbe3" stroke-width="2"':''}/>
+  <clipPath id="shirtClip"><path d="${full}"/></clipPath>${pattern?`<g clip-path="url(#shirtClip)">${pattern}</g>`:''}
+  <path d="M64,186 L58,208 M136,186 L142,208" stroke="${od}" stroke-width="1.5" opacity=".6"/>
+  ${extra}<path d="M86,160 Q100,172 114,160" stroke="${a.outfit==='raglan'?slvCol:od}" stroke-width="4" fill="none" stroke-linecap="round"/></g>`;
+ const eye=(cx,side,closed)=>{
+  if(closed)return `<path d="M${cx-11},99 Q${cx},106 ${cx+11},99" stroke="#2a1a14" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+  const id='e'+side,sh=`M${cx-11},99 Q${cx-10},86 ${cx},86 Q${cx+11},86 ${cx+11},99 Q${cx+10},108 ${cx},108 Q${cx-10},108 ${cx-11},99 Z`,out=side==='L'?-1:1;
+  const lidLow=face==='cool';
+  return `<clipPath id="${id}"><path d="${sh}"/></clipPath><path d="${sh}" fill="#fff"/><g clip-path="url(#${id})"><circle cx="${cx}" cy="98" r="7.5" fill="${eyeC}"/><circle cx="${cx}" cy="98" r="7.5" fill="url(#irisShade)"/><circle cx="${cx}" cy="98" r="3.6" fill="#140c0a"/><circle cx="${cx+2.6}" cy="95" r="2.4" fill="#fff"/><circle cx="${cx-2.4}" cy="101.5" r="1.1" fill="#fff" opacity=".9"/>${lidLow?`<rect x="${cx-12}" y="84" width="24" height="9" fill="${skin}"/>`:''}</g>
+  <path d="M${cx-12},${lidLow?94:99} Q${cx-11},${lidLow?91:85} ${cx},${lidLow?92:85} Q${cx+12},${lidLow?91:85} ${cx+12},${lidLow?94:98}" stroke="#2a1a14" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+  <path d="M${cx+12*out},${lidLow?94:97} l${4*out},-4" stroke="#2a1a14" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M${cx-7},108.5 Q${cx},110.5 ${cx+7},108.5" stroke="${sk3}" stroke-width="1.2" fill="none" opacity=".7"/>`};
+ const teeth=`<path d="M84,118 Q100,121 116,118 Q114,134 100,134 Q86,134 84,118 Z" fill="#8e2b3d"/><path d="M85,118.6 Q100,121.6 115,118.6 L114,124.5 Q100,126.5 86,124.5 Z" fill="#fff"/><path d="M92,131 Q100,134 108,131" stroke="#ff8fa3" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M82,117 Q83,119 85,118 M118,117 Q117,119 115,118" stroke="${sk3}" stroke-width="1.4" fill="none"/>`;
+ const mouth={risa:teeth,sonrisa:`<path d="M86,119 Q100,130 114,119" stroke="#a83a50" stroke-width="3.2" fill="none" stroke-linecap="round"/><path d="M84,117.5 Q85,120 87,119.5 M116,117.5 Q115,120 113,119.5" stroke="${sk3}" stroke-width="1.4" fill="none"/>`,
+  cool:`<path d="M88,121 Q102,126 114,116 Q104,132 92,126 Z" fill="#8e2b3d"/><path d="M90,121.5 Q102,125 113,117 L111,120.5 Q102,127 92,124 Z" fill="#fff"/>`,guino:teeth}[face]||teeth;
+ if(acc.includes('auriculares'))ac+=`<path d="M56,98 C52,24 148,24 144,98" stroke="#1e1e1e" stroke-width="7" fill="none" stroke-linecap="round"/><ellipse cx="57" cy="100" rx="10" ry="15" fill="${gc}" stroke="#1e1e1e" stroke-width="3"/><ellipse cx="143" cy="100" rx="10" ry="15" fill="${gc}" stroke="#1e1e1e" stroke-width="3"/>`;
+ if(acc.includes('gorra'))ac+=`<path d="M58,72 C58,30 142,30 142,72 Z" fill="${gc}"/><path d="M58,70 C80,62 120,62 142,70 L146,78 C122,71 78,71 54,78 Z" fill="${shade(gc,-.3)}"/><circle cx="100" cy="34" r="3.5" fill="${shade(gc,-.3)}"/><path d="M100,34 L100,70" stroke="${shade(gc,-.2)}" stroke-width="1.5"/>`;
+ if(acc.includes('corona'))ac+=`<path d="M74,50 L80,36 L88,45 L100,30 L112,45 L120,36 L126,50 Q100,44 74,50 Z" fill="#ffd54a" stroke="#d9a400" stroke-width="1.5"/><circle cx="100" cy="41" r="3.2" fill="#ff4fa0"/><circle cx="85" cy="46" r="2" fill="#7cd3ff"/><circle cx="115" cy="46" r="2" fill="#7cd3ff"/>`;
+ if(acc.includes('pinzas'))ac+=`<rect x="120" y="60" width="16" height="5" rx="2.5" fill="${gc}" transform="rotate(30 128 62)"/><rect x="116" y="68" width="14" height="5" rx="2.5" fill="#ffffff" transform="rotate(30 123 70)"/>`;
+ if(acc.includes('gafas'))ac+=`<rect x="68" y="86" width="28" height="23" rx="7" fill="#ffffff" opacity=".18" stroke="${gc}" stroke-width="3.5"/><rect x="104" y="86" width="28" height="23" rx="7" fill="#ffffff" opacity=".18" stroke="${gc}" stroke-width="3.5"/><path d="M96,95 Q100,92 104,95" stroke="${gc}" stroke-width="3" fill="none"/><path d="M68,92 L60,90 M132,92 L140,90" stroke="${gc}" stroke-width="3"/>`;
+ const heart=(cx,cy,s)=>`<path d="M${cx},${cy+s*.9} C${cx-s*1.7},${cy-s*.2} ${cx-s*.8},${cy-s*1.4} ${cx},${cy-s*.45} C${cx+s*.8},${cy-s*1.4} ${cx+s*1.7},${cy-s*.2} ${cx},${cy+s*.9} Z" fill="#ff4fa0" fill-opacity=".55" stroke="#d61f69" stroke-width="2.5"/>`;
+ if(acc.includes('corazones'))ac+=heart(82,98,12)+heart(118,98,12)+`<path d="M94,94 Q100,91 106,94" stroke="#d61f69" stroke-width="2.5" fill="none"/>`;
+ if(acc.includes('flor'))ac+=[0,72,144,216,288].map(d=>`<circle cx="${(130+7*Math.cos(d*Math.PI/180)).toFixed(1)}" cy="${(56+7*Math.sin(d*Math.PI/180)).toFixed(1)}" r="6" fill="#ff8fc2"/>`).join('')+`<circle cx="130" cy="56" r="4.5" fill="#ffd54a"/>`;
+ if(acc.includes('estrellas'))ac+=star(70,116,5,'#ffd54a')+star(130,114,4.5,'#ffd54a')+star(137,122,2.6,'#fff1a8')+star(63,123,2.6,'#fff1a8');
+ if(acc.includes('micro'))ac+=`<g transform="translate(160,166) rotate(18)"><rect x="-4.5" y="4" width="9" height="38" rx="4" fill="#1e1e1e"/><rect x="-5" y="4" width="10" height="6" rx="2" fill="#c99a0e"/><circle cx="0" cy="-5" r="12" fill="#ffd54a" stroke="#c99a0e" stroke-width="2"/><path d="M-8,-9 L8,-9 M-10,-3 L10,-3 M-8,3 L8,3" stroke="#c99a0e" stroke-width="1.3"/></g>`;
+ const ears=`<ellipse cx="60" cy="100" rx="7" ry="11" fill="${sk2}"/><path d="M60,94 Q64,100 60,106" stroke="${sk3}" stroke-width="2" fill="none"/><ellipse cx="140" cy="100" rx="7" ry="11" fill="${sk2}"/><path d="M140,94 Q136,100 140,106" stroke="${sk3}" stroke-width="2" fill="none"/>`+(acc.includes('aros')?`<circle cx="60" cy="117" r="6" fill="none" stroke="#e8b923" stroke-width="2.2"/><circle cx="140" cy="117" r="6" fill="none" stroke="#e8b923" stroke-width="2.2"/>`:'');
+ return `${DEFS}<defs><radialGradient id="irisShade" cx=".5" cy=".75" r=".7"><stop offset="0" stop-color="#ffffff" stop-opacity=".25"/><stop offset=".6" stop-color="#000000" stop-opacity="0"/><stop offset="1" stop-color="#000000" stop-opacity=".35"/></radialGradient></defs>
+ ${back}${top}
+ <path d="M90,126 L90,160 Q100,167 110,160 L110,126 Z" fill="${sk2}"/><path d="M90,138 Q100,146 110,138 L110,132 L90,132 Z" fill="${sk3}" opacity=".35"/>
+ ${shirt}${locks}${ears}
+ <path d="M60,88 C60,52 80,38 100,38 C120,38 140,52 140,88 C140,112 126,132 100,138 C74,132 60,112 60,88 Z" fill="${skin}"/>
+ <circle cx="70" cy="114" r="8.5" fill="#ff8c9e" opacity=".45"/><circle cx="130" cy="114" r="8.5" fill="#ff8c9e" opacity=".45"/>
+ <path d="M71,82 Q81,75 92,80" stroke="${brow}" stroke-width="3.2" fill="none" stroke-linecap="round"/><path d="M108,80 Q119,75 129,82" stroke="${brow}" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+ ${eye(82,'L',false)}${eye(118,'R',face==='guino')}
+ <path d="M98,108 Q101,112 104,109" stroke="${sk3}" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+ ${mouth}
+ ${front}${ac}`;
+}
+const avatarSVG=(a,cls='')=>`<svg class="${cls}" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">${avatarInner(a)}</svg>`;
+function stageSVG(i,a){
+ const gc=genre(a.genre)[3];
+ const BG=[['#ffe2ee','#fff6fa'],['#c9d1e3','#eef1f8'],['#5a3a2e','#8a5a40'],['#17143a','#2c2766'],['#ff8a5c','#ffd29a'],['#060a20','#18204d'],['#24104e','#6a2bb0'],['#3b2a05','#d4a020']];
+ const [b1,b2]=BG[i];let d='';
+ const beams=n=>{let s='';for(let j=0;j<n;j++){const x=40+j*(260/Math.max(1,n-1));s+=`<polygon points="${x-6},0 ${x+6},0 ${170+(x-170)*.15+30},175 ${170+(x-170)*.15-30},175" fill="${j%2?'#ffffff':gc}" opacity=".18"/>`}return s};
+ if(i===0)d=`<rect x="26" y="26" width="46" height="60" rx="4" fill="${gc}" opacity=".75"/><text x="49" y="64" font-size="26" text-anchor="middle" fill="#fff">♪</text><rect x="250" y="22" width="64" height="54" rx="6" fill="#bfe3ff" stroke="#fff" stroke-width="5"/><circle cx="296" cy="36" r="7" fill="#fff8b0"/><rect x="262" y="120" width="40" height="50" rx="4" fill="#d6b08a"/><ellipse cx="170" cy="190" rx="120" ry="14" fill="${gc}" opacity=".25"/>`;
+ if(i===1){for(let y=20;y<170;y+=14)d+=`<rect x="14" y="${y}" width="312" height="10" rx="3" fill="#aeb8cf"/>`;d+=`<rect x="24" y="128" width="34" height="44" rx="4" fill="#7c8aa8"/><rect x="282" y="132" width="30" height="40" rx="4" fill="#7c8aa8"/>`}
+ if(i===2){for(let y=10;y<170;y+=16)for(let x=(y/16%2)*16;x<340;x+=32)d+=`<rect x="${x}" y="${y}" width="30" height="14" rx="2" fill="#6b4434" opacity=".7"/>`;let p='M0,30 Q85,60 170,32 Q255,60 340,30';d+=`<path d="${p}" stroke="#2b1a14" stroke-width="2" fill="none"/>`;for(let j=0;j<14;j++){const x=12+j*24,y=34+12*Math.sin(Math.PI*((x%170)/170));d+=`<circle cx="${x}" cy="${y.toFixed(1)}" r="5" fill="${['#ffd54a','#ff7aa8','#7cd3ff','#9dff9a'][j%4]}"/>`}}
+ if(i===3)d=beams(3)+`<rect x="0" y="0" width="340" height="14" fill="#0b0920"/>`;
+ if(i===4){d=`<circle cx="270" cy="44" r="26" fill="#fff3b0" opacity=".9"/>`;for(let j=0;j<17;j++){const x=j*20;d+=`<polygon points="${x},12 ${x+20},12 ${x+10},28" fill="${['#ff4fa0','#ffd54a','#4f7cff','#22c55e',gc][j%5]}"/>`}d+=`<path d="M0,12 L340,12" stroke="#5b3a1a" stroke-width="2"/>`+beams(2)}
+ if(i===5){for(let j=0;j<40;j++)d+=`<circle cx="${(j*83)%340}" cy="${(j*37)%110}" r="${j%3?1:1.6}" fill="#fff" opacity=".8"/>`;d+=beams(5);[30,110,230,310].forEach(x=>d+=`<circle cx="${x}" cy="10" r="7" fill="#fff8d0"/>`)}
+ if(i===6){d=`<circle cx="276" cy="56" r="38" fill="#3b82f6" opacity=".55"/><ellipse cx="276" cy="56" rx="16" ry="38" fill="none" stroke="#fff" opacity=".5"/><path d="M238,56 L314,56 M244,36 L308,36 M244,76 L308,76" stroke="#fff" opacity=".5"/><text x="40" y="50" font-size="22">✈️</text>`+beams(4)}
+ if(i===7){for(let j=0;j<16;j++){const a1=j/16*Math.PI*2,a2=a1+0.12;d+=`<polygon points="170,95 ${170+300*Math.cos(a1)},${95+300*Math.sin(a1)} ${170+300*Math.cos(a2)},${95+300*Math.sin(a2)}" fill="#fff3b0" opacity=".25"/>`}d+=star(40,40,12,'#fff3b0')+star(300,36,10,'#fff3b0')}
+ const n=[0,2,5,9,14,20,24,28][i];let crowd='';
+ for(let j=0;j<n;j++){const row=j%2,x=10+((j*(320/Math.max(1,n)))+row*9)%330,y=row?196:186,c=i===4?'#5b2a4f':'#0d0b1e';const up=(j*7)%3===0;
+  crowd+=`<circle cx="${x}" cy="${y}" r="7" fill="${c}"/><rect x="${x-9}" y="${y+5}" width="18" height="20" rx="8" fill="${c}"/>${up?`<path d="M${x-7},${y+8} L${x-12},${y-8} M${x+7},${y+8} L${x+12},${y-8}" stroke="${c}" stroke-width="4" stroke-linecap="round"/>`:''}`}
+ const floor=i===0?'#e8c8a4':i===1?'#9aa3b5':'#221c33';
+ return `<svg class="stage" viewBox="0 0 340 210" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="sbg${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${b1}"/><stop offset="1" stop-color="${b2}"/></linearGradient></defs><rect width="340" height="210" fill="url(#sbg${i})"/>${d}<rect x="0" y="168" width="340" height="42" fill="${floor}"/><rect x="0" y="168" width="340" height="3" fill="${gc}" opacity=".8"/><g transform="translate(108,30) scale(0.62)">${avatarInner(a)}</g>${crowd}</svg>`;
+}
+
+/* --- sonidos --- */
+let actx=null;
+function audio(){if(st.sound===false)return null;try{if(!actx){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;actx=new AC()}if(actx.state==='suspended')actx.resume();return actx}catch(e){return null}}
+document.addEventListener('pointerdown',()=>{if(st.sound!==false)audio()},{passive:true});
+const GSOUND={pop:['triangle',[0,4,7,12],150],rock:['sawtooth',[0,5,7,12],150],indie:['triangle',[0,2,7,9],120],rap:['square',[0,3,5,7],110],electro:['square',[0,7,12,19],165],latino:['triangle',[0,4,7,9],150],kpop:['square',[0,4,7,11],170],flamenco:['triangle',[0,1,4,5],135],jazz:['sine',[0,4,7,11],115],clasica:['sine',[0,4,7,12],105],metal:['sawtooth',[0,3,7,10],175],reggae:['triangle',[0,4,7,9],95],country:['triangle',[0,2,4,7],125]};
+function jingle(kind){
+ const c=audio();if(!c)return;
+ const [wave,iv,bpm]=GSOUND[(st.artist||{}).genre]||GSOUND.pop,beat=60/bpm/2,base=62;
+ const seq={level:[0,1,2,3,4],win:[0,2,1,3,4,4],disco:[4,3,4,6],stage:[0,1,2,3,2,3,4,6],fail:[2,0]}[kind]||[0,2];
+ seq.forEach((n,i)=>{const t=c.currentTime+0.02+i*beat,o=c.createOscillator(),g=c.createGain();
+  const midi=base+iv[n%4]+Math.floor(n/4)*12;o.type=wave;o.frequency.value=440*Math.pow(2,(midi-69)/12);
+  const vol=wave==='sine'?0.16:wave==='triangle'?0.12:0.05;
+  g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+0.015);g.gain.exponentialRampToValueAtTime(0.0001,t+beat*(i===seq.length-1?3:1.5));
+  o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+beat*3.2)});
+}
+/* --- confeti y avisos --- */
+function confetti(){
+ try{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return}catch(e){}
+ const cols=['#ff4fa0','#ffd54a','#4f7cff','#22c55e','#9b5cff','#ff7a45'],box=document.createElement('div');box.className='confetti';
+ for(let i=0;i<70;i++){const p=document.createElement('i');p.style.left=Math.random()*100+'%';p.style.background=cols[i%cols.length];p.style.animationDelay=Math.random()*.5+'s';p.style.animationDuration=1.8+Math.random()*1.4+'s';p.style.width=(6+Math.random()*6)+'px';box.appendChild(p)}
+ document.body.appendChild(box);setTimeout(()=>box.remove(),4000);
+}
+let toastQ=[];
+function toast(html){toastQ.push(html);if(toastQ.length===1)showToast()}
+function showToast(){const h=toastQ[0];if(!h)return;const t=document.createElement('div');t.className='toast';t.innerHTML=h;document.body.appendChild(t);setTimeout(()=>{t.classList.add('out');setTimeout(()=>{t.remove();toastQ.shift();showToast()},400)},3400)}
+
+/* --- discos (logros) --- */
+const DISCOS=[
+ {id:'first',e:'💿',n:'Primera canción',d:'Juega tu primera partida',c:s=>s.stats.plays>=1},
+ {id:'allgames',e:'💿',n:'Multiinstrumentista',d:'Juega a los 5 juegos',c:s=>Object.values(s.games).every(g=>g.plays>0)},
+ {id:'ten',e:'💿',n:'Diez temas',d:'Juega 10 partidas',c:s=>s.stats.plays>=10},
+ {id:'fifty',e:'📀',n:'Álbum completo',d:'Juega 50 partidas',c:s=>s.stats.plays>=50},
+ {id:'streak3',e:'💿',n:'Ensayo diario',d:'Juega 3 días seguidos',c:s=>s.streak>=3},
+ {id:'streak7',e:'📀',n:'Semana de gira',d:'Juega 7 días seguidos',c:s=>s.streak>=7},
+ {id:'daily5',e:'💿',n:'Siempre puntual',d:'Completa 5 retos del día',c:s=>s.stats.daily>=5},
+ {id:'record',e:'💿',n:'Nuevo éxito',d:'Bate tu propio récord en un juego',c:s=>s.stats.records>=1},
+ {id:'perfect',e:'📀',n:'Actuación perfecta',d:'Haz una partida perfecta, sin fallos',c:s=>s.stats.perfect>=1},
+ {id:'band3',e:'💿',n:'Banda completa',d:'Todos los instrumentos en nivel 3',c:s=>Object.values(s.games).every(g=>g.lv>=3)},
+ {id:'band7',e:'📀',n:'Banda de estrellas',d:'Todos los instrumentos en nivel 7',c:s=>Object.values(s.games).every(g=>g.lv>=7)},
+ {id:'duel1',e:'💿',n:'Primera batalla',d:'Manda o juega una batalla con una amiga',c:s=>(s.duels||[]).length>=1||s.stats.sent>=1},
+ {id:'wins3',e:'📀',n:'Ganadora de batallas',d:'Gana 3 batallas',c:s=>(s.duels||[]).filter(d=>d.me>d.them).length>=3},
+ {id:'group',e:'💿',n:'Fiesta en casa',d:'Juega una partida en Modo grupo',c:s=>s.stats.group>=1},
+ {id:'chest5',e:'📀',n:'Coleccionista',d:'Abre 5 cofres diarios',c:s=>(s.stats.chests||0)>=5},
+ {id:'early',e:'💿',n:'Madrugadora',d:'Entrena antes de las 9 de la mañana',c:s=>s.stats.early>=1},
+];
+const unlocksBy=pred=>[...HAIRCOL,...OUTFITS,...ACCS].filter(x=>x[2]&&pred(x[2])).map(x=>x[1].replace(/ ✨$/,'')).join(', ');
+function checkDiscos(){
+ st.discos=st.discos||{};const nw=[];
+ DISCOS.forEach(d=>{if(!st.discos[d.id]&&d.c(st)){st.discos[d.id]=today();nw.push(d)}});
+ if(nw.length){save();setTimeout(()=>jingle('disco'),900);nw.forEach(d=>{const un=unlocksBy(r=>r.disco===d.id);toast(`<b>${d.e} ¡Nuevo disco!</b> ${d.n}${un?`<br><small>🔓 Desbloqueas: ${un}</small>`:''}`)})}
+ return nw;
+}
+function celebrate(r0,lvUp,win){
+ const r1=rankOf(st.xp);
+ if(r1>r0){confetti();jingle('stage');const un=unlocksBy(r=>r.stage!=null&&r.stage>r0&&r.stage<=r1);toast(`<b>${RANKS[r1][2]} ¡Nuevo escenario!</b> Ahora tocas en: ${RANKS[r1][1]}${un?`<br><small>🔓 Desbloqueas: ${un}</small>`:''}`)}
+ else if(lvUp||win){confetti();jingle(lvUp?'level':'win')}
+ checkDiscos();
+}
+
+/* --- editor de la artista --- */
+function artistEditor(first){
+ cleanup();curView='artist';$('#modalRoot').innerHTML='';
+ const a=JSON.parse(JSON.stringify(st.artist||defaultArtist()));
+ const sw=(id,list,cur,fn)=>`<div class="sw" id="${id}">${list.map((x,i)=>{const v=fn?fn(x,i):x;const req=Array.isArray(x)?x[2]:null,lock=!isUnl(req),bg=v==='galaxia'?'linear-gradient(135deg,#2b1055,#7597de,#d16ba5)':v==='arcoiris'?'linear-gradient(135deg,#ff4d6d,#ffe66d,#4ade80,#60a5fa,#a78bfa)':v==='plata'?'linear-gradient(#f8fafc,#94a3b8)':v;
+  return `<button data-v="${v}" class="${String(v)===String(cur)?'sel':''}${lock?' lock':''}" style="background:${bg}" title="${Array.isArray(x)?x[1]:''}" ${lock?`data-req='${JSON.stringify(req)}'`:''}>${lock?'🔒':''}</button>`}).join('')}</div>`;
+ const chips=(id,list,cur,multi)=>`<div class="chips" id="${id}">${list.map(x=>{const lock=!isUnl(x[2]);const on=multi?cur.includes(x[0]):x[0]===cur;return `<button class="chip${on?' sel':''}${lock?' lock':''}" data-v="${x[0]}" ${lock?`data-req='${JSON.stringify(x[2])}'`:''}>${lock?'🔒 ':''}${x[1]}</button>`}).join('')}</div>`;
+ view.innerHTML=`<div class="ghead">${first?'':'<button class="iconbtn" id="exit" title="Volver">←</button>'}<h2>${first?'🎤 Crea tu artista':'🎨 Mi artista'}</h2></div>
+ <div class="panel pop">
+  ${first?'<p class="lead">Vas a empezar tu carrera musical tocando en tu habitación. Cada vez que entrenes la mente ganarás <b>fans</b>, y tu escenario irá creciendo hasta… ¡la gira mundial!</p>':''}
+  <div class="prev" id="prev">${avatarSVG(a)}</div>
+  <div class="lab">Nombre artístico</div><input type="text" id="sname" maxlength="16" value="${esc(a.stage)}" placeholder="Tu nombre de artista">
+  <div class="lab">Estilo musical</div>${chips('aGen',GENRES.map(g=>[g[0],g[2]+' '+g[1]]),a.genre)}
+  <div class="lab">Piel</div>${sw('aSkin',SKINS,a.skin,(x,i)=>i)}
+  <div class="lab">Expresión</div>${chips('aFace',FACES,a.face||'risa')}
+  <div class="lab">Color de ojos</div>${sw('aEye',EYES,a.eyeColor||'#6b3e21',x=>x[0])}
+  <div class="lab">Peinado</div>${chips('aHair',HAIRS,a.hair)}
+  <div class="lab">Color de pelo</div>${sw('aHc',HAIRCOL,a.hairColor,x=>x[0])}
+  <div class="lab">Ropa</div>${chips('aOut',OUTFITS,a.outfit)}
+  <div class="lab">Color de la ropa</div>${sw('aOc',OUTCOL,a.outfitColor)}
+  <div class="lab">Complementos</div>${chips('aAcc',ACCS,a.acc,true)}
+  <div class="fb" id="lockMsg" style="color:#8a5200"></div>
+  <button class="btn wide" id="aSave" style="margin-top:16px">${first?'¡Al escenario! 🎶':'Guardar'}</button>
+ </div>`;
+ const skinSw=$('#aSkin');skinSw.querySelectorAll('button').forEach((b,i)=>b.style.background=SKINS[i]);
+ const upd=()=>{$('#prev').innerHTML=avatarSVG(a)};
+ const lockMsg=req=>{$('#lockMsg').textContent=`🔒 Para desbloquearlo, ${reqText(req)}.`};
+ const bindSel=(id,fn,multi)=>$('#'+id).querySelectorAll('button').forEach(b=>b.onclick=()=>{
+  if(b.dataset.req){lockMsg(JSON.parse(b.dataset.req));return}
+  $('#lockMsg').textContent='';
+  if(multi){b.classList.toggle('sel')}else{$('#'+id).querySelectorAll('button').forEach(x=>x.classList.remove('sel'));b.classList.add('sel')}
+  fn(b.dataset.v,b.classList.contains('sel'));upd()});
+ bindSel('aGen',v=>a.genre=v);bindSel('aFace',v=>a.face=v);bindSel('aEye',v=>a.eyeColor=v);bindSel('aSkin',v=>a.skin=+v);bindSel('aHair',v=>a.hair=v);bindSel('aHc',v=>a.hairColor=v);bindSel('aOut',v=>a.outfit=v);bindSel('aOc',v=>a.outfitColor=v);
+ bindSel('aAcc',(v,on)=>{a.acc=a.acc.filter(x=>x!==v);if(on){a.acc.push(v);const other=v==='gorra'?'corona':v==='corona'?'gorra':null;if(other&&a.acc.includes(other)){a.acc=a.acc.filter(x=>x!==other);const ob=$('#aAcc').querySelector(`[data-v="${other}"]`);if(ob)ob.classList.remove('sel')}}},true);
+ $('#sname').oninput=e=>{a.stage=e.target.value};
+ if($('#exit'))$('#exit').onclick=home;
+ $('#aSave').onclick=()=>{a.stage=(a.stage||'').trim()||st.name;st.artist=a;save();if(first){confetti();jingle('level')}if(!openPending())home()};
+}
+
+/* --- mis discos --- */
+function discosScreen(){
+ const D=st.discos||{},got=DISCOS.filter(d=>D[d.id]).length;
+ const items=[...HAIRCOL.filter(x=>x[2]).map(x=>['💇 Pelo '+x[1].toLowerCase(),x[2]]),...OUTFITS.filter(x=>x[2]).map(x=>['👗 '+x[1],x[2]]),...ACCS.map(x=>[x[1],x[2]])];
+ screen('💿 Mis discos',`<p class="lead">Llevas <b>${got} de ${DISCOS.length}</b> discos. Cada disco es un logro, y algunos desbloquean cosas para tu artista.</p>
+ <div class="discos">${DISCOS.map(d=>{const has=D[d.id];return `<div class="disco${has?' got':''}"><div class="dv">${has?d.e:'💿'}</div><b>${d.n}</b><small>${d.d}</small>${has?`<em>${D[d.id].split('-').reverse().join('/')}</em>`:''}</div>`}).join('')}</div>
+ <div class="lab" style="margin-top:20px">🔓 Cosas para desbloquear</div>
+ <div class="hist">${items.map(([n,r])=>`<div><span>${isUnl(r)?'✅':'🔒'}</span><div><b>${n}</b><small>${isUnl(r)?'¡Ya es tuyo! Póntelo en «Mi artista».':'Para conseguirlo, '+reqText(r)+'.'}</small></div></div>`).join('')}</div>`);
+}
+
+/* ================= TRIVIALES ================= */
+// [asignatura, dificultad 1-3, trimestre (0 = repaso de 1º, 1, 2, 3), pregunta, correcta, [incorrectas], explicación]
+const TRIVIA=[
+ // --- Matemáticas ---
+ ['Mates',1,0,'¿Cuánto es el 25% de 80?','20',['15','25','40'],'El 25% es la cuarta parte: 80 ÷ 4 = 20.'],
+ ['Mates',1,0,'¿Cuántos grados suman los ángulos de un triángulo?','180°',['90°','360°','270°'],'Siempre suman 180°, sea como sea el triángulo.'],
+ ['Mates',1,0,'¿Cuál es el área de un rectángulo de 6 cm × 4 cm?','24 cm²',['20 cm²','10 cm²','48 cm²'],'Área = base × altura = 6 × 4 = 24 cm².'],
+ ['Mates',1,0,'Si x + 7 = 15, ¿cuánto vale x?','8',['7','22','9'],'Pasamos el 7 restando: x = 15 − 7 = 8.'],
+ ['Mates',1,1,'¿Cuánto es (−3) × (−4)?','12',['−12','7','−7'],'Menos por menos da más: (−3) × (−4) = +12.'],
+ ['Mates',1,1,'¿Cuánto es (−5) + 8?','3',['−13','13','−3'],'Partes de −5 y subes 8: llegas a +3.'],
+ ['Mates',1,1,'¿Cuánto es 2³?','8',['6','9','5'],'2³ = 2 × 2 × 2 = 8.'],
+ ['Mates',1,1,'¿Qué fracción es equivalente a 1/2?','3/6',['2/3','1/3','3/5'],'3/6 se simplifica dividiendo entre 3: queda 1/2.'],
+ ['Mates',1,1,'¿Cuál es la raíz cuadrada de 144?','12',['14','72','11'],'12 × 12 = 144.'],
+ ['Mates',2,1,'¿Cuánto es 3/4 + 1/4?','1',['4/8','3/16','1/2'],'Mismo denominador: se suman los numeradores: 4/4 = 1.'],
+ ['Mates',2,1,'¿Cuánto es 10⁰?','1',['0','10','100'],'Cualquier número (distinto de 0) elevado a 0 da 1.'],
+ ['Mates',2,1,'¿Cuál es el mínimo común múltiplo de 4 y 6?','12',['24','2','10'],'Múltiplos de 4: 4, 8, 12… de 6: 6, 12… El primero común es 12.'],
+ ['Mates',2,1,'¿Cuánto es 2/3 de 30?','20',['10','15','45'],'30 ÷ 3 = 10, y por 2 = 20.'],
+ ['Mates',3,1,'¿Cuánto es (−2)³?','−8',['8','−6','6'],'(−2)×(−2)×(−2) = −8: con exponente impar, el signo menos se mantiene.'],
+ ['Mates',3,1,'¿Cuánto es 2³ · 2²?','2⁵ = 32',['2⁶ = 64','4⁵','2¹ = 2'],'Al multiplicar potencias de igual base se suman los exponentes: 3 + 2 = 5.'],
+ ['Mates',2,2,'Si 3 cuadernos cuestan 6 €, ¿cuánto cuestan 5?','10 €',['9 €','12 €','15 €'],'Proporcionalidad directa: cada cuaderno vale 2 €, y 5 × 2 = 10 €.'],
+ ['Mates',2,2,'Un móvil cuesta 200 € y lo rebajan un 20%. ¿Cuánto cuesta ahora?','160 €',['180 €','140 €','120 €'],'El 20% de 200 es 40, y 200 − 40 = 160 €.'],
+ ['Mates',2,2,'Resuelve: 2x − 4 = 10','x = 7',['x = 3','x = 5','x = 6'],'2x = 14, así que x = 7.'],
+ ['Mates',3,2,'Si 4 personas pintan una pared en 6 horas, ¿cuánto tardan 8 personas?','3 horas',['12 horas','4 horas','2 horas'],'Proporcionalidad inversa: el doble de personas, la mitad de tiempo.'],
+ ['Mates',3,2,'Resuelve: 3(x − 2) = 12','x = 6',['x = 2','x = 4','x = 5'],'x − 2 = 4, así que x = 6.'],
+ ['Mates',2,3,'Un triángulo rectángulo tiene catetos de 3 y 4. ¿Cuánto mide la hipotenusa?','5',['7','6','12'],'Teorema de Pitágoras: √(3² + 4²) = √25 = 5.'],
+ ['Mates',2,3,'¿Cuál es la media de 4, 6 y 8?','6',['18','7','5'],'Se suman (18) y se divide entre 3.'],
+ ['Mates',3,3,'¿Cuál es el volumen de un cubo de 3 cm de arista?','27 cm³',['9 cm³','18 cm³','12 cm³'],'Volumen = arista³ = 3 × 3 × 3 = 27 cm³.'],
+ // --- Física y Química ---
+ ['Ciencias',1,0,'¿A qué temperatura hierve el agua a nivel del mar?','100 °C',['0 °C','50 °C','212 °C'],'A nivel del mar, el agua hierve a 100 °C (212 es en grados Fahrenheit).'],
+ ['Ciencias',1,1,'¿Cuál es la unidad de masa en el Sistema Internacional?','El kilogramo',['El gramo','El litro','El newton'],'En el SI la masa se mide en kilogramos (kg).'],
+ ['Ciencias',1,1,'¿Cómo se llama el paso de sólido a líquido?','Fusión',['Solidificación','Condensación','Sublimación'],'Cuando el hielo se derrite se produce una fusión.'],
+ ['Ciencias',1,1,'¿Cómo se llama el paso de líquido a gas?','Vaporización',['Fusión','Solidificación','Condensación'],'Puede ser por evaporación (en la superficie) o ebullición (en todo el líquido).'],
+ ['Ciencias',1,1,'¿Cómo se llama el paso de gas a líquido?','Condensación',['Fusión','Vaporización','Solidificación'],'Por ejemplo, las gotas que aparecen en un vaso frío.'],
+ ['Ciencias',1,1,'¿Qué estado de la materia tiene forma y volumen fijos?','Sólido',['Líquido','Gas','Ninguno'],'Los líquidos tienen volumen fijo pero adoptan la forma del recipiente.'],
+ ['Ciencias',2,1,'¿Qué es la densidad?','La masa dividida entre el volumen',['El peso de un objeto','El espacio que ocupa un cuerpo','La temperatura de un cuerpo'],'d = m / V. Por eso el aceite (menos denso) flota sobre el agua.'],
+ ['Ciencias',2,1,'¿A cuánto equivale 1 litro?','1 dm³',['1 m³','1 cm³','10 dm³'],'1 L = 1 dm³ = 1.000 cm³ (o mL).'],
+ ['Ciencias',2,1,'¿Cuál de estas es una magnitud física?','La temperatura',['La belleza','La simpatía','El color favorito'],'Una magnitud es algo que se puede medir con un número y una unidad.'],
+ ['Ciencias',3,1,'Un objeto tiene 200 g de masa y 100 cm³ de volumen. ¿Cuál es su densidad?','2 g/cm³',['0,5 g/cm³','20.000 g/cm³','100 g/cm³'],'d = m / V = 200 / 100 = 2 g/cm³.'],
+ ['Ciencias',3,1,'¿Por qué un gas ocupa todo el recipiente?','Sus partículas se mueven libremente y están muy separadas',['Sus partículas son más grandes','Pesa más que el aire','Sus partículas están quietas'],'Es la teoría cinética: en los gases las partículas apenas se atraen.'],
+ ['Ciencias',2,2,'¿Qué tipo de mezcla es agua con sal bien disuelta?','Homogénea (una disolución)',['Heterogénea','Una sustancia pura','Un elemento'],'No se distinguen sus componentes a simple vista.'],
+ ['Ciencias',2,2,'¿Cómo separarías arena y agua?','Filtración',['Imantación','Destilación','Decantación de gases'],'El filtro deja pasar el agua y retiene la arena.'],
+ ['Ciencias',2,2,'¿Cómo separarías limaduras de hierro mezcladas con arena?','Con un imán',['Filtrando','Calentando','Con un tamiz de agua'],'El hierro es atraído por el imán y la arena no.'],
+ ['Ciencias',2,3,'¿Cuál de estos es un cambio químico?','Quemar papel',['Derretir hielo','Romper un vaso','Disolver azúcar en agua'],'Al quemarse se forman sustancias nuevas (cenizas, humo…).'],
+ ['Ciencias',2,3,'¿Qué energía tiene un objeto en movimiento?','Cinética',['Potencial','Química','Nuclear'],'La energía cinética depende de la masa y la velocidad.'],
+ ['Ciencias',3,3,'¿Qué partícula del átomo tiene carga negativa?','El electrón',['El protón','El neutrón','El núcleo'],'Los protones son positivos y los neutrones no tienen carga.'],
+ ['Ciencias',3,3,'¿Cuál es el símbolo químico del hierro?','Fe',['Hi','H','Ir'],'Viene del latín ferrum.'],
+ // --- Ciencias Sociales (Edad Media) ---
+ ['Sociales',1,0,'¿En qué continente está España?','Europa',['África','Asia','América'],'España está en el suroeste de Europa.'],
+ ['Sociales',1,1,'¿Qué época empieza con la caída del Imperio romano de Occidente (año 476)?','La Edad Media',['La Edad Moderna','La Prehistoria','La Edad Contemporánea'],'La Edad Media va del 476 al 1492, aproximadamente.'],
+ ['Sociales',1,1,'¿Qué pueblos ocuparon el Imperio romano de Occidente al caer?','Los pueblos germánicos',['Los vikingos','Los aztecas','Los egipcios'],'Visigodos, francos, ostrogodos… crearon sus propios reinos.'],
+ ['Sociales',1,1,'¿Cuál era la capital del Imperio bizantino?','Constantinopla',['Roma','Atenas','Damasco'],'Hoy se llama Estambul y está en Turquía.'],
+ ['Sociales',1,1,'¿Qué religión fundó Mahoma?','El islam',['El cristianismo','El judaísmo','El budismo'],'Nació en la península arábiga en el siglo VII.'],
+ ['Sociales',2,1,'¿En qué año llegaron los musulmanes a la península ibérica?','711',['476','1492','1000'],'Cruzaron el estrecho de Gibraltar en el 711.'],
+ ['Sociales',1,1,'¿Cómo se llamaba el territorio de la península gobernado por los musulmanes?','Al-Ándalus',['Hispania','Castilla','Bizancio'],'Llegó a ocupar casi toda la península.'],
+ ['Sociales',2,1,'¿Qué famoso monumento de Al-Ándalus está en Córdoba?','La Mezquita',['La Sagrada Familia','El Acueducto','La Alhambra'],'La Alhambra también es andalusí, ¡pero está en Granada!'],
+ ['Sociales',2,1,'¿Qué emperador fue coronado en el año 800?','Carlomagno',['Julio César','Justiniano','Napoleón'],'Fue el gran rey de los francos.'],
+ ['Sociales',1,1,'En el feudalismo, ¿quién trabajaba las tierras del señor?','Los campesinos',['Los nobles','Los obispos','Los caballeros'],'A cambio de protección, pagaban rentas y trabajaban para el señor.'],
+ ['Sociales',2,1,'¿Cómo se llamaba el pacto en el que un noble juraba fidelidad a otro más poderoso?','Vasallaje',['Cruzada','Concilio','Monopolio'],'El vasallo recibía un feudo a cambio de fidelidad y ayuda militar.'],
+ ['Sociales',2,2,'¿Qué conde se considera el origen de la dinastía de los condes de Barcelona?','Guifré el Pilós (Wifredo el Velloso)',['Jaume I','Ramon Berenguer IV','Carlomagno'],'Vivió en el siglo IX.'],
+ ['Sociales',1,2,'¿Qué estilo artístico tiene arcos de medio punto y muros gruesos?','El románico',['El gótico','El barroco','El islámico'],'Hay muchas iglesias románicas en el Pirineo catalán, como las de la Vall de Boí.'],
+ ['Sociales',1,2,'¿Qué estilo tiene arcos apuntados, vidrieras y rosetones?','El gótico',['El románico','El modernismo','El renacentista'],'Buscaba altura y mucha luz.'],
+ ['Sociales',2,2,'¿Qué rey conquistó Mallorca y Valencia en el siglo XIII?','Jaume I',['Guifré el Pilós','Fernando el Católico','Martí l\'Humà'],'Es conocido como Jaume I el Conqueridor.'],
+ ['Sociales',2,2,'En la Edad Media, ¿cómo se llamaban los habitantes de las ciudades que vivían del comercio y la artesanía?','Burgueses',['Siervos','Clérigos','Vasallos'],'Venía de «burgo», que significaba ciudad.'],
+ ['Sociales',2,3,'¿Qué iglesia gótica de Barcelona construyeron los vecinos del barrio de la Ribera?','Santa Maria del Mar',['La Sagrada Familia','Sant Pau del Camp','El Palau Güell'],'Es uno de los mejores ejemplos de gótico catalán.'],
+ ['Sociales',3,3,'¿En qué siglo llegó la peste negra a Europa?','Siglo XIV',['Siglo X','Siglo XII','Siglo XVI'],'En 1348 provocó la muerte de una gran parte de la población.'],
+ ['Sociales',3,3,'¿Cómo se llamó el acuerdo de 1412 para elegir rey tras morir Martí l\'Humà sin herederos?','Compromiso de Caspe',['Tratado de Utrecht','Paz de Westfalia','Concilio de Trento'],'Se eligió a Fernando de Antequera.'],
+ ['Sociales',3,3,'¿Qué institución catalana nació en el siglo XIV como Diputació del General?','La Generalitat',['El Parlament Europeu','L\'Ajuntament','El Senat'],'Se creó en 1359 para recaudar impuestos.'],
+ // --- Llengua catalana ---
+ ['Català',1,0,'Com es diu «mariposa» en català?','Papallona',['Mariposa','Paloma','Papaia'],'Papallona!'],
+ ['Català',1,0,'Quin és el plural de «peix»?','Peixos',['Peixs','Peixes','Peix'],'Els mots acabats en -x fan el plural en -os.'],
+ ['Català',1,0,'Què es regala per Sant Jordi?','Un llibre i una rosa',['Un tió','Una mona','Panellets'],'El 23 d\'abril és la diada del llibre i la rosa.'],
+ ['Català',1,1,'Quin és un sinònim de «feliç»?','Content',['Trist','Enfadat','Cansat'],'Sinònims: paraules amb un significat semblant.'],
+ ['Català',1,1,'Quin és l\'antònim de «ràpid»?','Lent',['Veloç','Àgil','Lleuger'],'Antònims: paraules de significat contrari.'],
+ ['Català',2,1,'Quin d\'aquests mots porta accent obert (`)?','Cafè',['Cançó','També','Camí'],'La e de cafè és oberta: porta accent greu.'],
+ ['Català',2,1,'Quina categoria gramatical és «ràpidament»?','Adverbi',['Adjectiu','Verb','Nom'],'Els adverbis acabats en -ment indiquen manera.'],
+ ['Català',2,2,'Quin gènere literari s\'escriu normalment en vers i expressa sentiments?','La lírica',['La narrativa','El teatre','L\'assaig'],'Els poemes pertanyen a la lírica.'],
+ ['Català',3,3,'Quina figura retòrica és «els teus ulls són dos estels»?','Una metàfora',['Una comparació','Una hipèrbole','Una onomatopeia'],'Identifica dues coses sense fer servir «com».'],
+ // --- Lengua castellana ---
+ ['Castellano',1,0,'¿Cuál está bien escrita?','A ver si vienes',['Haber si vienes','Aver si vienes','Ha ver si vienes'],'«A ver» viene de ver; «haber» es otro verbo.'],
+ ['Castellano',1,0,'¿Cuál de estas palabras es aguda?','Canción',['Árbol','Música','Lápiz'],'Las agudas llevan la fuerza en la última sílaba: can-CIÓN.'],
+ ['Castellano',2,1,'¿Qué tipo de palabra es «rápidamente»?','Un adverbio',['Un adjetivo','Un verbo','Un sustantivo'],'Indica cómo se hace algo.'],
+ ['Castellano',2,1,'¿Cuál es el sujeto en «Mi hermana canta en el coro»?','Mi hermana',['Canta','En el coro','El coro'],'El sujeto es quien realiza la acción y concuerda con el verbo.'],
+ ['Castellano',2,1,'¿Cuál es una palabra esdrújula?','Música',['Canción','Árbol','Pared'],'Las esdrújulas llevan la fuerza en la antepenúltima sílaba y siempre tilde.'],
+ ['Castellano',2,2,'¿Qué figura literaria compara dos cosas usando «como»?','El símil (comparación)',['La metáfora','La hipérbole','La personificación'],'Ejemplo: «blanco como la nieve».'],
+ ['Castellano',2,2,'«La luna nos sonreía» es un ejemplo de…','Personificación',['Hipérbole','Símil','Rima'],'Se da una cualidad humana (sonreír) a algo que no lo es.'],
+ ['Castellano',3,3,'¿Hasta cuántas sílabas tiene un verso de arte menor?','Ocho',['Diez','Seis','Doce'],'De 9 sílabas en adelante, son de arte mayor.'],
+ // --- Inglés ---
+ ['Inglés',1,0,'What is the plural of «child»?','Children',['Childs','Childes','Childrens'],'It\'s an irregular plural.'],
+ ['Inglés',1,0,'She ___ to school every day.','goes',['go','going','gone'],'Present simple: third person adds -s/-es.'],
+ ['Inglés',1,0,'What\'s the opposite of «cheap»?','Expensive',['Small','Easy','Cold'],'Cheap = barato; expensive = caro.'],
+ ['Inglés',1,1,'I ___ watching TV right now.','am',['is','are','be'],'Present continuous: I am + -ing.'],
+ ['Inglés',2,1,'There ___ some apples in the fridge.','are',['is','be','am'],'Plural: there are.'],
+ ['Inglés',2,1,'___ you like pizza?','Do',['Does','Are','Is'],'With «you» we use «do» for questions in the present simple.'],
+ ['Inglés',2,2,'What is the past simple of «go»?','went',['goed','gone','going'],'«Go» is irregular: go – went – gone.'],
+ ['Inglés',2,2,'What is the comparative of «good»?','better',['gooder','more good','best'],'Good – better – the best.'],
+ ['Inglés',3,3,'If it rains, I ___ stay at home.','will',['would','am','did'],'First conditional: if + present, will + verb.'],
+ // --- Tecnología y Digitalización ---
+ ['Tecnología',1,0,'¿Cuántos bits tiene un byte?','8',['2','10','16'],'1 byte = 8 bits.'],
+ ['Tecnología',1,1,'¿Qué parte del ordenador guarda los archivos aunque lo apagues?','El disco duro (o SSD)',['La memoria RAM','La pantalla','El ratón'],'La RAM se borra al apagar el ordenador.'],
+ ['Tecnología',2,1,'Para proteger tu cuenta, ¿cuál es la mejor contraseña?','Una larga con letras, números y símbolos',['Tu fecha de nacimiento','123456','Tu nombre'],'Y mejor no repetirla en todas las cuentas.'],
+ ['Tecnología',2,2,'¿Cuál de estos materiales conduce bien la electricidad?','El cobre',['La madera','El plástico','El vidrio'],'Por eso los cables son de cobre recubierto de plástico.'],
+ ['Tecnología',3,3,'¿En qué unidad se mide la resistencia eléctrica?','Ohmios (Ω)',['Voltios','Amperios','Vatios'],'La ley de Ohm relaciona voltaje, intensidad y resistencia: V = I · R.'],
+];
+const MUSICA=[
+ // [categoría, dificultad, —, pregunta, correcta, incorrectas, explicación]
+ ['Música en clase',1,0,'¿Cuántas líneas tiene un pentagrama?','5',['4','6','7'],'Penta = cinco.'],
+ ['Música en clase',1,0,'¿Cuántas notas musicales naturales hay?','7',['5','8','12'],'Do, re, mi, fa, sol, la, si.'],
+ ['Música en clase',1,0,'En un compás de 4/4, ¿qué figura dura 4 tiempos?','La redonda',['La blanca','La negra','La corchea'],'Redonda 4, blanca 2, negra 1, corchea ½.'],
+ ['Música en clase',1,0,'¿Qué figura dura 1 tiempo?','La negra',['La redonda','La blanca','La semicorchea'],'Dos corcheas equivalen a una negra.'],
+ ['Música en clase',1,0,'¿Cuántas cuerdas tiene una guitarra española?','6',['4','5','12'],'El violín tiene 4.'],
+ ['Música en clase',1,0,'¿A qué familia de instrumentos pertenece la trompeta?','Viento metal',['Viento madera','Cuerda','Percusión'],'También el trombón, la tuba y la trompa.'],
+ ['Música en clase',2,0,'¿A qué familia pertenece la flauta travesera, aunque sea de metal?','Viento madera',['Viento metal','Cuerda','Percusión'],'Se clasifica por cómo produce el sonido, no por su material.'],
+ ['Música en clase',2,0,'¿Qué significa «piano» en una partitura?','Suave',['Rápido','Fuerte','Lento'],'«Forte» significa fuerte.'],
+ ['Música en clase',2,0,'¿Cuál es el instrumento más grave de la familia del violín?','El contrabajo',['La viola','El violonchelo','El violín'],'Violín, viola, violonchelo y contrabajo, de agudo a grave.'],
+ ['Música en clase',2,0,'¿Qué compositor siguió componiendo a pesar de quedarse sordo?','Beethoven',['Mozart','Vivaldi','Bach'],'Compuso su Novena Sinfonía casi totalmente sordo.'],
+ ['Música en clase',2,0,'¿Quién compuso «Las cuatro estaciones»?','Vivaldi',['Mozart','Chopin','Beethoven'],'Antonio Vivaldi, compositor barroco italiano.'],
+ ['Música en clase',3,0,'¿En qué ciudad nació Mozart?','Salzburgo',['Viena','Berlín','París'],'Salzburgo está en Austria.'],
+ ['Música en clase',3,0,'¿Qué nota se escribe en la segunda línea del pentagrama con clave de sol?','Sol',['Mi','Do','La'],'¡Por eso se llama clave de sol!'],
+ ['Cantantes',1,0,'¿De qué provincia es Rosalía?','Barcelona',['Madrid','Sevilla','Valencia'],'Es de Sant Esteve Sesrovires, en el Baix Llobregat.'],
+ ['Cantantes',1,0,'¿De qué país es Bad Bunny?','Puerto Rico',['México','España','Colombia'],'Es puertorriqueño.'],
+ ['Cantantes',1,0,'¿De qué país es Shakira?','Colombia',['Argentina','México','Venezuela'],'Nació en Barranquilla.'],
+ ['Cantantes',1,0,'¿En qué programa de televisión se dio a conocer Aitana?','Operación Triunfo',['La Voz','Factor X','Got Talent'],'Participó en Operación Triunfo 2017.'],
+ ['Cantantes',1,0,'¿De qué país es el grupo BTS?','Corea del Sur',['Japón','China','Tailandia'],'Es uno de los grupos de K-pop más famosos del mundo.'],
+ ['Cantantes',1,0,'¿Quién era el cantante de Queen?','Freddie Mercury',['Elton John','Mick Jagger','David Bowie'],'Una de las voces más famosas del rock.'],
+ ['Cantantes',1,0,'¿A quién llaman «el Rey del Pop»?','Michael Jackson',['Elvis Presley','Justin Bieber','Prince'],'A Elvis lo llaman «el Rey del Rock and Roll».'],
+ ['Cantantes',1,0,'¿Quién canta «Espresso» (2024)?','Sabrina Carpenter',['Taylor Swift','Dua Lipa','Olivia Rodrigo'],'Fue una de las canciones del verano de 2024.'],
+ ['Cantantes',1,0,'¿Quién canta «Flowers» (2023)?','Miley Cyrus',['Selena Gomez','Ariana Grande','Billie Eilish'],'Ganó el Grammy a la grabación del año.'],
+ ['Cantantes',1,0,'¿De quién es el disco «Motomami»?','Rosalía',['Aitana','Karol G','Lola Índigo'],'Salió en 2022.'],
+ ['Cantantes',1,0,'¿De quién es el disco «Un verano sin ti»?','Bad Bunny',['J Balvin','Quevedo','Ozuna'],'Salió en 2022 y batió récords de escuchas.'],
+ ['Cantantes',2,0,'¿Cómo se llamaba la gira mundial de Taylor Swift de 2023 y 2024?','The Eras Tour',['The Love Tour','Midnights World','Red Tour Forever'],'Recorría todas las «eras» de su carrera.'],
+ ['Cantantes',2,0,'¿Con qué productor argentino hizo Quevedo su famosa «Music Session» de 2022?','Bizarrap',['Tiësto','Calvin Harris','David Guetta'],'Es la sesión número 52 de Bizarrap.'],
+ ['Cantantes',2,0,'¿Con quién compone Billie Eilish sus canciones?','Con su hermano Finneas',['Con su madre','Con Ed Sheeran','Con su mejor amiga'],'Empezaron grabando en el dormitorio de casa.'],
+ ['Cantantes',2,0,'¿De qué ciudad eran los Beatles?','Liverpool',['Londres','Manchester','Dublín'],'Una ciudad portuaria del noroeste de Inglaterra.'],
+ ['Cantantes',2,0,'¿De qué ciudad son los hermanos de Estopa?','Cornellà de Llobregat',['Madrid','Sabadell','Badalona'],'Los hermanos Muñoz son de Cornellà.'],
+ ['Cantantes',2,0,'¿De qué país es Karol G?','Colombia',['Puerto Rico','España','Chile'],'Es de Medellín.'],
+ ['Cantantes',2,0,'¿En qué ciudad nació Dua Lipa?','Londres',['Tirana','Nueva York','Berlín'],'Su familia es de Kosovo.'],
+ ['Cantantes',2,0,'¿Qué instrumento suele tocar Ed Sheeran en sus conciertos?','La guitarra',['El piano','La batería','El violín'],'Además, usa un pedal para grabar capas de sonido en directo.'],
+ ['Cantantes',2,0,'¿En qué idioma cantan grupos como Oques Grasses, Txarango o Manel?','Catalán',['Euskera','Gallego','Inglés'],'Hay muchísimos grupos que cantan en catalán.'],
+ ['Cantantes',2,0,'¿Cuántas componentes tiene el grupo de K-pop BLACKPINK?','4',['3','5','7'],'Jisoo, Jennie, Rosé y Lisa.'],
+ ['Cantantes',2,0,'¿Quién cantaba «Despacito» junto a Daddy Yankee?','Luis Fonsi',['Enrique Iglesias','Maluma','Nicky Jam'],'Fue un éxito mundial en 2017.'],
+ ['Cantantes',3,0,'¿Qué país ganó Eurovisión en 2024?','Suiza',['Suecia','Italia','Ucrania'],'Lo ganó Nemo con «The Code».'],
+ ['Cantantes',3,0,'¿Con qué canción quedó España en tercer lugar en Eurovisión 2022?','«SloMo» de Chanel',['«Eaea» de Blanca Paloma','«Zorra» de Nebulossa','«Voy a quedarme» de Blas Cantó'],'Fue el mejor resultado de España en muchos años.'],
+ ['Cantantes',3,0,'¿Quién canta «drivers license»?','Olivia Rodrigo',['Billie Eilish','Lorde','Taylor Swift'],'Fue su primer gran éxito, en 2021.'],
+ ['Música y Barcelona',2,0,'¿Qué edificio modernista de Barcelona es una famosa sala de conciertos?','El Palau de la Música Catalana',['La Casa Batlló','La Pedrera','El Park Güell'],'Lo diseñó el arquitecto Lluís Domènech i Montaner.'],
+ ['Música y Barcelona',2,0,'¿Qué festival de música electrónica se celebra cada año en Barcelona?','Sónar',['Coachella','Tomorrowland','Glastonbury'],'Coachella es en EE. UU., Tomorrowland en Bélgica y Glastonbury en Inglaterra.'],
+ ['Música y Barcelona',3,0,'¿Qué gran teatro de ópera hay en La Rambla de Barcelona?','El Gran Teatre del Liceu',['La Scala','El Teatro Real','La Ópera de Sídney'],'La Scala está en Milán y el Teatro Real en Madrid.'],
+];
+const TRIM=['repaso de 1º','1.er trimestre','2.º trimestre','3.er trimestre'];
+function curTrim(){const m=new Date().getMonth()+1;return m>=9?1:m<=3?2:m<=6?3:3}
+function playQuiz(k){
+ const lv=ctx.lv,N=10,bank=k==='trivia'?TRIVIA:MUSICA,tr=curTrim(),maxD=lv<=3?1:lv<=6?2:3;
+ const allowed=bank.map((q,i)=>[q,i]).filter(([q])=>q[2]<=tr);
+ let pool=allowed.filter(([q])=>q[1]<=maxD);if(pool.length<N)pool=allowed;
+ const extra=k==='trivia'?`Preguntas de lo que se suele dar hasta ahora en 2º de ESO (<b>${TRIM[tr]}</b>) y repaso de 1º. Al responder verás la explicación.`:'Cantantes, canciones, instrumentos y lo que das en clase de música. Al responder verás la explicación.';
+ intro(k,`Son ${N} preguntas. ${extra}`,()=>{
+  const seenK='quiz_'+k,seen=ctx.mode==='solo'?((st.quizSeen||{})[seenK]||[]):[];
+  const list=shuffle(pool).sort((a,b)=>seen.includes(a[1])-seen.includes(b[1])).slice(0,N);
+  if(ctx.mode==='solo'){st.quizSeen=st.quizSeen||{};st.quizSeen[seenK]=[...seen,...list.map(x=>x[1])].slice(-Math.floor(allowed.length*0.7));save()}
+  const S={i:0,ok:0,score:0,t0:0};const b=frame(k,false);
+  function q(){
+   if(S.i>=list.length)return done();
+   const [Q]=list[S.i];S.i++;
+   const opts=shuffle([Q[4],...Q[5]]);
+   b.innerHTML=`<div class="info">Pregunta ${S.i} de ${list.length}</div><span class="qtag">${Q[0]}${k==='trivia'&&Q[2]?' · '+TRIM[Q[2]]:''}</span><div class="qtext">${Q[3]}</div><div class="vopts">${opts.map(o=>`<button class="vopt" data-v="${esc(o)}">${o}</button>`).join('')}</div><div id="ex"></div>`;
+   b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');S.t0=Date.now();
+   b.querySelectorAll('.vopt').forEach(bt=>bt.onclick=()=>{
+    const good=bt.dataset.v===Q[4];
+    b.querySelectorAll('.vopt').forEach(x=>{x.disabled=true;if(x.dataset.v===Q[4])x.classList.add('p3')});
+    if(good){S.ok++;S.score+=10+(Date.now()-S.t0<8000?5:0);setScore(S.score)}else bt.classList.add('p0');
+    $('#ex').innerHTML=`<div class="explain">${good?'✅ ¡Correcto!':'❌ Era: <b>'+Q[4]+'</b>.'} ${Q[6]||''}</div><button class="btn wide" style="margin-top:14px" id="nx">${S.i>=list.length?'Ver resultado':'Siguiente →'}</button>`;
+    $('#nx').onclick=q;$('#ex').scrollIntoView({behavior:'smooth',block:'nearest'});
+   });
+  }
+  q();
+  function done(){finish(k,S.score,S.ok>=8?1:S.ok<=4?-1:0,[`✅ Aciertos: ${S.ok} de ${list.length}`,'⚡ Si respondes en menos de 8 segundos ganas puntos extra.'],cheerFor(S.ok/list.length),S.ok===list.length)}
+ });
+}
+
+/* ================= COFRE DIARIO ================= */
+function openChest(){
+ if(st.chestDay===today())return;
+ const r0=rankOf(st.xp);
+ st.chestDay=today();st.chest=st.chest||{};st.stats.chests=(st.stats.chests||0)+1;
+ const items=[...HAIRCOL,...ACCS].filter(x=>x[2]&&x[2].chest&&!st.chest[x[2].chest]);
+ let rw;
+ if(items.length&&(Math.random()<0.3||st.stats.chests%4===0)){const it=items[Math.floor(Math.random()*items.length)];st.chest[it[2].chest]=today();rw=['✨','¡Objeto exclusivo!',`${it[1]}. Póntelo en «🎨 Mi artista».`]}
+ else{const f=[20,25,30,40,50,75][Math.floor(Math.random()*6)];st.xp+=f;rw=['🙌',`+${f} fans`,'¡Tu público no para de crecer!']}
+ save();
+ const root=$('#modalRoot');
+ root.innerHTML=`<div class="modal"><div class="panel pop" style="text-align:center"><div class="chest" id="chB">🎁</div><p class="lead" id="chT">Abriendo el cofre…</p><div id="chR"></div></div></div>`;
+ setTimeout(()=>{
+  const c=$('#chB');if(!c)return;c.classList.remove('chest');c.classList.add('chestOpen');c.textContent=rw[0];
+  $('#chT').innerHTML=`<b style="font-size:22px;color:var(--ink)">${rw[1]}</b><br>${rw[2]}`;
+  $('#chR').innerHTML=`<p class="lead" style="font-size:13px">Vuelve mañana: completa el 🎯 reto del día para abrir otro cofre.</p><button class="btn wide" id="chOk">¡Genial!</button>`;
+  confetti();jingle('disco');
+  $('#chOk').onclick=()=>{root.innerHTML='';if(curView==='home')home();const b2=$('#chestBtn');if(b2)b2.remove();celebrate(r0,false,false)};
+ },1300);
+}
+
+/* ---------- pantallas ---------- */
+function nameScreen(edit){
+ curView='name';
+ view.innerHTML=`<div class="panel pop" style="margin-top:40px;text-align:center"><div style="font-size:64px">🧠✨</div><h1 class="f" style="font-size:28px;margin-top:8px">Gimnasio Mental</h1><p style="color:var(--muted);line-height:1.5">Juegos cortos para entrenar la memoria, la atención, la lógica y la forma de resolver problemas. ¡10 minutos al día y verás cómo creces!</p><form id="nf"><input type="text" id="nm" maxlength="20" placeholder="¿Cómo te llamas?" value="${esc(st.name)}" autocomplete="off"><button class="btn wide" type="submit">${edit?'Guardar':'¡Vamos!'}</button></form>${edit?'':'<button class="chip" id="nRestore" style="margin-top:14px">¿Ya jugabas? Recuperar con copia de seguridad</button>'}</div>`;
+ if($('#nRestore'))$('#nRestore').onclick=()=>backupScreen('restore');
+ $('#nf').onsubmit=e=>{e.preventDefault();const v=$('#nm').value.trim();if(!v){$('#nm').focus();return}st.name=v;save();if(!st.artist)return artistEditor(true);if(!openPending())home()};
+ later(()=>$('#nm')&&$('#nm').focus(),100);
+}
+function settings(){
+ const root=$('#modalRoot');
+ root.innerHTML=`<div class="modal"><div class="panel pop"><h3 class="f" style="font-size:20px">Ajustes</h3><div style="display:grid;gap:10px;margin-top:14px"><div class="status">${storageStatus()[0]} ${storageStatus()[1]}</div><button class="btn ghost wide" id="sArt">🎨 Mi artista</button><button class="btn ghost wide" id="sSound">${st.sound!==false?'🔊 Sonidos: activados':'🔇 Sonidos: desactivados'}</button><button class="btn ghost wide" id="sBackup">📦 Copia de seguridad</button><button class="btn ghost wide" id="sName">Cambiar nombre</button><button class="btn ghost wide" id="sReset" style="color:var(--bad);border-color:var(--bad)">Borrar todo el progreso</button><button class="btn wide" id="sClose">Cerrar</button></div><div id="sConf"></div></div></div>`;
+ const close=()=>root.innerHTML='';
+ $('#sClose').onclick=close;
+ $('#sName').onclick=()=>{close();nameScreen(true)};
+ $('#sBackup').onclick=()=>{close();backupScreen()};
+ $('#sArt').onclick=()=>{close();artistEditor(false)};
+ $('#sSound').onclick=()=>{st.sound=st.sound===false;save();$('#sSound').textContent=st.sound?'🔊 Sonidos: activados':'🔇 Sonidos: desactivados';if(st.sound)jingle('level')};
+ $('#sReset').onclick=()=>{$('#sConf').innerHTML=`<p style="font-weight:700">¿Seguro? Se borrarán niveles, puntos y racha.</p><div class="row" style="margin-top:6px"><button class="btn ghost" id="cNo">No</button><button class="btn" id="cYes" style="background:var(--bad);box-shadow:0 6px 0 #a3272b">Sí, borrar</button></div>`;
+  $('#cNo').onclick=()=>$('#sConf').innerHTML='';$('#cYes').onclick=()=>{const n=st.name;st=def();st.name=n;save();close();home()}};
+}
+function backupScreen(mode){
+ cleanup();curView='backup';
+ const code=toCode(st);
+ view.innerHTML=`<div class="ghead"><button class="iconbtn" id="exit" title="Volver">←</button><h2>📦 Copia de seguridad</h2></div><div class="panel pop">
+ ${mode==='restore'?'':`<div class="lab" style="margin-top:0">Guardar mi progreso</div><p class="lead">Copia este código y guárdalo (por ejemplo, envíatelo por WhatsApp o pégalo en las notas del móvil). Con él puedes recuperar tus niveles, puntos y rankings en cualquier momento.</p>
+ <textarea class="msg" id="msg" readonly>${code}</textarea><button class="btn wide" id="copy" style="margin-top:10px">📋 Copiar código</button><div class="fb" id="cfb"></div>`}
+ <div class="lab">Recuperar una copia</div><p class="lead">Pega aquí un código de copia de seguridad (empieza por <b>GM1:</b>). Sustituirá el progreso actual.</p>
+ <textarea class="msg" id="rin" placeholder="GM1:..." style="min-height:80px"></textarea><button class="btn ${mode==='restore'?'':'ghost '}wide" id="rbtn" style="margin-top:10px">Recuperar progreso</button><div class="fb" id="rfb"></div></div>`;
+ $('#exit').onclick=()=>st.name?home():nameScreen();
+ if($('#copy'))$('#copy').onclick=async()=>{try{await navigator.clipboard.writeText(code);$('#cfb').textContent='✅ Copiado. ¡Guárdalo en un sitio seguro!'}catch(e){const t=$('#msg');t.focus();t.select();$('#cfb').textContent='Selecciona el código y cópialo a mano.'}};
+ $('#rbtn').onclick=()=>{const o=fromCode($('#rin').value);if(!o){$('#rfb').style.color='var(--bad)';$('#rfb').textContent='Ese código no es válido. Asegúrate de copiarlo entero.';return}
+  st=mergeState(o,st);save();$('#rfb').style.color='var(--ok)';$('#rfb').textContent=`✅ ¡Recuperado! Hola de nuevo, ${st.name||''}.`;later(()=>st.name?home():nameScreen(),1200)};
+}
+function home(){
+ cleanup();curView='home';
+ if(!st.name)return nameScreen();
+ if(!st.artist)return artistEditor(true);
+ const d=daily(),ri=rankOf(st.xp),rk=RANKS[ri],nx=RANKS[ri+1],A=st.artist,G0=genre(A.genre);
+ const prog=nx?(st.xp-rk[0])/(nx[0]-rk[0])*100:100;
+ const streakNow=st.lastDay===today()||st.lastDay===yesterday()?st.streak:0;
+ const h=new Date().getHours();const greet=h<14?'¡Buenos días':h<21?'¡Buenas tardes':'¡Buenas noches';
+ const nDisc=DISCOS.filter(x=>(st.discos||{})[x.id]).length;
+ view.innerHTML=`
+ <div class="top"><div class="hello">${greet},<b>${esc(st.name)}!</b></div><button class="iconbtn" id="cfg" title="Ajustes">⚙️</button></div>
+ <div class="hero2 pop" style="--gc:${G0[3]}">
+  <div class="stagewrap">${stageSVG(ri,A)}<span class="where">${rk[2]} ${rk[1]}</span></div>
+  <div class="hinfo">
+   <div class="sname">${esc(A.stage)}</div><small>${G0[2]} ${G0[1]}</small>
+   <div class="xpbar"><i style="width:${prog}%"></i></div>
+   <small>🙌 ${st.xp} fans${nx?` · faltan ${nx[0]-st.xp} para tocar en «${nx[1]}»`:' · ¡eres una leyenda!'}</small>
+   <div class="pills"><span class="pill">🔥 Racha: ${streakNow} ${streakNow===1?'día':'días'}</span><span class="pill">${d.done?'✅ Reto del día hecho':'🎯 Reto del día pendiente'}</span>${d.done&&st.chestDay!==today()?'<button class="pill chestpill" id="hChest">🎁 ¡Abre tu cofre!</button>':''}</div>
+   <div class="hbtns"><button id="hArt">🎨 Mi artista</button><button id="hDisc">💿 Mis discos ${nDisc}/${DISCOS.length}</button></div>
+  </div>
+ </div>
+ ${!cloudRef&&!localOK?`<button class="warn" id="wBk">⚠️ Este navegador no guarda tu progreso. Toca aquí para hacer una copia de seguridad.</button>`:''}
+ <div class="section">Tu banda <small style="font-family:Nunito;font-weight:700;color:var(--muted);font-size:13px">· cada juego mejora un instrumento</small></div>
+ <div class="areas">${Object.entries(GAMES).map(([k,g])=>{const B=BAND[k],lv=st.games[k].lv,T=tier(lv);return `<div class="band"><span class="bi" style="background:${g.bg}">${B[0]}</span><div class="bt"><div><b>${B[1]}</b> <small>${g.area}</small></div><div class="bar"><i style="width:${lv*10}%;background:${g.col}"></i></div><small>${T[0]} ${T[1]}</small></div><span class="blv">${lv}/10</span></div>`}).join('')}</div>
+ <div class="section">Entrena</div>
+ <div class="cards">${Object.entries(GAMES).map(([k,g])=>`<button class="card${d.game===k&&!d.done?' daily':''}" data-k="${k}">${d.game===k&&!d.done?'<span class="badge">🎯 Reto del día · fans extra</span>':''}<div class="ic" style="background:${g.bg}">${g.icon}</div><div><h3>${g.name}</h3><p>${g.desc}</p></div><span class="lv">Nv ${st.games[k].lv}</span></button>`).join('')}</div>
+ <div class="section">Con amig@s</div>
+ <div class="cards">
+  <button class="card" id="fGroup"><div class="ic" style="background:#fff1d6">👥</div><div><h3>Modo grupo</h3><p>De 2 a 8 jugadores en un mismo móvil o tablet. Os vais pasando el dispositivo y al final, ¡podio!</p></div></button>
+  <button class="card" id="fSend"><div class="ic" style="background:#ffe6ee">⚔️</div><div><h3>Retar a distancia</h3><p>Juega una partida y envía un código por WhatsApp. Tu amig@ jugará exactamente los mismos retos.</p></div></button>
+  <button class="card" id="fRank"><div class="ic" style="background:#fff6cc">🏅</div><div><h3>Mis retos y rankings</h3><p>Tu historial de retos, la liga con tus amig@s y la liga del Modo grupo.</p></div></button>
+  <button class="card" id="fCode"><div class="ic" style="background:#e9f7ef">🎟️</div><div><h3>Tengo un código de reto</h3><p>Mete el código que te han mandado y demuestra quién manda.</p></div></button>
+ </div>
+ <details class="family"><summary>👨‍👩‍👧 Cómo funciona (para familias)</summary><p>Cada juego se adapta solo: si va muy bien, sube de nivel; si cuesta, baja un poco para afianzar. Lo ideal son 10–15 minutos al día (2 o 3 juegos), mejor que mucho rato de golpe. El «Reto del día» propone el área menos trabajada. Las <b>Misiones de vida</b> dan mucho juego para comentarlas juntas. El progreso se guarda en este navegador.</p></details>`;
+ $('#cfg').onclick=settings;$('#hArt').onclick=()=>artistEditor(false);if($('#hChest'))$('#hChest').onclick=openChest;$('#hDisc').onclick=discosScreen;if($('#wBk'))$('#wBk').onclick=()=>backupScreen();
+ view.querySelectorAll('.card[data-k]').forEach(c=>c.onclick=()=>launch(c.dataset.k));
+ $('#fGroup').onclick=groupSetup;$('#fSend').onclick=sendSetup;$('#fCode').onclick=codeEntry;$('#fRank').onclick=()=>myRanking();
+}
+
+/* ================= CON AMIG@S ================= */
+const cleanName=n=>(n||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Za-z0-9]/g,'').slice(0,12).toUpperCase()||'ALGUIEN';
+const niceName=n=>n.charAt(0)+n.slice(1).toLowerCase();
+const makeCode=(k,lv,seed,score)=>`${CODES[k]}${lv}-${seed.toString(36).toUpperCase()}-${score}-${cleanName(artistName())}`;
+function parseCode(s){
+ const m=String(s).trim().replace(/^#?reto-/i,'').match(/^([MCTSVQX])(\d{1,2})-([0-9A-Z]{1,7})-(\d{1,5})-([A-Z0-9]{1,12})$/i);
+ if(!m)return null;
+ const k=Object.keys(CODES).find(x=>CODES[x]===m[1].toUpperCase());const lv=+m[2],seed=parseInt(m[3],36);
+ if(!k||lv<1||lv>10||!seed)return null;
+ return{k,lv,seed,score:+m[4],name:niceName(m[5].toUpperCase())};
+}
+function screen(title,html){cleanup();curView='other';view.innerHTML=`<div class="ghead"><button class="iconbtn" id="exit" title="Volver">←</button><h2>${title}</h2></div><div class="panel pop" id="body">${html}</div>`;$('#exit').onclick=home;return $('#body')}
+function chipsHTML(id,items,sel){return `<div class="chips" id="${id}">${items.map(([v,l])=>`<button class="chip${v===sel?' sel':''}" data-v="${v}">${l}</button>`).join('')}</div>`}
+function bindChips(id,cb){const box=$('#'+id);box.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{box.querySelectorAll('.chip').forEach(x=>x.classList.remove('sel'));c.classList.add('sel');cb(c.dataset.v)})}
+const gameItems=()=>Object.entries(GAMES).map(([k,g])=>[k,g.icon+' '+g.name]);
+
+/* --- Retar a distancia --- */
+function sendSetup(){
+ let k='series',lv=5;
+ const b=screen('⚔️ Retar a distancia',`<p class="lead">Elige juego y dificultad. Juega tu partida y al final te daré un código para mandarlo. Tu amig@ tendrá <b>exactamente los mismos retos</b>.</p>
+ <div class="lab">Juego</div>${chipsHTML('cg',gameItems(),k)}<div class="lab">Dificultad</div>${chipsHTML('cd',DIFF.map(([l,v])=>[String(v),l]),'5')}
+ <button class="btn wide" id="go2" style="margin-top:18px">Jugar mi partida</button>`);
+ bindChips('cg',v=>k=v);bindChips('cd',v=>lv=+v);
+ $('#go2').onclick=()=>launch(k,{mode:'send',lv,banner:'⚔️ Tu puntuación será el reto que mandes'});
+}
+function shareScreen(k,lv,seed,score){
+ const code=makeCode(k,lv,seed,score);
+ const msg=`🎤⚔️ ¡Batalla de bandas en Gimnasio Mental! Soy ${artistName()} y he sacado ${score} puntos en ${GAMES[k].name}. ¿A que no me superas? 😏\n\nEntra aquí: ${APP_URL}#reto-${code}\n\n(o mete este código en «Tengo un código de reto»: ${code})`;
+ const b=screen('⚔️ Tu reto está listo',`<div style="text-align:center"><div style="font-size:54px">${GAMES[k].icon}</div><p class="lead">Has hecho <b>${score} puntos</b> en ${GAMES[k].name}.<br>Manda este mensaje a quien quieras retar:</p>
+ <div class="code">${code}</div></div>
+ <textarea class="msg" id="msg" readonly>${esc(msg)}</textarea>
+ <div class="row" style="margin-top:12px"><button class="btn" id="copy">📋 Copiar mensaje</button><a class="btn" id="wa" style="background:#25d366;box-shadow:0 6px 0 #179c4b;text-align:center;text-decoration:none" href="https://wa.me/?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">WhatsApp</a></div>
+ <div class="fb" id="cfb"></div>
+ <button class="btn ghost wide" id="hm" style="margin-top:12px">Volver al inicio</button>`);
+ $('#copy').onclick=async()=>{try{await navigator.clipboard.writeText(msg);$('#cfb').textContent='✅ ¡Copiado! Pégalo en el chat.'}catch(e){const t=$('#msg');t.focus();t.select();$('#cfb').textContent='Selecciona el texto y cópialo a mano.'}};
+ $('#hm').onclick=home;
+}
+function codeEntry(){
+ const b=screen('🎟️ Código de reto',`<p class="lead">Escribe el código que te han mandado: un reto (algo como <b>S5-K9X2P-95-LUCIA</b>) o un resultado que te devuelven (empieza por <b>R</b>).</p><form id="cf"><input type="text" id="ci" placeholder="Código" autocomplete="off" style="text-transform:uppercase"><button class="btn wide" type="submit">Ver el reto</button></form><div class="fb" id="cfb" style="color:var(--bad)"></div>`);
+ $('#cf').onsubmit=e=>{e.preventDefault();const v=$('#ci').value,rr=parseResult(v);if(rr)return resultIntro(rr);const c=parseCode(v);if(!c){$('#cfb').textContent='Ese código no es válido. Revísalo bien 🧐';return}challengeIntro(c)};
+ later(()=>$('#ci')&&$('#ci').focus(),100);
+}
+function challengeIntro(c){
+ pending=null;try{if(location.hash)history.replaceState(null,'',location.pathname+location.search)}catch(e){}
+ const b=screen('⚔️ ¡Te han retado!',`<div style="text-align:center"><div style="font-size:60px">${GAMES[c.k].icon}</div><h2 class="f" style="font-size:24px;margin:6px 0">${esc(c.name)} te reta</h2><p class="lead">Juego: <b>${GAMES[c.k].name}</b> · Dificultad: nivel ${c.lv}<br>Su puntuación: <b style="font-size:22px">${c.score}</b> puntos</p><p class="lead">Vas a jugar <b>exactamente los mismos retos</b>. ¿Podrás superarle?</p><button class="btn wide" id="acc">¡Acepto el reto!</button></div>`);
+ $('#acc').onclick=()=>launch(c.k,{mode:'challenge',lv:c.lv,seed:c.seed,rival:{name:c.name,score:c.score},banner:`⚔️ Reto de <b>${esc(c.name)}</b>: ${c.score} puntos. ¡Supéralo!`});
+}
+function recordDuel(d){
+ st.duels=st.duels||[];
+ const key=d.seed+'|'+d.rival.toLowerCase();
+ const i=st.duels.findIndex(x=>x.seed+'|'+x.rival.toLowerCase()===key);
+ if(i>=0)st.duels[i]=Object.assign(st.duels[i],d);else st.duels.unshift(d);
+ st.duels=st.duels.slice(0,200);save();
+ return i<0;
+}
+function challengeDone(k,score,cheer,r0){
+ const R=ctx.rival,lv=ctx.lv,seed=ctx.seed;st.xp+=Math.max(5,Math.round(score/4))+(score>R.score?15:0);addStreak();
+ recordDuel({date:today(),k,lv,seed,rival:R.name,me:score,them:R.score,how:'recibido'});
+ const win=score>R.score,tie=score===R.score;
+ const b=screen('⚔️ Resultado del reto',`<div class="result"><div class="big">${win?'🏆':tie?'🤝':'😤'}</div><h2 class="f">${win?'¡Has ganado!':tie?'¡Empate!':`Gana ${esc(R.name)}… ¡esta vez!`}</h2>
+ <div class="vs"><div><small>Tú</small><b>${score}</b></div><span>vs</span><div><small>${esc(R.name)}</small><b>${R.score}</b></div></div>
+ <p class="lead">${win?'Mándale la revancha… ¡a ver si te la devuelve!':tie?'Hay que desempatar. ¡Lanza tú el siguiente reto!':'Devuélvele el reto con una partida nueva del mismo juego.'}</p>
+ <button class="btn wide" id="tell">📩 Mandarle tu resultado</button>
+ <p class="lead" style="font-size:13px;margin-top:6px">Así le cuenta en su ranking de retos.</p>
+ <button class="btn wide" id="rev" style="background:#ff6b8b;box-shadow:0 6px 0 #d84467;margin-top:6px">⚔️ Devolver el reto</button>
+ <button class="btn ghost wide" id="hm" style="margin-top:12px">Inicio</button></div>`);
+ $('#tell').onclick=()=>resultShare(k,lv,seed,R,score);
+ celebrate(r0,false,win);
+ $('#rev').onclick=()=>launch(k,{mode:'send',lv,banner:`⚔️ Revancha contra <b>${esc(R.name)}</b>`});$('#hm').onclick=home;
+}
+/* --- Devolver el resultado al que retó --- */
+const outcome=(me,them)=>me>them?'win':me<them?'loss':'tie';
+function shareBox(msg,afterHTML=''){
+ return `<textarea class="msg" id="msg" readonly>${esc(msg)}</textarea>
+ <div class="row" style="margin-top:12px"><button class="btn" id="copy">📋 Copiar mensaje</button><a class="btn" style="background:#25d366;box-shadow:0 6px 0 #179c4b;text-decoration:none" href="https://wa.me/?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">WhatsApp</a></div><div class="fb" id="cfb"></div>${afterHTML}`;
+}
+function bindCopy(msg){$('#copy').onclick=async()=>{try{await navigator.clipboard.writeText(msg);$('#cfb').textContent='✅ ¡Copiado! Pégalo en el chat.'}catch(e){const t=$('#msg');t.focus();t.select();$('#cfb').textContent='Selecciona el texto y cópialo a mano.'}}}
+function resultShare(k,lv,seed,R,score){
+ const code=`R${CODES[k]}${lv}-${seed.toString(36).toUpperCase()}-${R.score}-${score}-${cleanName(R.name)}-${cleanName(artistName())}`;
+ const o=outcome(score,R.score);
+ const msg=`${o==='win'?'🏆':o==='tie'?'🤝':'👏'} ¡Ya he jugado tu reto de ${GAMES[k].name}! Tú: ${R.score} · Yo: ${score}. ${o==='win'?'¡Te he ganado! 😎':o==='tie'?'¡Empate!':'Esta vez ganas tú… ¡pero vuelvo!'}\n\nApúntalo en tu ranking: ${APP_URL}#res-${code}\n\n(o mete este código en «Tengo un código»: ${code})`;
+ screen('📩 Mandar tu resultado',`<p class="lead">Manda este mensaje a <b>${esc(R.name)}</b>. Al abrirlo, el resultado se apunta en su historial de retos.</p><div class="code" style="text-align:center">${code}</div>${shareBox(msg,'<button class="btn ghost wide" id="hm" style="margin-top:12px">Volver al inicio</button>')}`);
+ bindCopy(msg);$('#hm').onclick=home;
+}
+function parseResult(s){
+ const m=String(s).trim().replace(/^#?res-/i,'').match(/^R([MCTSVQX])(\d{1,2})-([0-9A-Z]{1,7})-(\d{1,5})-(\d{1,5})-([A-Z0-9]{1,12})-([A-Z0-9]{1,12})$/i);
+ if(!m)return null;
+ const k=Object.keys(CODES).find(x=>CODES[x]===m[1].toUpperCase());const seed=parseInt(m[3],36);
+ if(!k||!seed)return null;
+ return{k,lv:+m[2],seed,me:+m[4],them:+m[5],rival:niceName(m[7].toUpperCase()),forName:m[6].toUpperCase()};
+}
+function resultIntro(res){
+ pendingRes=null;try{if(location.hash)history.replaceState(null,'',location.pathname+location.search)}catch(e){}
+ setTimeout(checkDiscos,600);
+ const fresh=recordDuel({date:today(),k:res.k,lv:res.lv,seed:res.seed,rival:res.rival,me:res.me,them:res.them,how:'enviado'});
+ const o=outcome(res.me,res.them),other=res.forName!==cleanName(artistName())&&res.forName!==cleanName(st.name);
+ screen('📩 Resultado de tu reto',`<div class="result"><div class="big">${o==='win'?'🏆':o==='tie'?'🤝':'😤'}</div><h2 class="f">${o==='win'?'¡Has ganado tú!':o==='tie'?'¡Empate!':`Te ha ganado ${esc(res.rival)}`}</h2>
+ <div class="lead">${GAMES[res.k].icon} ${GAMES[res.k].name}</div>
+ <div class="vs"><div><small>Tú</small><b>${res.me}</b></div><span>vs</span><div><small>${esc(res.rival)}</small><b>${res.them}</b></div></div>
+ <p class="lead">${fresh?'✅ Apuntado en tu ranking de retos.':'Este resultado ya estaba apuntado.'}${other?'<br><small>(Ojo: este reto lo mandó otra persona, pero lo hemos apuntado igualmente).</small>':''}</p>
+ <button class="btn wide" id="rk">🏅 Ver mi ranking</button>
+ <button class="btn wide" id="rev" style="background:#ff6b8b;box-shadow:0 6px 0 #d84467;margin-top:12px">⚔️ Lanzarle otro reto</button>
+ <button class="btn ghost wide" id="hm" style="margin-top:12px">Inicio</button></div>`);
+ $('#rk').onclick=myRanking;$('#hm').onclick=home;
+ $('#rev').onclick=()=>launch(res.k,{mode:'send',lv:res.lv,banner:`⚔️ Nuevo reto para <b>${esc(res.rival)}</b>`});
+}
+let pendingRes=null;
+
+/* --- Mis retos y rankings --- */
+function myRanking(tab){
+ tab=tab||'retos';
+ const D=st.duels||[];
+ let html=`<div class="chips" id="rtab"><button class="chip${tab==='retos'?' sel':''}" data-v="retos">⚔️ Liga de retos</button><button class="chip${tab==='grupo'?' sel':''}" data-v="grupo">👥 Liga del grupo</button></div>`;
+ if(tab==='retos'){
+  const T={};const me='Tú';T[me]={n:me,pj:0,g:0,e:0,p:0,pts:0,me:true};
+  D.forEach(d=>{const o=outcome(d.me,d.them),key=d.rival.toLowerCase();T[key]=T[key]||{n:d.rival,pj:0,g:0,e:0,p:0,pts:0};const R=T[key],M=T[me];
+   M.pj++;R.pj++;
+   if(o==='win'){M.g++;M.pts+=3;R.p++}else if(o==='loss'){R.g++;R.pts+=3;M.p++}else{M.e++;R.e++;M.pts++;R.pts++}});
+  const rows=Object.values(T).sort((a,b)=>b.pts-a.pts||b.g-a.g||a.pj-b.pj);
+  html+=D.length?`<p class="lead" style="margin-top:12px">Cada reto: ganar 3 puntos, empatar 1. Cuentan los retos que juegas tú y los que mandas cuando te devuelven el resultado.</p>
+  <table class="tbl"><tr><th></th><th>Nombre</th><th>PJ</th><th>G</th><th>E</th><th>P</th><th>Pts</th></tr>${rows.map((x,i)=>`<tr class="${x.me?'meRow':''}"><td>${MED[i]||i+1+'º'}</td><td><b>${esc(x.n)}</b></td><td>${x.pj}</td><td>${x.g}</td><td>${x.e}</td><td>${x.p}</td><td><b>${x.pts}</b></td></tr>`).join('')}</table>
+  <div class="lab">Últimos retos</div><div class="hist">${D.slice(0,25).map(d=>{const o=outcome(d.me,d.them);return `<div><span>${o==='win'?'🏆':o==='tie'?'🤝':'❌'}</span><div><b>${esc(d.rival)}</b><small>${GAMES[d.k].icon} ${GAMES[d.k].name} · ${d.date.split('-').reverse().join('/')} · ${d.how==='enviado'?'lo mandaste tú':'te retó'}</small></div><em>${d.me} – ${d.them}</em></div>`}).join('')}</div>`
+  :`<div class="intro" style="margin-top:14px"><div class="big">⚔️</div><p>Todavía no hay retos.<br>Reta a una amiga o juega un reto que te manden, y aquí irá apareciendo la liga.</p></div>`;
+ }else{
+  const L=Object.values(st.league||{}).sort((a,b)=>b.wins-a.wins||b.pts-a.pts);
+  html+=L.length?`<p class="lead" style="margin-top:12px">Partidas en Modo grupo jugadas en este dispositivo. Ganar una partida de grupo suma una victoria; los puntos son los de los podios.</p>
+  <table class="tbl"><tr><th></th><th>Nombre</th><th>Partidas</th><th>🏆</th><th>Podios</th><th>Pts</th></tr>${L.map((x,i)=>`<tr><td>${MED[i]||i+1+'º'}</td><td><b>${esc(x.n)}</b></td><td>${x.games}</td><td>${x.wins}</td><td>${x.pods}</td><td><b>${x.pts}</b></td></tr>`).join('')}</table>
+  <button class="chip" id="lreset" style="margin-top:14px">Reiniciar liga del grupo</button><div id="lconf"></div>`
+  :`<div class="intro" style="margin-top:14px"><div class="big">👥</div><p>Todavía no habéis jugado en Modo grupo.<br>Cuando terminéis una partida, aquí se irá formando vuestra liga.</p></div>`;
+ }
+ screen('🏅 Mis retos y rankings',html);curView='rank';
+ $('#rtab').querySelectorAll('.chip').forEach(c=>c.onclick=()=>myRanking(c.dataset.v));
+ const lr=$('#lreset');if(lr)lr.onclick=()=>{$('#lconf').innerHTML=`<p style="font-weight:700">¿Seguro? Se borrará la liga del grupo (no afecta a los retos).</p><div class="row"><button class="btn ghost" id="lno">No</button><button class="btn" id="lyes" style="background:var(--bad);box-shadow:0 6px 0 #a3272b">Sí, reiniciar</button></div>`;$('#lno').onclick=()=>myRanking('grupo');$('#lyes').onclick=()=>{st.league={};save();myRanking('grupo')}};
+}
+
+/* --- Modo grupo (un solo dispositivo) --- */
+let G=null;
+function groupSetup(){
+ let names=(st.groupNames&&st.groupNames.length>=2)?st.groupNames.slice():[st.name,''];
+ let game='mix',lv=5;
+ const b=screen('👥 Modo grupo',`<p class="lead">Escribid vuestros nombres. Todos jugaréis <b>los mismos retos</b> por turnos, pasándoos el móvil.</p>
+ <div class="lab">Jugadores</div><div id="pl"></div><button class="chip" id="addp" style="margin-top:8px">＋ Añadir jugador</button>
+ <div class="lab">Juego</div>${chipsHTML('gg',[['mix','🏆 Torneo (3 juegos)'],...gameItems()],game)}
+ <div class="lab">Dificultad</div>${chipsHTML('gd',DIFF.map(([l,v])=>[String(v),l]),'5')}
+ <button class="btn wide" id="gstart" style="margin-top:18px">¡A jugar!</button><div class="fb" id="gfb" style="color:var(--bad)"></div>`);
+ const drawP=()=>{$('#pl').innerHTML=names.map((n,i)=>`<div class="prow"><input type="text" maxlength="14" data-i="${i}" value="${esc(n)}" placeholder="Jugador ${i+1}">${names.length>2?`<button class="iconbtn" data-del="${i}">✕</button>`:''}</div>`).join('');
+  $('#pl').querySelectorAll('input').forEach(x=>x.oninput=()=>names[+x.dataset.i]=x.value);
+  $('#pl').querySelectorAll('[data-del]').forEach(x=>x.onclick=()=>{names.splice(+x.dataset.del,1);drawP()});
+  $('#addp').style.display=names.length>=8?'none':''};
+ drawP();
+ $('#addp').onclick=()=>{names.push('');drawP();const ins=$('#pl').querySelectorAll('input');ins[ins.length-1].focus()};
+ bindChips('gg',v=>game=v);bindChips('gd',v=>lv=+v);
+ $('#gstart').onclick=()=>{
+  const ps=names.map(n=>n.trim()).filter(Boolean);
+  if(ps.length<2){$('#gfb').textContent='Hacen falta al menos 2 jugadores.';return}
+  if(new Set(ps.map(p=>p.toLowerCase())).size!==ps.length){$('#gfb').textContent='Hay dos nombres iguales: añadid una inicial para distinguirlos.';return}
+  st.groupNames=ps;save();
+  const games=game==='mix'?shuffle(['mem','calc','stroop','series','trivia','musica']).slice(0,3):[game];
+  G={players:ps,games,lv,seeds:games.map(newSeed),round:0,turn:0,res:games.map(()=>[]),totals:ps.map(()=>0)};
+  groupTurn();
+ };
+}
+function groupTurn(){
+ const p=G.players[G.turn],k=G.games[G.round];
+ launch(k,{mode:'group',lv:G.lv,seed:G.seeds[G.round],player:p,banner:`📱 Turno de <b>${esc(p)}</b>${G.games.length>1?` · Ronda ${G.round+1} de ${G.games.length}`:''}`});
+}
+function groupDone(score){
+ G.res[G.round][G.turn]=score;
+ const p=G.players[G.turn];G.turn++;
+ const last=G.turn>=G.players.length;
+ const b=screen('👥 Modo grupo',`<div class="result"><div class="big">🎯</div><h2 class="f">${esc(p)}: ${score} puntos</h2>
+ ${last?'<p class="lead">¡Ya habéis jugado todos esta ronda!</p><button class="btn wide" id="nx">Ver resultados de la ronda</button>':`<p class="lead">Ahora pásale el móvil a…</p><div class="code" style="font-size:26px">${esc(G.players[G.turn])}</div><p class="lead" style="font-size:13.5px">¡Sin mirar su pantalla! 🙈</p><button class="btn wide" id="nx">Soy ${esc(G.players[G.turn])}, ¡empiezo!</button>`}</div>`);
+ $('#exit').onclick=()=>{G=null;home()};
+ $('#nx').onclick=last?roundResults:groupTurn;
+}
+function rankList(vals){const order=vals.map((v,i)=>i).sort((a,b)=>vals[b]-vals[a]);const pos=[];order.forEach((i,j)=>{pos[i]=j>0&&vals[i]===vals[order[j-1]]?pos[order[j-1]]:j});return{order,pos}}
+const MED=['🥇','🥈','🥉'];
+function roundResults(){
+ const sc=G.res[G.round],n=G.players.length,{order,pos}=rankList(sc);
+ sc.forEach((v,i)=>G.totals[i]+=n-pos[i]);
+ const k=G.games[G.round],more=G.round+1<G.games.length;
+ const b=screen(`${GAMES[k].icon} Resultados`,`<div class="lead" style="text-align:center">${GAMES[k].name}${G.games.length>1?` · Ronda ${G.round+1} de ${G.games.length}`:''}</div>
+ <div class="ranking">${order.map(i=>`<div><span>${MED[pos[i]]||(pos[i]+1)+'º'}</span><b>${esc(G.players[i])}</b><em>${sc[i]} pts</em>${G.games.length>1?`<small>+${n-pos[i]}</small>`:''}</div>`).join('')}</div>
+ <button class="btn wide" id="nx" style="margin-top:16px">${more?'Siguiente ronda →':'Ver el podio final 🏆'}</button>`);
+ $('#exit').onclick=()=>{G=null;home()};
+ $('#nx').onclick=()=>{if(more){G.round++;G.turn=0;groupTurn()}else podium()};
+}
+function podium(){
+ const multi=G.games.length>1,vals=multi?G.totals:G.res[0],{order,pos}=rankList(vals);
+ if(!G.saved){G.saved=true;st.league=st.league||{};const n=G.players.length;
+  G.players.forEach((p,i)=>{const key=p.toLowerCase();const L=st.league[key]=st.league[key]||{n:p,games:0,wins:0,pods:0,pts:0};L.n=p;L.games++;if(pos[i]===0)L.wins++;if(pos[i]<=2)L.pods++;L.pts+=n-pos[i]});st.stats.group++;save();confetti();jingle('win');checkDiscos()}
+ const top=order.filter(i=>pos[i]===0).map(i=>esc(G.players[i]));
+ const b=screen('🏆 Podio',`<div class="result"><div class="big">🎉</div><h2 class="f">${top.length>1?'¡Empate entre '+top.join(' y ')+'!':'¡'+top[0]+' gana!'}</h2>
+ <div class="ranking">${order.map(i=>`<div><span>${MED[pos[i]]||(pos[i]+1)+'º'}</span><b>${esc(G.players[i])}</b><em>${vals[i]} ${multi?'puntos de torneo':'pts'}</em></div>`).join('')}</div>
+ ${multi?'<p class="lead" style="font-size:13.5px">En cada ronda, el 1º suma tantos puntos como jugadores hay, el 2º uno menos, y así sucesivamente.</p>':''}
+ <div class="row"><button class="btn ghost" id="hm">Inicio</button><button class="btn" id="again">Revancha</button></div></div>`);
+ $('#hm').onclick=()=>{G=null;home()};
+ $('#again').onclick=()=>{const games=G.games.length>1?shuffle(['mem','calc','stroop','series','trivia','musica']).slice(0,3):G.games;G=Object.assign(G,{games,seeds:games.map(newSeed),round:0,turn:0,res:games.map(()=>[]),totals:G.players.map(()=>0)});groupTurn()};
+}
+
+/* --- arranque y enlaces de reto --- */
+function readHash(){const h=decodeURIComponent(location.hash.slice(1));if(/^reto-/i.test(h)){const c=parseCode(h);if(c)pending=c}else if(/^res-/i.test(h)){const c=parseResult(h);if(c)pendingRes=c}}
+function openPending(){if(pending)return challengeIntro(pending),true;if(pendingRes)return resultIntro(pendingRes),true;return false}
+function boot(){readHash();if(!st.name)return nameScreen();if(!openPending())home()}
+window.addEventListener('hashchange',()=>{readHash();if(st.name){cleanup();openPending()}});
+boot();initCloud();
+</script>
+</body>
+</html>
